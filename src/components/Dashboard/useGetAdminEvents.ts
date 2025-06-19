@@ -5,7 +5,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 
 const fetchUpcomingEvents = async (): Promise<AdminDashboardUpcomingEvent[]> => {
-    const { data } = await axios.get('http://localhost:8080/api/events/admin-dashboard');
+    const { data } = await axios.get('https://betim.onrender.com/api/events/admin-dashboard');
     console.log({data})
 
     return data;
@@ -22,11 +22,11 @@ export const useGetAdminEvents = () => {
 
 // API function for deleting event
 const deleteEvent = async (eventId: string): Promise<void> => {
-    await axios.delete(`http://localhost:8080/api/events/${eventId}`);
+    await axios.delete(`https://betim.onrender.com/api/events/${eventId}`);
 };
 
 const createEvent = async (event: AdminDashboardUpcomingEvent): Promise<void> => {
-    await axios.post(`http://localhost:8080/api/events/`, event);
+    await axios.post(`https://betim.onrender.com/api/events/`, event);
 };
 
 

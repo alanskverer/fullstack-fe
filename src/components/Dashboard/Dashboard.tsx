@@ -1,4 +1,3 @@
-import React from 'react';
 import { Card, CardContent, Typography, Button } from '@mui/material';
 import './Dashboard.scss';
 import { useCreateEvent, useDeleteEvent, useGetAdminEvents } from "./useGetAdminEvents";
