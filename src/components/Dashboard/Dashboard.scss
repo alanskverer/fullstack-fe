@@ -1,0 +1,40 @@
+.dashboard-container {
+  max-width: 600px;
+  margin: 40px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  overflow: hidden;
+}
+
+.dashboard-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.dashboard-items {
+  overflow-y: auto;
+
+  max-height: 50vh; // adjust height as needed
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-right: 4px; // optional, avoids scrollbar overlay
+}
+
+.dashboard-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.dashboard-card {
+  max-width: 500px;
+  flex-grow: 1;
+}
+
+.dashboard-row button {
+  width: 100px;
+  height: 40px;
+}

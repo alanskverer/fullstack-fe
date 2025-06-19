@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import logo from './logo.svg'
 import './App.css'
+import Button from '@mui/material/Button';
+
 
 function App() {
   const [count, setCount] = useState(0)
@@ -17,6 +19,7 @@ function App() {
         </p>
         <p>
           Edit <code>App.tsx</code> and save to test HMR updates.
+          <Button variant="contained">Hello</Button>;
         </p>
         <p>
           <a
