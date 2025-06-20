@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
-import axios from "axios";
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import apiClient from "../../api/apiClient.ts";
 
 
 
 const fetchUpcomingEvents = async (): Promise<AdminDashboardUpcomingEvent[]> => {
-    const { data } = await axios.get('https://betim.onrender.com/api/events/admin-dashboard');
+    const { data } = await apiClient.get('/events/admin-dashboard');
     console.log({data})
 
     return data;
@@ -22,11 +22,11 @@ export const useGetAdminEvents = () => {
 
 // API function for deleting event
 const deleteEvent = async (eventId: string): Promise<void> => {
-    await axios.delete(`https://betim.onrender.com/api/events/${eventId}`);
+    await apiClient.delete(`/events/${eventId}`);
 };
 
 const createEvent = async (event: AdminDashboardUpcomingEvent): Promise<void> => {
-    await axios.post(`https://betim.onrender.com/api/events/`, event);
+    await apiClient.post(`/events/`, event);
 };
 
 
@@ -61,7 +61,7 @@ export const useCreateEvent = () => {
 
 
 type AdminDashboardUpcomingEvent = {
-    id: string;
+    _id: string;
     type: string;
     startDate: number;
     homeTeam: {

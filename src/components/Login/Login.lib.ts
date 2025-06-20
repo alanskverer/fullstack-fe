@@ -1,11 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
-import axios from 'axios';
+import apiClient from "../../api/apiClient.ts";
 
 export function useLogin() {
     return useMutation({
         mutationFn: (password: string) => {
-            // Replace with your real API call
-            return axios.post('https://betim.onrender.com/api/admin/login', { password });
+            return apiClient.post('/admin/login', { password });
         },
     });
 }

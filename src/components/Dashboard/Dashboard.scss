@@ -1,16 +1,31 @@
 .dashboard-container {
-  max-width: 600px;
-  margin: 40px auto;
   display: flex;
+  align-items: center;
+  //margin: 40px auto;
   flex-direction: column;
   gap: 16px;
-  padding: 16px;
+  padding: 32px;
   overflow: hidden;
 }
 
 .dashboard-header {
   text-align: center;
   margin-bottom: 24px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  .logout-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    button {
+      margin: 0;
+    }
+  }
 }
 
 .dashboard-items {
