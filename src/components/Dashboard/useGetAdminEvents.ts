@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import apiClient from "../../api/apiClient.ts";
+import { API_VERSION } from "../../constants/api";
 
 // Updated type to match backend response structure
 type AdminDashboardResponse = {
@@ -32,7 +33,7 @@ type IEvent = {
 };
 
 const fetchAdminDashboardData = async (): Promise<AdminDashboardResponse> => {
-    const { data } = await apiClient.get('/admin/events/dashboard');
+    const { data } = await apiClient.get(`/${API_VERSION}/admin/events/dashboard`);
     console.log('Dashboard data:', data);
     return data;
 };
@@ -46,12 +47,12 @@ export const useGetAdminEvents = () => {
 
 // API function for deleting event (using _id from dbEvents)
 const deleteEvent = async (eventId: string): Promise<void> => {
-  await apiClient.delete(`/admin/events/${eventId}`);
+  await apiClient.delete(`/${API_VERSION}/admin/events/${eventId}`);
 };
 
 // API function for creating event (using external event data)
 const createEvent = async (event: IEvent): Promise<void> => {
-    await apiClient.post(`/admin/events`, event);
+    await apiClient.post(`/${API_VERSION}/admin/events`, event);
 };
 
 // React Query mutation hook for deletion
