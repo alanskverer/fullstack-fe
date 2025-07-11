@@ -57,7 +57,7 @@ export const NavigationLayout = ({ onLogout }: NavigationLayoutProps) => {
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-            <AppBar position="static" elevation={1}>
+            <AppBar position="fixed" elevation={1}>
                 <Container maxWidth="xl">
                     <Toolbar sx={{ justifyContent: 'space-between' }}>
                         {/* Logo and Brand */}
@@ -151,7 +151,7 @@ export const NavigationLayout = ({ onLogout }: NavigationLayoutProps) => {
             </AppBar>
 
             {/* Main Content */}
-            <Box component="main" sx={{ flexGrow: 1, bgcolor: 'grey.50' }}>
+            <Box component="main" sx={{ flexGrow: 1, bgcolor: 'grey.50', pt: { xs: '56px', sm: '64px' }, minHeight: 0 }}>
                 <Outlet />
             </Box>
         </Box>
