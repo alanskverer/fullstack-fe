@@ -11,14 +11,13 @@ import {
     Avatar,
     Tooltip,
     Container,
-    Chip
+
 } from '@mui/material';
 import {
     SportsTennis as SportsIcon,
     AccountCircle,
     Settings,
     Logout,
-    Dashboard as DashboardIcon
 } from '@mui/icons-material';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 
@@ -28,13 +27,6 @@ const navigationItems = [
         path: '/dashboard',
         icon: <SportsIcon />,
         description: 'Manage NBA events'
-    },
-    {
-        label: 'Analytics',
-        path: '/analytics',
-        icon: <DashboardIcon />,
-        description: 'View statistics',
-        disabled: true
     }
 ];
 
@@ -90,8 +82,7 @@ export const NavigationLayout = ({ onLogout }: NavigationLayoutProps) => {
                             {navigationItems.map((item) => (
                                 <Button
                                     key={item.path}
-                                    onClick={() => !item.disabled && navigate(item.path)}
-                                    disabled={item.disabled}
+                                    onClick={() => navigate(item.path)}
                                     startIcon={item.icon}
                                     sx={{
                                         color: 'white',
@@ -106,19 +97,6 @@ export const NavigationLayout = ({ onLogout }: NavigationLayoutProps) => {
                                     }}
                                 >
                                     {item.label}
-                                    {item.disabled && (
-                                        <Chip
-                                            label="Soon"
-                                            size="small"
-                                            sx={{
-                                                ml: 1,
-                                                height: 20,
-                                                fontSize: '0.7rem',
-                                                backgroundColor: 'rgba(255,255,255,0.2)',
-                                                color: 'white'
-                                            }}
-                                        />
-                                    )}
                                 </Button>
                             ))}
                         </Box>
