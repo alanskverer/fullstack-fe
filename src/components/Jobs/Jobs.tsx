@@ -36,7 +36,7 @@ import { useRemoveScheduler } from './useRemoveScheduler';
 
 export const Jobs = () => {
     const { data, isLoading, error, refetch } = useGetJobs();
-    const { data: schedulersData, isLoading: isLoadingSchedulers, error: schedulersError, refetch: refetchSchedulers } = useGetSchedulers();
+    const { data: schedulersData, refetch: refetchSchedulers } = useGetSchedulers();
     const { mutate: removeJob, isPending: isRemovingJob } = useRemoveJob();
     const { mutate: removeQueueJobs, isPending: isRemovingQueueJobs } = useRemoveQueueJobs();
     const { mutate: removeScheduler, isPending: isRemovingScheduler } = useRemoveScheduler();
@@ -257,7 +257,7 @@ export const Jobs = () => {
 
             {/* Summary Cards */}
             <Grid container spacing={2} sx={{ mb: 4 }}>
-                <Grid item xs={12} sm={6} md={3}>
+                <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                     <Card variant="outlined">
                         <CardContent sx={{ textAlign: 'center' }}>
                             <Typography variant="h4" color="info.main" sx={{ fontWeight: 700 }}>
@@ -269,7 +269,7 @@ export const Jobs = () => {
                         </CardContent>
                     </Card>
                 </Grid>
-                <Grid item xs={12} sm={6} md={3}>
+                <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                     <Card variant="outlined">
                         <CardContent sx={{ textAlign: 'center' }}>
                             <Typography variant="h4" color="warning.main" sx={{ fontWeight: 700 }}>
@@ -281,7 +281,7 @@ export const Jobs = () => {
                         </CardContent>
                     </Card>
                 </Grid>
-                <Grid item xs={12} sm={6} md={3}>
+                <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                     <Card variant="outlined">
                         <CardContent sx={{ textAlign: 'center' }}>
                             <Typography variant="h4" color="error.main" sx={{ fontWeight: 700 }}>
@@ -293,7 +293,7 @@ export const Jobs = () => {
                         </CardContent>
                     </Card>
                 </Grid>
-                <Grid item xs={12} sm={6} md={3}>
+                <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                     <Card variant="outlined">
                         <CardContent sx={{ textAlign: 'center' }}>
                             <Typography variant="h4" color="success.main" sx={{ fontWeight: 700 }}>
