@@ -18,6 +18,7 @@ import {
     AccountCircle,
     Settings,
     Logout,
+    Work as JobsIcon,
 } from '@mui/icons-material';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 
@@ -27,6 +28,12 @@ const navigationItems = [
         path: '/dashboard',
         icon: <SportsIcon />,
         description: 'Manage NBA events'
+    },
+    {
+        label: 'Jobs',
+        path: '/jobs',
+        icon: <JobsIcon />,
+        description: 'Monitor BullMQ jobs'
     }
 ];
 

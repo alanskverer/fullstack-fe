@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import './index.css';
 import { Login } from "./components/Login/Login";
 import { Dashboard } from "./components/Dashboard/Dashboard";
+import { Jobs } from "./components/Jobs/Jobs";
 import { NavigationLayout } from "./components/Layout/NavigationLayout";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
@@ -41,6 +42,7 @@ function App() {
             />
             <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} onLogout={handleLogout} />}>
                 <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/jobs" element={<Jobs />} />
             </Route>
         </Routes>
     );
