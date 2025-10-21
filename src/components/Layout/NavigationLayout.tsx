@@ -64,7 +64,7 @@ export const NavigationLayout = ({ onLogout }: NavigationLayoutProps) => {
     const handleLogout = () => {
         handleProfileMenuClose();
         onLogout();
-        navigate('/', { replace: true });
+        navigate('/admin/login', { replace: true });
     };
 
     const isMenuOpen = Boolean(anchorEl);

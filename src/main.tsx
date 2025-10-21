@@ -7,13 +7,14 @@ import { Dashboard } from "./components/Dashboard/Dashboard";
 import { Jobs } from "./components/Jobs/Jobs";
 import { LiveEventConfig } from "./components/LiveEventConfig/LiveEventConfig";
 import { NavigationLayout } from "./components/Layout/NavigationLayout";
+import { LandingPage } from "./components/LandingPage/LandingPage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useAuthValidation } from "./hooks/useAuthValidation";
 
 const queryClient = new QueryClient();
 
 const ProtectedRoute = ({ isAuthenticated, onLogout }: { isAuthenticated: boolean; onLogout: () => void }) => {
-    return isAuthenticated ? <NavigationLayout onLogout={onLogout} /> : <Navigate to="/" replace />;
+    return isAuthenticated ? <NavigationLayout onLogout={onLogout} /> : <Navigate to="/admin/login" replace />;
 };
 
 function App() {
@@ -56,8 +57,9 @@ function App() {
 
     return (
         <Routes>
+            <Route path="/" element={<LandingPage />} />
             <Route 
-                path="/" 
+                path="/admin/login" 
                 element={
                     isAuthenticated 
                         ? <Navigate to="/admin/dashboard" replace /> 
