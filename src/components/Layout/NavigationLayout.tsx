@@ -19,21 +19,28 @@ import {
     Settings,
     Logout,
     Work as JobsIcon,
+    SettingsApplications as ConfigIcon,
 } from '@mui/icons-material';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 
 const navigationItems = [
     {
         label: 'Events',
-        path: '/dashboard',
+        path: '/admin/dashboard',
         icon: <SportsIcon />,
         description: 'Manage NBA events'
     },
     {
         label: 'Jobs',
-        path: '/jobs',
+        path: '/admin/jobs',
         icon: <JobsIcon />,
         description: 'Monitor BullMQ jobs'
+    },
+    {
+        label: 'Live Event Config',
+        path: '/admin/live-config',
+        icon: <ConfigIcon />,
+        description: 'Configure live event settings'
     }
 ];
 

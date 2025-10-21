@@ -26,7 +26,7 @@ export const Login = (props:LoginProps) => {
         login(password, {
             onSuccess: () => {
                 props.onLogin();
-                navigate('/dashboard');
+                navigate('/admin/dashboard');
             },
             onError: () => setError('Invalid password. Please try again.'),
         });
