@@ -192,7 +192,7 @@ export const LandingPage = () => {
         </Box>
 
         {/* 4 Images */}
-        <Grid container spacing={4} justifyContent="center">
+        <Grid container spacing={4} justifyContent="center" sx={{ mb: 8 }}>
           {onboardingImages.map((item, index) => (
             <Grid size={{ xs: 12, sm: 6, md: 3 }} key={index}>
               <Card
@@ -245,6 +245,55 @@ export const LandingPage = () => {
             </Grid>
           ))}
         </Grid>
+
+        {/* Footer Links */}
+        <Box
+          sx={{
+            mt: 8,
+            pt: 4,
+            borderTop: "1px solid rgba(255, 255, 255, 0.1)",
+            display: "flex",
+            justifyContent: "center",
+            gap: { xs: 2, sm: 4 },
+            flexWrap: "wrap",
+          }}
+        >
+          <Button
+            onClick={() => navigate("/privacy")}
+            sx={{
+              color: "#999",
+              textTransform: "none",
+              fontSize: "0.9rem",
+              "&:hover": {
+                color: "#ff6b6b",
+              },
+            }}
+          >
+            Privacy Policy
+          </Button>
+          <Button
+            onClick={() => navigate("/terms")}
+            sx={{
+              color: "#999",
+              textTransform: "none",
+              fontSize: "0.9rem",
+              "&:hover": {
+                color: "#ff6b6b",
+              },
+            }}
+          >
+            Terms & Conditions
+          </Button>
+          <Typography
+            variant="caption"
+            sx={{
+              color: "#666",
+              alignSelf: "center",
+            }}
+          >
+            © 2025 Bettim. All rights reserved.
+          </Typography>
+        </Box>
       </Container>
     </Box>
   );

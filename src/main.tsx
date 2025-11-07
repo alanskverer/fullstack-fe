@@ -8,6 +8,8 @@ import { Jobs } from "./components/Jobs/Jobs";
 import { LiveEventConfig } from "./components/LiveEventConfig/LiveEventConfig";
 import { NavigationLayout } from "./components/Layout/NavigationLayout";
 import { LandingPage } from "./components/LandingPage/LandingPage";
+import Privacy from "./components/Privacy/Privacy";
+import Terms from "./components/Terms/Terms";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useAuthValidation } from "./hooks/useAuthValidation";
 
@@ -58,13 +60,15 @@ function App() {
     return (
         <Routes>
             <Route path="/" element={<LandingPage />} />
-            <Route 
-                path="/admin/login" 
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route
+                path="/admin/login"
                 element={
-                    isAuthenticated 
-                        ? <Navigate to="/admin/dashboard" replace /> 
+                    isAuthenticated
+                        ? <Navigate to="/admin/dashboard" replace />
                         : <Login onLogin={handleLogin} />
-                } 
+                }
             />
             <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} onLogout={handleLogout} />}>
                 <Route path="/admin/dashboard" element={<Dashboard />} />
