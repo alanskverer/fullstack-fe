@@ -9,7 +9,7 @@ import { LiveEventConfig } from "./components/LiveEventConfig/LiveEventConfig";
 import { NavigationLayout } from "./components/Layout/NavigationLayout";
 import { LandingPage } from "./components/LandingPage/LandingPage";
 import Privacy from "./components/Privacy/Privacy";
-import Terms from "./components/Terms/Terms";
+import TermsDocx from "./components/Terms/TermsDocx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useAuthValidation } from "./hooks/useAuthValidation";
 
@@ -61,7 +61,7 @@ function App() {
         <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/privacy" element={<Privacy />} />
-            <Route path="/terms" element={<Terms />} />
+            <Route path="/terms" element={<TermsDocx />} />
             <Route
                 path="/admin/login"
                 element={
