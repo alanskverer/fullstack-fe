@@ -3,7 +3,7 @@ import { Container, Box, Button, CircularProgress, Alert, Typography } from '@mu
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import GavelIcon from '@mui/icons-material/Gavel';
 import { useNavigate } from 'react-router-dom';
-import { renderAsync } from 'docx-preview';
+import mammoth from 'mammoth';
 
 const TermsDocx: React.FC = () => {
   const navigate = useNavigate();
@@ -25,9 +25,17 @@ const TermsDocx: React.FC = () => {
 
         const arrayBuffer = await response.arrayBuffer();
 
-        // Render the document
+        // Convert DOCX to HTML using Mammoth
+        const result = await mammoth.convertToHtml({ arrayBuffer });
+
+        // Render the HTML into the container
         if (containerRef.current) {
-          await renderAsync(arrayBuffer, containerRef.current);
+          containerRef.current.innerHTML = result.value;
+        }
+
+        // Log any warnings from conversion
+        if (result.messages.length > 0) {
+          console.warn('Mammoth conversion warnings:', result.messages);
         }
       } catch (err) {
         console.error('Error loading document:', err);
@@ -100,7 +108,7 @@ const TermsDocx: React.FC = () => {
       <Container
         maxWidth="lg"
         sx={{
-          px: { xs: 2, sm: 3 },
+          px: { xs: 1, sm: 2, md: 3 },
           flex: 1,
           overflow: 'hidden',
           display: 'flex',
@@ -111,17 +119,73 @@ const TermsDocx: React.FC = () => {
           ref={containerRef}
           sx={{
             bgcolor: 'white',
-            p: 3,
+            p: { xs: 1.5, sm: 2, md: 3 },
             borderRadius: 1,
             boxShadow: 1,
             overflowY: 'auto',
             maxHeight: 'calc(100vh - 200px)',
+            // Responsive typography
+            fontSize: { xs: '14px', sm: '15px', md: '16px' },
+            lineHeight: 1.6,
+            // Responsive styling for Mammoth HTML output
             '& p': {
-              mb: 1,
+              mb: 1.5,
+              fontSize: 'inherit',
+              wordBreak: 'break-word',
             },
-            '& h1, & h2, & h3, & h4, & h5, & h6': {
+            '& h1': {
+              fontSize: { xs: '1.5rem', sm: '1.75rem', md: '2rem' },
               mt: 2,
               mb: 1,
+              fontWeight: 700,
+            },
+            '& h2': {
+              fontSize: { xs: '1.25rem', sm: '1.5rem', md: '1.75rem' },
+              mt: 2,
+              mb: 1,
+              fontWeight: 700,
+            },
+            '& h3, & h4, & h5, & h6': {
+              fontSize: { xs: '1.1rem', sm: '1.25rem', md: '1.5rem' },
+              mt: 1.5,
+              mb: 0.75,
+              fontWeight: 600,
+            },
+            '& ul, & ol': {
+              pl: 2,
+              mb: 1.5,
+              '& li': {
+                mb: 0.75,
+                fontSize: 'inherit',
+              },
+            },
+            '& table': {
+              width: '100%',
+              borderCollapse: 'collapse',
+              mb: 1.5,
+              fontSize: { xs: '13px', sm: '14px', md: '15px' },
+              '& th, & td': {
+                border: '1px solid #ddd',
+                p: 1,
+                textAlign: 'left',
+              },
+              '& th': {
+                bgcolor: '#f5f5f5',
+                fontWeight: 600,
+              },
+            },
+            '& strong, & b': {
+              fontWeight: 600,
+            },
+            '& em, & i': {
+              fontStyle: 'italic',
+            },
+            '& a': {
+              color: 'primary.main',
+              textDecoration: 'none',
+              '&:hover': {
+                textDecoration: 'underline',
+              },
             },
             // Custom scrollbar styling
             '&::-webkit-scrollbar': {
