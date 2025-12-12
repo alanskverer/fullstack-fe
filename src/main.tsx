@@ -6,6 +6,7 @@ import { Login } from "./components/Login/Login";
 import { Dashboard } from "./components/Dashboard/Dashboard";
 import { Jobs } from "./components/Jobs/Jobs";
 import { LiveEventConfig } from "./components/LiveEventConfig/LiveEventConfig";
+import { TeamStats } from "./components/TeamStats/TeamStats";
 import { NavigationLayout } from "./components/Layout/NavigationLayout";
 import { LandingPage } from "./components/LandingPage/LandingPage";
 import Privacy from "./components/Privacy/Privacy";
@@ -72,6 +73,7 @@ function App() {
             />
             <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} onLogout={handleLogout} />}>
                 <Route path="/admin/dashboard" element={<Dashboard />} />
+                <Route path="/admin/team-stats" element={<TeamStats />} />
                 <Route path="/admin/jobs" element={<Jobs />} />
                 <Route path="/admin/live-config" element={<LiveEventConfig />} />
             </Route>

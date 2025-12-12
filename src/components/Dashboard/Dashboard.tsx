@@ -25,7 +25,7 @@ export const Dashboard = () => {
                 <CircularProgress size={48} />
                 <Typography variant="h6" sx={{ mt: 2 }}>Loading events...</Typography>
                 <Typography variant="body2" color="text.secondary">
-                    Fetching the latest NBA games
+                    Fetching the latest NCAA games
                 </Typography>
             </Container>
         );
@@ -260,7 +260,7 @@ export const Dashboard = () => {
                         No events available at the moment
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                        Check back later for new NBA games to manage
+                        Check back later for new NCAA games to manage
                     </Typography>
                 </Box>
             )}

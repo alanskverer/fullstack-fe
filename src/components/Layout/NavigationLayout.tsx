@@ -20,15 +20,22 @@ import {
     Logout,
     Work as JobsIcon,
     SettingsApplications as ConfigIcon,
+    Leaderboard as StatsIcon,
 } from '@mui/icons-material';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 
 const navigationItems = [
     {
-        label: 'Events',
+        label: 'NCAA Events',
         path: '/admin/dashboard',
         icon: <SportsIcon />,
-        description: 'Manage NBA events'
+        description: 'Manage NCAA events'
+    },
+    {
+        label: 'NCAA Team Stats',
+        path: '/admin/team-stats',
+        icon: <StatsIcon />,
+        description: 'View team statistics'
     },
     {
         label: 'Jobs',
