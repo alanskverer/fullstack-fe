@@ -65,10 +65,12 @@ export const TeamStats = () => {
         );
     }
 
-    const teams = editableTeams.length > 0 ? editableTeams : data.data;
+    const teams: EditableTeamStats[] = editableTeams.length > 0
+        ? editableTeams
+        : data.data.map(team => ({ ...team, isEditing: false }));
 
     const handleEdit = (index: number) => {
-        const updatedTeams = [...teams];
+        const updatedTeams: EditableTeamStats[] = [...teams];
         updatedTeams[index] = { ...updatedTeams[index], isEditing: true };
         setEditableTeams(updatedTeams);
     };
@@ -96,7 +98,7 @@ export const TeamStats = () => {
         updateTeamStats(updatePayload, {
             onSuccess: () => {
                 // Exit edit mode after successful update
-                const updatedTeams = [...teams];
+                const updatedTeams: EditableTeamStats[] = [...teams];
                 updatedTeams[index] = { ...updatedTeams[index], isEditing: false };
                 setEditableTeams(updatedTeams);
                 console.log('Team stats updated successfully!');
@@ -108,7 +110,7 @@ export const TeamStats = () => {
     };
 
     const handleFieldChange = (index: number, field: string, value: string | number) => {
-        const updatedTeams = [...teams];
+        const updatedTeams: EditableTeamStats[] = [...teams];
 
         if (field === 'wins' || field === 'losses') {
             updatedTeams[index] = {
