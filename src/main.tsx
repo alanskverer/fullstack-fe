@@ -11,6 +11,7 @@ import { NavigationLayout } from "./components/Layout/NavigationLayout";
 import { LandingPage } from "./components/LandingPage/LandingPage";
 import Privacy from "./components/Privacy/Privacy";
 import TermsDocx from "./components/Terms/TermsDocx";
+import QA from "./components/QA/QA";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useAuthValidation } from "./hooks/useAuthValidation";
 
@@ -63,6 +64,7 @@ function App() {
             <Route path="/" element={<LandingPage />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<TermsDocx />} />
+            <Route path="/qa" element={<QA />} />
             <Route
                 path="/admin/login"
                 element={

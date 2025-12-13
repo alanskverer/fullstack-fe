@@ -284,6 +284,19 @@ export const LandingPage = () => {
           >
             Terms & Conditions
           </Button>
+          <Button
+            onClick={() => navigate("/qa")}
+            sx={{
+              color: "#999",
+              textTransform: "none",
+              fontSize: "0.9rem",
+              "&:hover": {
+                color: "#ff6b6b",
+              },
+            }}
+          >
+            Q&A
+          </Button>
           <Typography
             variant="caption"
             sx={{
