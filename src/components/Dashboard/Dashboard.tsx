@@ -1,23 +1,24 @@
-import { 
-    Card, 
-    CardContent, 
-    Typography, 
-    Button, 
-    Box, 
-    Chip, 
+import {
+    Card,
+    CardContent,
+    Typography,
+    Button,
+    Box,
+    Chip,
     Divider,
     Container,
     Alert,
     Stack,
     CircularProgress
 } from '@mui/material';
+import { useState } from 'react';
 import './Dashboard.scss';
-import { useCreateEvent, useDeleteEvent, useGetAdminEvents } from "./useGetAdminEvents";
+import { useCreateEvent, useGetAdminEvents } from "./useGetAdminEvents";
 
 export const Dashboard = () => {
     const { data, isLoading, error } = useGetAdminEvents();
-    const { mutate: deleteEvent, isPending: isDeleting } = useDeleteEvent();
-    const { mutate: createEvent, isPending: isCreating } = useCreateEvent();
+    const { mutate: createEvent } = useCreateEvent();
+    const [processingEventId, setProcessingEventId] = useState<string | null>(null);
 
     if (isLoading) {
         return (
@@ -144,33 +145,34 @@ export const Dashboard = () => {
                         </Typography>
                     )}
                 </CardContent>
-                
-                <Box sx={{ p: 2, pt: 0 }}>
-                    <Button
-                        variant={isInDatabase ? "outlined" : "contained"}
-                        color={isInDatabase ? "error" : "primary"}
-                        fullWidth
-                        disabled={isDeleting || isCreating}
-                        onClick={() => {
-                            if (isInDatabase && event._id) {
-                                deleteEvent(event._id);
-                            } else {
-                                createEvent(event);
+
+                {!isInDatabase && (
+                    <Box sx={{ p: 2, pt: 0 }}>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            fullWidth
+                            disabled={processingEventId === event.providerEventId}
+                            onClick={() => {
+                                setProcessingEventId(event.providerEventId);
+                                createEvent(event, {
+                                    onSettled: () => setProcessingEventId(null)
+                                });
+                            }}
+                            sx={{ fontWeight: 600 }}
+                            startIcon={
+                                processingEventId === event.providerEventId ? (
+                                    <CircularProgress size={16} color="inherit" />
+                                ) : undefined
                             }
-                        }}
-                        sx={{ fontWeight: 600 }}
-                        startIcon={
-                            (isDeleting || isCreating) ? (
-                                <CircularProgress size={16} color="inherit" />
-                            ) : undefined
-                        }
-                    >
-                        {isDeleting || isCreating 
-                            ? (isInDatabase ? "Removing..." : "Adding...")
-                            : (isInDatabase ? "Remove from Database" : "Add to Database")
-                        }
-                    </Button>
-                </Box>
+                        >
+                            {processingEventId === event.providerEventId
+                                ? "Adding..."
+                                : "Add to Database"
+                            }
+                        </Button>
+                    </Box>
+                )}
             </Card>
         </Box>
     );
