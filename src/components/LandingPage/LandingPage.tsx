@@ -168,7 +168,7 @@ export const LandingPage = () => {
               opacity: 0.9,
             }}
           >
-            The Future of Sports Betting
+           The Future of Live Sports Gaming
           </Typography>
 
           <Typography
