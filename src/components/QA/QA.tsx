@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Container,
   Box,
@@ -6,17 +6,139 @@ import {
   CircularProgress,
   Alert,
   Typography,
+  TextField,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Divider,
+  Paper,
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import EmailIcon from "@mui/icons-material/Email";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import SecurityIcon from "@mui/icons-material/Security";
 import { useNavigate } from "react-router-dom";
 import mammoth from "mammoth";
+import { z } from "zod";
+
+// Zod validation schema
+const contactFormSchema = z.object({
+  name: z
+    .string()
+    .min(2, "Name must be at least 2 characters")
+    .max(100, "Name must be less than 100 characters")
+    .trim(),
+  email: z
+    .string()
+    .email("Please enter a valid email address")
+    .min(1, "Email is required")
+    .trim()
+    .toLowerCase(),
+  message: z
+    .string()
+    .min(10, "Message must be at least 10 characters")
+    .max(1000, "Message must be less than 1000 characters")
+    .trim(),
+});
 
 const QA: React.FC = () => {
   const navigate = useNavigate();
   const containerRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
+
+  // Contact form state
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
+  const [formSubmitting, setFormSubmitting] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<{
+    name?: string;
+    email?: string;
+    message?: string;
+  }>({});
+
+  // Handle contact form submission
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormError(null);
+    setValidationErrors({});
+
+    // Validate form data with Zod
+    try {
+      const validatedData = contactFormSchema.parse(formData);
+
+      setFormSubmitting(true);
+
+      // Send email using Formsubmit.co (simple, no signup required!)
+      const response = await fetch("https://formsubmit.co/ajax/support@bettim.co", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+        },
+        body: JSON.stringify({
+          name: validatedData.name,
+          email: validatedData.email,
+          message: validatedData.message,
+          _subject: `Bettim Support - ${validatedData.name}`,
+          _template: "box", // Nice email template
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to send message");
+      }
+
+      // Show success message
+      setFormSubmitted(true);
+      setFormData({ name: "", email: "", message: "" });
+
+      // Reset success message after 5 seconds
+      setTimeout(() => setFormSubmitted(false), 5000);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        // Handle validation errors
+        const errors: { name?: string; email?: string; message?: string } = {};
+        error.issues.forEach((err: z.ZodIssue) => {
+          const field = err.path[0] as "name" | "email" | "message";
+          errors[field] = err.message;
+        });
+        setValidationErrors(errors);
+      } else {
+        // Handle fetch or other errors
+        console.error("Error submitting form:", error);
+        setFormError(
+          "Failed to send message. Please email us directly at support@bettim.co or try again later."
+        );
+      }
+    } finally {
+      setFormSubmitting(false);
+    }
+  };
+
+  const handleFormChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+
+    // Clear validation error for this field when user starts typing
+    if (validationErrors[name as keyof typeof validationErrors]) {
+      setValidationErrors({
+        ...validationErrors,
+        [name]: undefined,
+      });
+    }
+  };
 
   useEffect(() => {
     const loadDocument = async () => {
@@ -90,10 +212,10 @@ const QA: React.FC = () => {
               <HelpOutlineIcon sx={{ fontSize: 32, color: "primary.main" }} />
               <Box>
                 <Typography variant="h5" sx={{ fontWeight: 700, mb: 0.5 }}>
-                  Q&A
+                  Bettim – Help & Support
                 </Typography>
-                <Typography variant="caption" color="textSecondary">
-                  Last Updated: December 13, 2025
+                <Typography variant="body2" color="textSecondary">
+                  Get answers to common questions or contact our support team
                 </Typography>
               </Box>
             </Box>
@@ -116,54 +238,345 @@ const QA: React.FC = () => {
       </Box>
 
       {/* Main Content Area */}
-      <Box
-        sx={{
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-          py: { xs: 2, sm: 4 },
-        }}
-      >
-        {/* Loading State */}
-        {loading && (
-          <Box
-            sx={{ display: "flex", justifyContent: "center", py: 4, flex: 1 }}
-          >
-            <CircularProgress />
-          </Box>
-        )}
-
-        {/* Error State */}
-        {error && (
-          <Container maxWidth="lg" sx={{ px: { xs: 2, sm: 3 } }}>
-            <Alert severity="error">{error}</Alert>
-          </Container>
-        )}
-
-        {/* Scrollable Document Container */}
-        <Container
-          maxWidth="lg"
+      <Container maxWidth="lg" sx={{ px: { xs: 2, sm: 3 }, py: { xs: 3, sm: 4 } }}>
+        {/* CRITICAL: Contact Support Section - Above the Fold */}
+        <Paper
+          elevation={2}
           sx={{
-            px: { xs: 1, sm: 2, md: 3 },
-            flex: 1,
-            overflow: "hidden",
-            display: "flex",
-            flexDirection: "column",
+            p: { xs: 2, sm: 3, md: 4 },
+            mb: 4,
+            bgcolor: "white",
+            borderRadius: 2,
           }}
         >
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 3 }}>
+            <EmailIcon sx={{ fontSize: 32, color: "primary.main" }} />
+            <Typography variant="h5" sx={{ fontWeight: 700 }}>
+              Contact Support
+            </Typography>
+          </Box>
+
+          <Typography variant="body1" sx={{ mb: 3, color: "text.secondary" }}>
+            If you need help or have any questions, you can contact our support
+            team using the options below.
+          </Typography>
+
+          {/* Direct Email Contact */}
+          <Box
+            sx={{
+              p: 2,
+              mb: 3,
+              bgcolor: "#f5f5f5",
+              borderRadius: 1,
+              border: "1px solid #e0e0e0",
+            }}
+          >
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+              Support Email
+            </Typography>
+            <Typography
+              variant="h6"
+              component="a"
+              href="mailto:support@bettim.co"
+              sx={{
+                color: "primary.main",
+                textDecoration: "none",
+                fontWeight: 600,
+                "&:hover": {
+                  textDecoration: "underline",
+                },
+              }}
+            >
+              support@bettim.co
+            </Typography>
+          </Box>
+
+          {/* Contact Form */}
+          <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
+            Send us a message
+          </Typography>
+
+          {formSubmitted && (
+            <Alert severity="success" sx={{ mb: 3 }}>
+              Thank you for contacting us! Your message has been sent successfully.
+              We'll respond to your inquiry as soon as possible (typically within 24-48 hours).
+            </Alert>
+          )}
+
+          {formError && (
+            <Alert severity="error" sx={{ mb: 3 }}>
+              {formError}
+            </Alert>
+          )}
+
+          <form onSubmit={handleFormSubmit}>
+            <TextField
+              fullWidth
+              label="Name"
+              name="name"
+              value={formData.name}
+              onChange={handleFormChange}
+              required
+              sx={{ mb: 2 }}
+              disabled={formSubmitting}
+              error={!!validationErrors.name}
+              helperText={validationErrors.name}
+            />
+            <TextField
+              fullWidth
+              label="Email"
+              name="email"
+              type="email"
+              value={formData.email}
+              onChange={handleFormChange}
+              required
+              sx={{ mb: 2 }}
+              disabled={formSubmitting}
+              error={!!validationErrors.email}
+              helperText={validationErrors.email}
+            />
+            <TextField
+              fullWidth
+              label="Message"
+              name="message"
+              value={formData.message}
+              onChange={handleFormChange}
+              required
+              multiline
+              rows={4}
+              sx={{ mb: 2 }}
+              disabled={formSubmitting}
+              error={!!validationErrors.message}
+              helperText={validationErrors.message}
+            />
+            <Button
+              type="submit"
+              variant="contained"
+              size="large"
+              disabled={formSubmitting}
+              sx={{
+                fontWeight: 600,
+                px: 4,
+              }}
+            >
+              {formSubmitting ? "Sending..." : "Send Message"}
+            </Button>
+          </form>
+        </Paper>
+
+        {/* FAQ Section - Apple Required Questions */}
+        <Paper
+          elevation={2}
+          sx={{
+            p: { xs: 2, sm: 3, md: 4 },
+            mb: 4,
+            bgcolor: "white",
+            borderRadius: 2,
+          }}
+        >
+          <Typography variant="h5" sx={{ fontWeight: 700, mb: 3 }}>
+            Frequently Asked Questions
+          </Typography>
+
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography sx={{ fontWeight: 600 }}>What is Bettim?</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>
+                Bettim is a live sports gaming platform where users can engage
+                with NCAA events in real-time. The app provides an entertaining
+                way to follow games and compete with other users through virtual
+                coins and leaderboards.
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography sx={{ fontWeight: 600 }}>
+                How do users get coins?
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>
+                Users receive free virtual coins when they join the app and can
+                earn additional coins by participating in games and achieving
+                milestones. <strong>Coins cannot be purchased with real money</strong> – they are earned through gameplay and daily bonuses only.
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography sx={{ fontWeight: 600 }}>
+                Can users buy anything with real money?
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>
+                <strong>No.</strong> Bettim does not offer any in-app purchases.
+                Users cannot buy coins, items, or any other content with real
+                money. All features are completely free and accessible to
+                everyone.
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography sx={{ fontWeight: 600 }}>
+                How often do rewards refresh?
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>
+                Daily bonuses and free coins refresh every 24 hours. Game-specific
+                rewards are updated in real-time based on live events. Users can
+                check the app anytime to see their current balance and available
+                rewards.
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography sx={{ fontWeight: 600 }}>
+                How do I report a bug or issue?
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>
+                If you encounter a bug or technical issue, please email us at{" "}
+                <strong>support@bettim.co</strong> with a description of the
+                problem, including your device type and what you were doing when
+                the issue occurred. We'll investigate and respond as quickly as
+                possible.
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography sx={{ fontWeight: 600 }}>
+                What should I do if the app crashes or freezes?
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>
+                First, try closing and reopening the app. If the problem
+                persists, restart your device. If you're still experiencing
+                issues, contact our support team at{" "}
+                <strong>support@bettim.co</strong> and include details about when
+                the crash occurs so we can help resolve it.
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography sx={{ fontWeight: 600 }}>
+                How can I contact support?
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>
+                You can reach our support team by emailing{" "}
+                <strong>support@bettim.co</strong> or by using the contact form
+                at the top of this page. We typically respond within 24-48 hours
+                during business days.
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+        </Paper>
+
+        {/* Safety & Fair Use Section */}
+        <Paper
+          elevation={2}
+          sx={{
+            p: { xs: 2, sm: 3, md: 4 },
+            mb: 4,
+            bgcolor: "white",
+            borderRadius: 2,
+          }}
+        >
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 3 }}>
+            <SecurityIcon sx={{ fontSize: 32, color: "primary.main" }} />
+            <Typography variant="h5" sx={{ fontWeight: 700 }}>
+              Safety & Fair Use
+            </Typography>
+          </Box>
+
+          <Typography variant="body1" paragraph>
+            Bettim is committed to providing a safe and fair entertainment
+            experience for all users:
+          </Typography>
+
+          <Box component="ul" sx={{ pl: 2, "& li": { mb: 1.5 } }}>
+            <li>
+              <Typography variant="body1">
+                <strong>No real-money gambling:</strong> Bettim is purely for
+                entertainment purposes and does not involve real-money wagering
+                or gambling of any kind.
+              </Typography>
+            </li>
+            <li>
+              <Typography variant="body1">
+                <strong>No purchases required:</strong> Virtual coins cannot be
+                purchased with real money. All features are free and accessible
+                to everyone.
+              </Typography>
+            </li>
+            <li>
+              <Typography variant="body1">
+                <strong>Entertainment only:</strong> The app is designed for fun
+                and friendly competition around live sports events.
+              </Typography>
+            </li>
+            <li>
+              <Typography variant="body1">
+                <strong>Report concerns:</strong> If you have concerns about
+                misuse or need assistance, please contact our support team at
+                support@bettim.co immediately.
+              </Typography>
+            </li>
+          </Box>
+        </Paper>
+
+        {/* Divider Before Additional Content */}
+        <Divider sx={{ my: 4 }}>
+          <Typography variant="body2" color="text.secondary">
+            Additional Information
+          </Typography>
+        </Divider>
+
+        {/* Original Q&A Document Content */}
+        <Paper
+          elevation={2}
+          sx={{
+            p: { xs: 2, sm: 3, md: 4 },
+            mb: 4,
+            bgcolor: "white",
+            borderRadius: 2,
+          }}
+        >
+          {loading && (
+            <Box sx={{ display: "flex", justifyContent: "center", py: 4 }}>
+              <CircularProgress />
+            </Box>
+          )}
+
+          {error && (
+            <Alert severity="error" sx={{ mb: 2 }}>
+              {error}
+            </Alert>
+          )}
+
           <Box
             ref={containerRef}
             sx={{
-              bgcolor: "white",
-              p: { xs: 1.5, sm: 2, md: 3 },
-              borderRadius: 1,
-              boxShadow: 1,
-              overflowY: "auto",
-              maxHeight: "calc(100vh - 200px)",
-              // Responsive typography
               fontSize: { xs: "14px", sm: "15px", md: "16px" },
               lineHeight: 1.6,
-              // Responsive styling for Mammoth HTML output
               "& p": {
                 mb: 1.5,
                 fontSize: "inherit",
@@ -223,25 +636,29 @@ const QA: React.FC = () => {
                   textDecoration: "underline",
                 },
               },
-              // Custom scrollbar styling
-              "&::-webkit-scrollbar": {
-                width: "8px",
-              },
-              "&::-webkit-scrollbar-track": {
-                backgroundColor: "#f1f1f1",
-                borderRadius: "4px",
-              },
-              "&::-webkit-scrollbar-thumb": {
-                backgroundColor: "#888",
-                borderRadius: "4px",
-                "&:hover": {
-                  backgroundColor: "#555",
-                },
-              },
             }}
           />
-        </Container>
-      </Box>
+        </Paper>
+
+        {/* Footer */}
+        <Box
+          sx={{
+            textAlign: "center",
+            py: 3,
+            borderTop: "1px solid #e0e0e0",
+          }}
+        >
+          <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
+            Bettim
+          </Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+            Support: <a href="mailto:support@bettim.co" style={{ color: "inherit" }}>support@bettim.co</a>
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            © 2025 Bettim. All rights reserved.
+          </Typography>
+        </Box>
+      </Container>
     </Box>
   );
 };
