@@ -6,10 +6,7 @@ import {
   Grid,
   Card,
   CardMedia,
-  IconButton,
-  Tooltip,
 } from "@mui/material";
-import { AdminPanelSettings as AdminIcon } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 
 // Images - using your b-logo for all 4 images
@@ -30,26 +27,6 @@ const onboardingImages = [
 
 export const LandingPage = () => {
   const navigate = useNavigate();
-
-  // Check if user is authenticated
-  const isAuthenticated = (() => {
-    const authData = localStorage.getItem("bettim-admin-auth");
-    if (!authData) return false;
-
-    try {
-      const { authenticated, timestamp } = JSON.parse(authData);
-      // Check if token is older than 24 hours
-      const isExpired = Date.now() - timestamp > 24 * 60 * 60 * 1000;
-      if (isExpired) {
-        localStorage.removeItem("bettim-admin-auth");
-        return false;
-      }
-      return authenticated;
-    } catch {
-      localStorage.removeItem("bettim-admin-auth");
-      return false;
-    }
-  })();
 
   return (
     <Box
@@ -104,40 +81,6 @@ export const LandingPage = () => {
       />
 
       <Container maxWidth="lg" sx={{ py: 8, position: "relative", zIndex: 1 }}>
-        {/* Admin Button */}
-        <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 4 }}>
-          {isAuthenticated ? (
-            <Button
-              variant="contained"
-              onClick={() => navigate("/admin/dashboard")}
-              startIcon={<AdminIcon />}
-              sx={{
-                backgroundColor: "#333",
-                color: "white",
-                "&:hover": {
-                  backgroundColor: "#555",
-                },
-              }}
-            >
-              Admin Dashboard
-            </Button>
-          ) : (
-            <Tooltip title="Admin Login">
-              <IconButton
-                onClick={() => navigate("/admin/login")}
-                sx={{
-                  color: "#666",
-                  "&:hover": {
-                    color: "white",
-                  },
-                }}
-              >
-                <AdminIcon />
-              </IconButton>
-            </Tooltip>
-          )}
-        </Box>
-
         {/* Title and Description */}
         <Box sx={{ textAlign: "center", mb: 8 }}>
           <Typography
