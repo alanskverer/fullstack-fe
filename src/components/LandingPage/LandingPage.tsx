@@ -428,6 +428,7 @@ export const LandingPage = () => {
           sx={{
             textAlign: "center",
             py: 6,
+            px: { xs: 3, sm: 4, md: 6 },
             mb: 4,
             borderRadius: 4,
             background: "linear-gradient(135deg, rgba(255, 107, 107, 0.08), rgba(78, 205, 196, 0.08))",
