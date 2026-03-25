@@ -1,19 +1,18 @@
+import { useRef, useEffect, useState } from "react";
 import {
   Box,
   Container,
   Typography,
   Button,
-  Grid,
-  Card,
-  CardMedia,
   Stack,
   SvgIcon,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
 } from "@mui/material";
 import AppleIcon from "@mui/icons-material/Apple";
-import BoltIcon from "@mui/icons-material/Bolt";
-import LeaderboardIcon from "@mui/icons-material/Leaderboard";
-import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
-import SportsBasketballIcon from "@mui/icons-material/SportsBasketball";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useNavigate } from "react-router-dom";
 
 const GooglePlayIcon = (props: any) => (
@@ -22,41 +21,292 @@ const GooglePlayIcon = (props: any) => (
   </SvgIcon>
 );
 
-const onboardingImages = [
-  { src: "/images/onboarding/landing-1.png" },
-  { src: "/images/onboarding/landing-2.png" },
-  { src: "/images/onboarding/landing-3.png" },
-  { src: "/images/onboarding/landing-4.png" },
+function useInView(threshold = 0.2) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(element);
+        }
+      },
+      { threshold }
+    );
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [threshold]);
+
+  return { ref, isVisible };
+}
+
+const showcaseSections = [
+  {
+    title: "Pick Your Game",
+    subtitle: "Home Screen",
+    description: "Browse tonight's NBA and NCAA matchups. Tap any game to jump in — it only takes seconds.",
+    media: { type: "image" as const, src: "/images/showcase/pick-your-game.jpeg" },
+  },
+  {
+    title: "Make Your Call",
+    subtitle: "Place Bet",
+    description: "Predict the final score — just two numbers, home and away. Lock it in with virtual coins and wait for tip-off.",
+    media: { type: "video" as const, src: "/videos/showcase/place_bet_video_2.mp4" },
+  },
+  {
+    title: "Live The Moment",
+    subtitle: "My Bets",
+    description: "Track every prediction in one place — upcoming, live, and completed. Watch your bets unfold in real-time.",
+    media: { type: "video" as const, src: "/videos/showcase/cutted_video-compressed.mp4" },
+  },
+  {
+    title: "Hall of Fame",
+    subtitle: "All Time Leaderboard",
+    description: "See who's dominating. Climb the rankings, earn your spot, and prove you're the best predictor out there.",
+    media: { type: "video" as const, src: "/videos/showcase/all_time_leader.mp4" },
+  },
+  {
+    title: "Own Your Look",
+    subtitle: "Avatar Page",
+    description: "Unlock and customize exclusive avatars as you level up. Stand out in the crowd with your unique style.",
+    media: { type: "video" as const, src: "/videos/showcase/avatar_world.mp4" },
+  },
 ];
 
-const features = [
+const faqs = [
   {
-    icon: <BoltIcon sx={{ fontSize: 40 }} />,
-    title: "Real-Time Competition",
-    description: "Watch your rank shift live as the game unfolds — every quarter matters.",
+    question: "What is Bettim?",
+    answer: "Bettim is a live sports gaming platform where users can engage with NBA and NCAA events in real-time. The app provides an entertaining way to follow games and compete with other users through virtual coins and leaderboards.",
   },
   {
-    icon: <LeaderboardIcon sx={{ fontSize: 40 }} />,
-    title: "Live Leaderboards",
-    description: "Compete against thousands and climb the all-time rankings.",
+    question: "Can users buy anything with real money?",
+    answer: "No. Bettim does not offer any in-app purchases. Users cannot buy coins, items, or any other content with real money. All features are completely free and accessible to everyone.",
   },
   {
-    icon: <EmojiEventsIcon sx={{ fontSize: 40 }} />,
-    title: "Win Rewards",
-    description: "Earn coins, XP, and unlock exclusive avatars as you level up.",
+    question: "How do users get coins?",
+    answer: "Users receive free virtual coins when they join the app and can earn additional coins by participating in games and achieving milestones. Coins cannot be purchased with real money — they are earned through gameplay and daily bonuses only.",
   },
   {
-    icon: <SportsBasketballIcon sx={{ fontSize: 40 }} />,
-    title: "NBA & NCAA Games",
-    description: "Predict final scores for tonight's games — two numbers, that's it.",
+    question: "How often do rewards refresh?",
+    answer: "Daily bonuses and free coins refresh every 24 hours. Game-specific rewards are updated in real-time based on live events. Users can check the app anytime to see their current balance and available rewards.",
   },
+  {
+    question: "How can I contact support?",
+    answer: "You can reach our support team by emailing support@bettim.co. We typically respond within 24-48 hours during business days.",
+  },
+];
+
+const GradientDivider = () => (
+  <Box
+    sx={{
+      height: "1px",
+      my: { xs: 2, md: 4 },
+      mx: "auto",
+      maxWidth: 400,
+      background: "linear-gradient(90deg, transparent, rgba(255, 107, 107, 0.3), transparent)",
+    }}
+  />
+);
+
+const storeButtons = [
+  { icon: <AppleIcon sx={{ fontSize: "32px !important" }} />, subtitle: "Download on the", label: "App Store", href: "https://apps.apple.com/us/app/bettim/id6755429397" },
+  { icon: <GooglePlayIcon sx={{ fontSize: "32px !important" }} />, subtitle: "GET IT ON", label: "Google Play", href: "https://play.google.com/store/apps/details?id=the.amazing.bettim&hl=en" },
 ];
 
 const steps = [
-  { number: "1", title: "Predict", description: "Pick a game and predict the final score" },
-  { number: "2", title: "Compete", description: "Watch your position update live during the game" },
-  { number: "3", title: "Dominate", description: "Win coins, climb the leaderboard, repeat" },
+  { number: "1", title: "Predict", description: "Pick a game and call the final score" },
+  { number: "2", title: "Compete", description: "Watch your rank shift live during the game" },
+  { number: "3", title: "Dominate", description: "Win coins, level up, climb the leaderboard" },
 ];
+
+const ShowcaseSection = ({
+  section,
+  index,
+}: {
+  section: (typeof showcaseSections)[number];
+  index: number;
+}) => {
+  const { ref, isVisible } = useInView(0.15);
+  const alignLeft = index % 2 === 0;
+
+  return (
+    <Box
+      ref={ref}
+      sx={{
+        display: "flex",
+        justifyContent: { xs: "center", md: alignLeft ? "flex-start" : "flex-end" },
+        mb: 7,
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible
+          ? "translateX(0)"
+          : alignLeft ? "translateX(-60px)" : "translateX(60px)",
+        transition: "opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
+      }}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          maxWidth: { md: "55%" },
+        }}
+      >
+        <Box sx={{ textAlign: "center", mb: 3 }}>
+          <Typography
+            sx={{
+              color: "#ff6b6b",
+              fontWeight: 600,
+              fontSize: "0.85rem",
+              textTransform: "uppercase",
+              letterSpacing: "0.15em",
+              mb: 1.5,
+              fontFamily: '"Orbitron", "Roboto", sans-serif',
+            }}
+          >
+            {section.subtitle}
+          </Typography>
+          <Typography
+            variant="h3"
+            sx={{
+              fontWeight: 800,
+              fontSize: { xs: "1.8rem", md: "2.5rem" },
+              fontFamily: '"Exo 2", "Roboto", sans-serif',
+              mb: 2,
+              lineHeight: 1.2,
+            }}
+          >
+            {section.title}
+          </Typography>
+          <Typography
+            variant="body1"
+            sx={{
+              color: "#999",
+              fontSize: { xs: "1rem", md: "1.1rem" },
+              lineHeight: 1.7,
+              maxWidth: 420,
+              mx: "auto",
+            }}
+          >
+            {section.description}
+          </Typography>
+        </Box>
+
+        <Box
+          sx={{
+            width: { xs: "60%", sm: 240, md: 280 },
+            borderRadius: "28px",
+            overflow: "hidden",
+            border: "3px solid #222",
+            backgroundColor: "#111",
+            boxShadow: "0 20px 60px rgba(0, 0, 0, 0.5)",
+          }}
+        >
+          {section.media.type === "image" ? (
+            <Box
+              component="img"
+              src={section.media.src}
+              alt={section.title}
+              sx={{ width: "100%", height: "auto", display: "block" }}
+            />
+          ) : (
+            <Box
+              component="video"
+              autoPlay
+              loop
+              muted
+              playsInline
+              src={section.media.src}
+              sx={{ width: "100%", height: "auto", display: "block" }}
+            />
+          )}
+        </Box>
+      </Box>
+    </Box>
+  );
+};
+
+const StickyDownloadBar = () => {
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShow(window.scrollY > 600);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <Box
+      sx={{
+        position: "fixed",
+        bottom: 0,
+        left: 0,
+        right: 0,
+        zIndex: 1000,
+        backgroundColor: "rgba(10, 10, 10, 0.92)",
+        backdropFilter: "blur(12px)",
+        borderTop: "1px solid rgba(255, 255, 255, 0.08)",
+        py: 1.5,
+        px: 2,
+        transform: show ? "translateY(0)" : "translateY(100%)",
+        transition: "transform 0.3s ease",
+      }}
+    >
+      <Stack
+        direction="row"
+        spacing={1.5}
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Typography
+          sx={{
+            color: "#fff",
+            fontWeight: 600,
+            fontSize: { xs: "0.8rem", sm: "0.95rem" },
+            display: { xs: "none", sm: "block" },
+            mr: 1,
+          }}
+        >
+          Download Bettim
+        </Typography>
+        {storeButtons.map(({ icon, label, href }) => (
+          <Button
+            key={label}
+            variant="contained"
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            startIcon={icon}
+            size="small"
+            sx={{
+              backgroundColor: "#ff6b6b",
+              color: "#fff",
+              borderRadius: "10px",
+              px: { xs: 1.5, sm: 2.5 },
+              py: 0.8,
+              textTransform: "none",
+              fontSize: { xs: "0.75rem", sm: "0.85rem" },
+              fontWeight: 700,
+              minWidth: { xs: "auto", sm: 150 },
+              "&:hover": {
+                backgroundColor: "#ff5252",
+              },
+            }}
+          >
+            {label}
+          </Button>
+        ))}
+      </Stack>
+    </Box>
+  );
+};
 
 export const LandingPage = () => {
   const navigate = useNavigate();
@@ -76,6 +326,7 @@ export const LandingPage = () => {
         `,
         position: "relative",
         overflow: "hidden",
+        pb: 8,
         "&::before": {
           content: '""',
           position: "absolute",
@@ -91,6 +342,8 @@ export const LandingPage = () => {
         },
       }}
     >
+      <StickyDownloadBar />
+
       {/* Ambient glow orbs */}
       <Box
         sx={{
@@ -138,21 +391,21 @@ export const LandingPage = () => {
 
       <Container maxWidth="lg" sx={{ py: { xs: 6, md: 10 }, position: "relative", zIndex: 1 }}>
         {/* Hero Section */}
-        <Box sx={{ textAlign: "center", mb: { xs: 8, md: 12 } }}>
-          <Typography
-            variant="h1"
+        <Box sx={{ textAlign: "center", mb: { xs: 6, md: 8 } }}>
+          {/* Logo */}
+          <Box
+            component="img"
+            src="/images/logo/logo.png"
+            alt="Bettim"
             sx={{
-              fontWeight: 900,
-              color: "white",
-              fontSize: { xs: "3rem", md: "5rem" },
-              fontFamily: '"Orbitron", "Roboto", sans-serif',
-              textShadow: "0 0 30px rgba(255, 255, 255, 0.3)",
-              letterSpacing: "0.05em",
-              mb: 3,
+              width: { xs: 160, md: 210 },
+              height: { xs: 160, md: 210 },
+              borderRadius: "28px",
+              mx: "auto",
+              mb: 4,
+              display: "block",
             }}
-          >
-            Bettim
-          </Typography>
+          />
 
           <Typography
             variant="h2"
@@ -191,10 +444,7 @@ export const LandingPage = () => {
             justifyContent="center"
             alignItems="center"
           >
-            {[
-              { icon: <AppleIcon sx={{ fontSize: "32px !important" }} />, subtitle: "Download on the", label: "App Store", href: "https://apps.apple.com/us/app/bettim/id6755429397" },
-              { icon: <GooglePlayIcon sx={{ fontSize: "32px !important" }} />, subtitle: "GET IT ON", label: "Google Play", href: "https://play.google.com/store/apps/details?id=the.amazing.bettim&hl=en" },
-            ].map(({ icon, subtitle, label, href }) => (
+            {storeButtons.map(({ icon, subtitle, label, href }) => (
               <Button
                 key={label}
                 variant="contained"
@@ -229,16 +479,33 @@ export const LandingPage = () => {
               </Button>
             ))}
           </Stack>
+
+          {/* Scroll indicator */}
+          <Box
+            sx={{
+              mt: 6,
+              animation: "bounce 2s ease-in-out infinite",
+              "@keyframes bounce": {
+                "0%, 100%": { transform: "translateY(0)" },
+                "50%": { transform: "translateY(8px)" },
+              },
+            }}
+          >
+            <Typography sx={{ color: "#555", fontSize: "0.8rem", mb: 0.5 }}>
+              Scroll to explore
+            </Typography>
+            <KeyboardArrowDownIcon sx={{ color: "#555", fontSize: 28 }} />
+          </Box>
         </Box>
 
         {/* How It Works */}
-        <Box sx={{ mb: { xs: 8, md: 12 } }}>
+        <Box sx={{ mb: { xs: 10, md: 14 } }}>
           <Typography
             variant="h4"
             sx={{
               textAlign: "center",
               fontWeight: 700,
-              mb: 6,
+              mb: 5,
               fontFamily: '"Exo 2", "Roboto", sans-serif',
               fontSize: { xs: "1.5rem", md: "2rem" },
             }}
@@ -246,19 +513,87 @@ export const LandingPage = () => {
             How It Works
           </Typography>
 
+          {/* Mobile: horizontal row of circles + titles */}
           <Stack
-            direction={{ xs: "column", md: "row" }}
-            spacing={4}
-            alignItems="center"
+            direction="row"
             justifyContent="center"
+            alignItems="flex-start"
+            spacing={2}
+            sx={{ display: { xs: "flex", sm: "none" } }}
           >
             {steps.map((step, index) => (
-              <Box key={step.number} sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                <Box sx={{ textAlign: "center", flex: 1, maxWidth: 280 }}>
+              <Box key={step.number} sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <Box sx={{ textAlign: "center", width: 100 }}>
                   <Box
                     sx={{
-                      width: 64,
-                      height: 64,
+                      width: 48,
+                      height: 48,
+                      borderRadius: "50%",
+                      border: "2px solid #ff6b6b",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      mx: "auto",
+                      mb: 1.5,
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        fontSize: "1.1rem",
+                        fontWeight: 800,
+                        color: "#ff6b6b",
+                        fontFamily: '"Orbitron", "Roboto", sans-serif',
+                      }}
+                    >
+                      {step.number}
+                    </Typography>
+                  </Box>
+                  <Typography
+                    sx={{
+                      fontWeight: 700,
+                      fontFamily: '"Orbitron", "Roboto", sans-serif',
+                      textTransform: "uppercase",
+                      letterSpacing: "0.05em",
+                      fontSize: "0.75rem",
+                      mb: 0.5,
+                    }}
+                  >
+                    {step.title}
+                  </Typography>
+                  <Typography sx={{ color: "#999", fontSize: "0.7rem", lineHeight: 1.4 }}>
+                    {step.description}
+                  </Typography>
+                </Box>
+                {index < steps.length - 1 && (
+                  <Box
+                    sx={{
+                      width: 20,
+                      height: "2px",
+                      background: "linear-gradient(90deg, #ff6b6b, transparent)",
+                      flexShrink: 0,
+                      mt: -4,
+                    }}
+                  />
+                )}
+              </Box>
+            ))}
+          </Stack>
+
+          {/* Desktop: wider row */}
+          <Stack
+            direction="row"
+            spacing={4}
+            alignItems="flex-start"
+            justifyContent="center"
+            sx={{ display: { xs: "none", sm: "flex" } }}
+          >
+            {steps.map((step, index) => (
+              <Box key={step.number} sx={{ display: "flex", alignItems: "center", gap: 2, flex: 1 }}>
+                <Box sx={{ textAlign: "center", flex: 1 }}>
+                  <Box
+                    sx={{
+                      width: 56,
+                      height: 56,
                       borderRadius: "50%",
                       border: "2px solid #ff6b6b",
                       display: "flex",
@@ -270,7 +605,7 @@ export const LandingPage = () => {
                   >
                     <Typography
                       sx={{
-                        fontSize: "1.5rem",
+                        fontSize: "1.3rem",
                         fontWeight: 800,
                         color: "#ff6b6b",
                         fontFamily: '"Orbitron", "Roboto", sans-serif',
@@ -287,11 +622,12 @@ export const LandingPage = () => {
                       fontFamily: '"Orbitron", "Roboto", sans-serif',
                       textTransform: "uppercase",
                       letterSpacing: "0.05em",
+                      fontSize: "1.15rem",
                     }}
                   >
                     {step.title}
                   </Typography>
-                  <Typography variant="body2" sx={{ color: "#999" }}>
+                  <Typography variant="body2" sx={{ color: "#999", maxWidth: 240, mx: "auto" }}>
                     {step.description}
                   </Typography>
                 </Box>
@@ -299,8 +635,7 @@ export const LandingPage = () => {
                 {index < steps.length - 1 && (
                   <Box
                     sx={{
-                      display: { xs: "none", md: "block" },
-                      width: 60,
+                      width: 40,
                       height: "2px",
                       background: "linear-gradient(90deg, #ff6b6b, transparent)",
                       flexShrink: 0,
@@ -312,116 +647,66 @@ export const LandingPage = () => {
           </Stack>
         </Box>
 
-        {/* App Screenshots in phone frames */}
-        <Box sx={{ mb: { xs: 8, md: 12 } }}>
+        <GradientDivider />
+
+        {/* Showcase Sections */}
+        {showcaseSections.map((section, index) => (
+          <ShowcaseSection key={section.title} section={section} index={index} />
+        ))}
+
+        <GradientDivider />
+
+        {/* FAQ Section */}
+        <Box sx={{ mb: { xs: 8, md: 10 }, maxWidth: 700, mx: "auto" }}>
           <Typography
             variant="h4"
             sx={{
               textAlign: "center",
               fontWeight: 700,
-              mb: 2,
+              mb: 4,
               fontFamily: '"Exo 2", "Roboto", sans-serif',
               fontSize: { xs: "1.5rem", md: "2rem" },
             }}
           >
-            See It In Action
-          </Typography>
-          <Typography
-            variant="body1"
-            sx={{ textAlign: "center", color: "#999", mb: 6, maxWidth: 500, mx: "auto" }}
-          >
-            Real-time competition, live leaderboards, and instant results — right in your pocket.
+            Frequently Asked Questions
           </Typography>
 
-          <Grid container spacing={3} justifyContent="center">
-            {onboardingImages.map((item, index) => (
-              <Grid size={{ xs: 6, sm: 6, md: 3 }} key={index}>
-                <Box
-                  sx={{
-                    borderRadius: "24px",
-                    overflow: "hidden",
-                    border: "3px solid #222",
-                    backgroundColor: "#111",
-                    transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
-                    "&:hover": {
-                      transform: "translateY(-8px)",
-                      border: "3px solid #ff6b6b",
-                      boxShadow: "0 20px 40px rgba(255, 107, 107, 0.2)",
-                    },
-                  }}
-                >
-                  <CardMedia
-                    component="img"
-                    image={item.src}
-                    alt={`Bettim app screenshot ${index + 1}`}
-                    sx={{
-                      width: "100%",
-                      height: "auto",
-                      display: "block",
-                    }}
-                  />
-                </Box>
-              </Grid>
-            ))}
-          </Grid>
+          {faqs.map((faq) => (
+            <Accordion
+              key={faq.question}
+              disableGutters
+              sx={{
+                backgroundColor: "rgba(255, 255, 255, 0.03)",
+                border: "1px solid rgba(255, 255, 255, 0.06)",
+                borderRadius: "12px !important",
+                mb: 1.5,
+                "&::before": { display: "none" },
+                "&:first-of-type": { borderRadius: "12px !important" },
+                "&:last-of-type": { borderRadius: "12px !important" },
+              }}
+            >
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon sx={{ color: "#999" }} />}
+                sx={{
+                  px: 3,
+                  py: 0.5,
+                  "& .MuiAccordionSummary-content": { my: 1.5 },
+                }}
+              >
+                <Typography sx={{ fontWeight: 600, color: "#fff", fontSize: { xs: "0.95rem", md: "1.05rem" } }}>
+                  {faq.question}
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails sx={{ px: 3, pb: 2.5 }}>
+                <Typography sx={{ color: "#999", lineHeight: 1.7, fontSize: { xs: "0.9rem", md: "1rem" } }}>
+                  {faq.answer}
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+          ))}
         </Box>
 
-        {/* Features */}
-        <Box sx={{ mb: { xs: 8, md: 12 } }}>
-          <Typography
-            variant="h4"
-            sx={{
-              textAlign: "center",
-              fontWeight: 700,
-              mb: 6,
-              fontFamily: '"Exo 2", "Roboto", sans-serif',
-              fontSize: { xs: "1.5rem", md: "2rem" },
-            }}
-          >
-            Why Players Love Bettim
-          </Typography>
-
-          <Grid container spacing={3} justifyContent="center">
-            {features.map((feature) => (
-              <Grid size={{ xs: 12, sm: 6, md: 3 }} key={feature.title}>
-                <Card
-                  sx={{
-                    backgroundColor: "rgba(255, 255, 255, 0.03)",
-                    border: "1px solid rgba(255, 255, 255, 0.08)",
-                    borderRadius: 3,
-                    p: 3,
-                    height: "100%",
-                    textAlign: "center",
-                    transition: "all 0.3s ease",
-                    "&:hover": {
-                      backgroundColor: "rgba(255, 255, 255, 0.06)",
-                      border: "1px solid rgba(255, 107, 107, 0.3)",
-                      transform: "translateY(-4px)",
-                    },
-                  }}
-                >
-                  <Box sx={{ color: "#ff6b6b", mb: 2 }}>
-                    {feature.icon}
-                  </Box>
-                  <Typography
-                    variant="h6"
-                    sx={{
-                      fontWeight: 700,
-                      color: "white",
-                      mb: 1,
-                      fontSize: "1rem",
-                    }}
-                  >
-                    {feature.title}
-                  </Typography>
-                  <Typography variant="body2" sx={{ color: "#999", lineHeight: 1.6 }}>
-                    {feature.description}
-                  </Typography>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
+        <GradientDivider />
 
         {/* CTA Section */}
         <Box
@@ -455,10 +740,7 @@ export const LandingPage = () => {
             justifyContent="center"
             alignItems="center"
           >
-            {[
-              { icon: <AppleIcon sx={{ fontSize: "28px !important" }} />, subtitle: "Download on the", label: "App Store", href: "https://apps.apple.com/us/app/bettim/id6755429397" },
-              { icon: <GooglePlayIcon sx={{ fontSize: "28px !important" }} />, subtitle: "GET IT ON", label: "Google Play", href: "https://play.google.com/store/apps/details?id=the.amazing.bettim&hl=en" },
-            ].map(({ icon, subtitle, label, href }) => (
+            {storeButtons.map(({ icon, subtitle, label, href }) => (
               <Button
                 key={label}
                 variant="contained"
@@ -504,18 +786,20 @@ export const LandingPage = () => {
             textAlign: "center",
           }}
         >
-          <Typography
+          <Box
+            component="img"
+            src="/images/logo/logo.png"
+            alt="Bettim"
             sx={{
-              fontFamily: '"Orbitron", "Roboto", sans-serif',
-              fontWeight: 700,
-              fontSize: "1.2rem",
-              color: "#fff",
-              mb: 3,
+              width: 70,
+              height: 70,
+              borderRadius: "16px",
+              mx: "auto",
+              mb: 2,
+              display: "block",
               opacity: 0.6,
             }}
-          >
-            Bettim
-          </Typography>
+          />
           <Stack
             direction="row"
             spacing={{ xs: 2, sm: 4 }}
