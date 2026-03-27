@@ -172,7 +172,7 @@ export const NavigationLayout = ({ onLogout }: NavigationLayoutProps) => {
             </AppBar>
 
             {/* Main Content */}
-            <Box component="main" sx={{ flexGrow: 1, bgcolor: 'grey.50', pt: { xs: '56px', sm: '64px' }, minHeight: 0 }}>
+            <Box component="main" sx={{ flexGrow: 1, bgcolor: 'grey.50', color: '#222', pt: { xs: '56px', sm: '64px' }, minHeight: 0 }}>
                 <Outlet />
             </Box>
         </Box>

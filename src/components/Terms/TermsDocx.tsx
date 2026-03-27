@@ -51,7 +51,7 @@ const TermsDocx: React.FC = () => {
   }, []);
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: '#f5f5f5', display: 'flex', flexDirection: 'column' }}>
+    <Box sx={{ minHeight: '100vh', bgcolor: '#f5f5f5', color: '#222', display: 'flex', flexDirection: 'column' }}>
       {/* Professional Header */}
       <Box sx={{ bgcolor: 'white', borderBottom: 1, borderColor: 'divider', boxShadow: '0 1px 3px rgba(0,0,0,0.08)' }}>
         <Container maxWidth="lg" sx={{ px: { xs: 2, sm: 3 }, py: 3 }}>
@@ -127,6 +127,10 @@ const TermsDocx: React.FC = () => {
             // Responsive typography
             fontSize: { xs: '14px', sm: '15px', md: '16px' },
             lineHeight: 1.6,
+            // Override inline color styles from DOCX conversion
+            '& *': {
+              color: '#222 !important',
+            },
             // Responsive styling for Mammoth HTML output
             '& p': {
               mb: 1.5,
