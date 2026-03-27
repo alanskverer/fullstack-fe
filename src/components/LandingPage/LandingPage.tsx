@@ -8,6 +8,7 @@ import {
   Container,
   Stack,
   SvgIcon,
+  SvgIconProps,
   Typography,
 } from "@mui/material";
 import AppleIcon from "@mui/icons-material/Apple";
@@ -61,7 +62,7 @@ function useInView(threshold = 0) {
             obs.unobserve(el);
           }
         },
-        { threshold }
+        { threshold },
       );
       obs.observe(el);
     });
@@ -77,7 +78,7 @@ function useInView(threshold = 0) {
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
-const GooglePlayIcon = (props: object) => (
+const GooglePlayIcon = (props: SvgIconProps) => (
   <SvgIcon {...props} viewBox="0 0 24 24">
     <path
       d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.199l2.807 1.626a1 1 0 0 1 0 1.732l-2.807 1.626L15.206 12l2.492-2.492zM5.864 2.658L16.8 8.99l-2.3 2.3-8.636-8.632z"
@@ -130,28 +131,40 @@ const SHOWCASE = [
     label: "Home Screen",
     title: "Pick Your Game",
     desc: "Browse tonight's NBA and NCAA matchups. Every detail at a glance — tip-off times, team records. Tap any game to jump in instantly.",
-    media: { type: "image" as const, src: "/images/showcase/pick-your-game.jpeg" },
+    media: {
+      type: "image" as const,
+      src: "/images/showcase/pick-your-game.jpeg",
+    },
     accent: C.purple,
   },
   {
     label: "Place Prediction",
     title: "Make Your Call",
     desc: "Predict the final score — home and away. Lock it in with virtual coins before tip-off and feel the rush when the game goes live.",
-    media: { type: "video" as const, src: "/videos/showcase/place_bet_video_2.mp4" },
+    media: {
+      type: "video" as const,
+      src: "/videos/showcase/place_bet_video_2.mp4",
+    },
     accent: C.rose,
   },
   {
     label: "Live Tracking",
     title: "Live the Moment",
     desc: "Every prediction tracked in one place. See upcoming games, live scores, and completed results. Real-time, always.",
-    media: { type: "video" as const, src: "/videos/showcase/cutted_video-compressed.mp4" },
+    media: {
+      type: "video" as const,
+      src: "/videos/showcase/cutted_video-compressed.mp4",
+    },
     accent: C.purple,
   },
   {
     label: "All-Time Leaderboard",
     title: "Hall of Fame",
     desc: "See who's dominating across all players. Climb the all-time rankings and prove you're the sharpest sports mind out there.",
-    media: { type: "video" as const, src: "/videos/showcase/all_time_leader.mp4" },
+    media: {
+      type: "video" as const,
+      src: "/videos/showcase/all_time_leader.mp4",
+    },
     accent: C.rose,
   },
   {
@@ -283,7 +296,13 @@ const StoreButton = ({
         },
       }}
     >
-      <Box sx={{ color: isWhite ? "#0A0A0A" : "#fff", display: "flex", fontSize: 26 }}>
+      <Box
+        sx={{
+          color: isWhite ? "#0A0A0A" : "#fff",
+          display: "flex",
+          fontSize: 26,
+        }}
+      >
         {icon}
       </Box>
       <Box sx={{ textAlign: "left", lineHeight: 1.25 }}>
@@ -410,12 +429,22 @@ const StickyBar = () => {
         transition: "transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
       }}
     >
-      <Stack direction="row" spacing={1.5} justifyContent="center" alignItems="center">
+      <Stack
+        direction="row"
+        spacing={1.5}
+        justifyContent="center"
+        alignItems="center"
+      >
         <Box
           component="img"
           src="/images/logo/logo.png"
           alt="Bettim"
-          sx={{ width: 32, height: 32, borderRadius: "8px", display: { xs: "none", sm: "block" } }}
+          sx={{
+            width: 32,
+            height: 32,
+            borderRadius: "8px",
+            display: { xs: "none", sm: "block" },
+          }}
         />
         <Typography
           sx={{
@@ -586,7 +615,8 @@ export const LandingPage = () => {
             lineHeight: 1.1,
             letterSpacing: "-0.01em",
             mb: 3,
-            background: "linear-gradient(135deg, #EEF2FF 20%, #C4B5FD 55%, #FB7185 100%)",
+            background:
+              "linear-gradient(135deg, #EEF2FF 20%, #C4B5FD 55%, #FB7185 100%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
@@ -666,15 +696,33 @@ export const LandingPage = () => {
             </Typography>
           </Stack>
           <Box sx={{ width: 1, height: 18, background: C.border }} />
-          <Typography sx={{ fontFamily: C.body, fontSize: "0.85rem", color: C.textSecondary }}>
-            <Box component="span" sx={{ color: C.textPrimary, fontWeight: 700 }}>
+          <Typography
+            sx={{
+              fontFamily: C.body,
+              fontSize: "0.85rem",
+              color: C.textSecondary,
+            }}
+          >
+            <Box
+              component="span"
+              sx={{ color: C.textPrimary, fontWeight: 700 }}
+            >
               10,000+
             </Box>{" "}
             Players
           </Typography>
           <Box sx={{ width: 1, height: 18, background: C.border }} />
-          <Typography sx={{ fontFamily: C.body, fontSize: "0.85rem", color: C.textSecondary }}>
-            <Box component="span" sx={{ color: C.textPrimary, fontWeight: 700 }}>
+          <Typography
+            sx={{
+              fontFamily: C.body,
+              fontSize: "0.85rem",
+              color: C.textSecondary,
+            }}
+          >
+            <Box
+              component="span"
+              sx={{ color: C.textPrimary, fontWeight: 700 }}
+            >
               100%
             </Box>{" "}
             Free Forever
@@ -789,7 +837,11 @@ export const LandingPage = () => {
           <Box
             sx={{
               display: "grid",
-              gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr", md: "1fr 1fr 1fr" },
+              gridTemplateColumns: {
+                xs: "1fr",
+                sm: "1fr 1fr",
+                md: "1fr 1fr 1fr",
+              },
               gap: 3,
             }}
           >
@@ -824,7 +876,10 @@ export const LandingPage = () => {
       </Box>
 
       {/* ── REVIEWS ───────────────────────────────────────────────────────── */}
-      <Box component="section" sx={{ py: { xs: 10, md: 14 }, background: C.bgSection }}>
+      <Box
+        component="section"
+        sx={{ py: { xs: 10, md: 14 }, background: C.bgSection }}
+      >
         <Container maxWidth="lg">
           <Box sx={{ textAlign: "center", mb: { xs: 7, md: 9 } }}>
             <EyebrowLabel>Player Reviews</EyebrowLabel>
@@ -839,11 +894,25 @@ export const LandingPage = () => {
             >
               LOVED BY THOUSANDS
             </Typography>
-            <Stack direction="row" spacing={0.5} justifyContent="center" alignItems="center">
+            <Stack
+              direction="row"
+              spacing={0.5}
+              justifyContent="center"
+              alignItems="center"
+            >
               {[...Array(5)].map((_, i) => (
-                <Box key={i} sx={{ color: C.gold, fontSize: 20 }}>★</Box>
+                <Box key={i} sx={{ color: C.gold, fontSize: 20 }}>
+                  ★
+                </Box>
               ))}
-              <Typography sx={{ fontFamily: C.body, color: C.textSecondary, ml: 1, fontSize: "0.9rem" }}>
+              <Typography
+                sx={{
+                  fontFamily: C.body,
+                  color: C.textSecondary,
+                  ml: 1,
+                  fontSize: "0.9rem",
+                }}
+              >
                 4.8 out of 5
               </Typography>
             </Stack>
@@ -852,7 +921,11 @@ export const LandingPage = () => {
           <Box
             sx={{
               display: "grid",
-              gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr", md: "1fr 1fr 1fr" },
+              gridTemplateColumns: {
+                xs: "1fr",
+                sm: "1fr 1fr",
+                md: "1fr 1fr 1fr",
+              },
               gap: 3,
             }}
           >
@@ -902,7 +975,11 @@ export const LandingPage = () => {
                   expandIcon={
                     <ExpandMoreIcon sx={{ color: C.textMuted, fontSize: 20 }} />
                   }
-                  sx={{ px: 3, py: 0.5, "& .MuiAccordionSummary-content": { my: 1.5 } }}
+                  sx={{
+                    px: 3,
+                    py: 0.5,
+                    "& .MuiAccordionSummary-content": { my: 1.5 },
+                  }}
                 >
                   <Typography
                     sx={{
@@ -971,8 +1048,8 @@ export const LandingPage = () => {
                 mx: "auto",
               }}
             >
-              Download Bettim and make your first prediction in under 60 seconds.
-              Join 10,000+ players today.
+              Download Bettim and make your first prediction in under 60
+              seconds. Join 10,000+ players today.
             </Typography>
             <Stack
               direction={{ xs: "column", sm: "row" }}
@@ -981,7 +1058,11 @@ export const LandingPage = () => {
               alignItems="center"
             >
               {STORE_BUTTONS.map((btn, i) => (
-                <StoreButton key={btn.label} variant={i === 0 ? "white" : "rose"} {...btn} />
+                <StoreButton
+                  key={btn.label}
+                  variant={i === 0 ? "white" : "rose"}
+                  {...btn}
+                />
               ))}
             </Stack>
           </Box>
@@ -1040,7 +1121,12 @@ export const LandingPage = () => {
 
             {/* Nav + social */}
             <Stack spacing={2} alignItems={{ xs: "center", sm: "flex-end" }}>
-              <Stack direction="row" spacing={3} flexWrap="wrap" justifyContent="center">
+              <Stack
+                direction="row"
+                spacing={3}
+                flexWrap="wrap"
+                justifyContent="center"
+              >
                 {[
                   { label: "Privacy Policy", path: "/privacy" },
                   { label: "Terms & Conditions", path: "/terms" },
@@ -1111,7 +1197,13 @@ export const LandingPage = () => {
             </Stack>
           </Stack>
 
-          <Box sx={{ borderTop: `1px solid ${C.border}`, pt: 3, textAlign: "center" }}>
+          <Box
+            sx={{
+              borderTop: `1px solid ${C.border}`,
+              pt: 3,
+              textAlign: "center",
+            }}
+          >
             <Typography
               sx={{
                 fontFamily: C.body,
@@ -1120,7 +1212,10 @@ export const LandingPage = () => {
                 letterSpacing: "0.04em",
               }}
             >
-              © 2026 Bettim. All rights reserved. · support@bettim.co
+              © 2026 Bettim. All rights reserved. ·{" "}
+              <a href="mailto:support@bettim.co" style={{ color: "inherit", textDecoration: "none" }}>
+                support@bettim.co
+              </a>
             </Typography>
           </Box>
         </Container>
@@ -1145,7 +1240,8 @@ function StepCard({ step }: { step: (typeof STEPS)[number] }) {
         p: { xs: 3, md: 4 },
         opacity: visible ? 1 : 0,
         transform: visible ? "translateY(0)" : "translateY(36px)",
-        transition: "opacity 0.6s ease 0.2s, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s",
+        transition:
+          "opacity 0.6s ease 0.2s, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s",
         "@media (prefers-reduced-motion: reduce)": { transition: "none" },
         position: "relative",
         overflow: "hidden",
@@ -1240,7 +1336,8 @@ function ShowcaseItem({
         mb: { xs: 12, md: 16 },
         opacity: visible ? 1 : 0,
         transform: visible ? "translateY(0)" : "translateY(48px)",
-        transition: "opacity 0.75s ease 0.2s, transform 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.2s",
+        transition:
+          "opacity 0.75s ease 0.2s, transform 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.2s",
         "@media (prefers-reduced-motion: reduce)": { transition: "none" },
       }}
     >
@@ -1265,8 +1362,12 @@ function ShowcaseItem({
           },
           "@keyframes auroraDrift1": {
             "0%, 100%": { transform: "translateY(-50%) scale(1)" },
-            "35%": { transform: "translateY(-54%) translateX(22px) scale(1.08)" },
-            "70%": { transform: "translateY(-46%) translateX(-14px) scale(0.94)" },
+            "35%": {
+              transform: "translateY(-54%) translateX(22px) scale(1.08)",
+            },
+            "70%": {
+              transform: "translateY(-46%) translateX(-14px) scale(0.94)",
+            },
           },
         }}
       />
@@ -1415,7 +1516,8 @@ function ReviewCard({ review }: { review: (typeof REVIEWS)[number] }) {
         gap: 2,
         opacity: visible ? 1 : 0,
         transform: visible ? "translateY(0)" : "translateY(32px)",
-        transition: "opacity 0.6s ease 0.2s, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s",
+        transition:
+          "opacity 0.6s ease 0.2s, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s",
         "@media (prefers-reduced-motion: reduce)": { transition: "none" },
         "&:hover": {
           borderColor: "rgba(255,255,255,0.14)",
@@ -1427,7 +1529,9 @@ function ReviewCard({ review }: { review: (typeof REVIEWS)[number] }) {
       {/* Stars */}
       <Stack direction="row" spacing={0.3}>
         {[...Array(5)].map((_, i) => (
-          <Box key={i} sx={{ color: C.gold, fontSize: 14 }}>★</Box>
+          <Box key={i} sx={{ color: C.gold, fontSize: 14 }}>
+            ★
+          </Box>
         ))}
       </Stack>
 

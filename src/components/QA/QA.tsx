@@ -166,6 +166,9 @@ const QA: React.FC = () => {
         if (result.messages.length > 0) {
           console.warn("Mammoth conversion warnings:", result.messages);
         }
+
+        // Scroll to top after content loads
+        window.scrollTo(0, 0);
       } catch (err) {
         console.error("Error loading document:", err);
         setError(
@@ -186,6 +189,7 @@ const QA: React.FC = () => {
       sx={{
         minHeight: "100vh",
         bgcolor: "#f5f5f5",
+        color: "#222",
         display: "flex",
         flexDirection: "column",
       }}
@@ -577,6 +581,10 @@ const QA: React.FC = () => {
             sx={{
               fontSize: { xs: "14px", sm: "15px", md: "16px" },
               lineHeight: 1.6,
+              // Override inline color styles from DOCX conversion
+              "& *": {
+                color: "#222 !important",
+              },
               "& p": {
                 mb: 1.5,
                 fontSize: "inherit",
