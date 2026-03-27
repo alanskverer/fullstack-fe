@@ -40,24 +40,37 @@ const C = {
 
 // ─── Hook ─────────────────────────────────────────────────────────────────────
 
-function useInView(threshold = 0.12) {
+function useInView(threshold = 0) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
-  const reduced =
-    typeof window !== "undefined" &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   useEffect(() => {
-    if (reduced) { setVisible(true); return; }
     const el = ref.current;
     if (!el) return;
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.unobserve(el); } },
-      { threshold }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [threshold, reduced]);
+
+    // rAF ensures the browser paints the initial opacity:0 state first,
+    // so the CSS transition is always visible when the observer fires.
+    let rafId: number;
+    let obs: IntersectionObserver;
+
+    rafId = requestAnimationFrame(() => {
+      obs = new IntersectionObserver(
+        ([e]) => {
+          if (e.isIntersecting) {
+            setVisible(true);
+            obs.unobserve(el);
+          }
+        },
+        { threshold }
+      );
+      obs.observe(el);
+    });
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      obs?.disconnect();
+    };
+  }, [threshold]);
 
   return { ref, visible };
 }
@@ -655,7 +668,7 @@ export const LandingPage = () => {
           <Box sx={{ width: 1, height: 18, background: C.border }} />
           <Typography sx={{ fontFamily: C.body, fontSize: "0.85rem", color: C.textSecondary }}>
             <Box component="span" sx={{ color: C.textPrimary, fontWeight: 700 }}>
-              50,000+
+              10,000+
             </Box>{" "}
             Players
           </Typography>
@@ -721,7 +734,7 @@ export const LandingPage = () => {
             sx={{ textAlign: "center" }}
           >
             {[
-              { value: "50,000+", label: "Active Players" },
+              { value: "10,000+", label: "Active Players" },
               { value: "4.8 ★", label: "App Store Rating" },
               { value: "100%", label: "Free — No purchases" },
             ].map(({ value, label }) => (
@@ -800,7 +813,7 @@ export const LandingPage = () => {
                 lineHeight: 1.15,
               }}
             >
-              EVERY FEATURE, POLISHED
+              THE FUTURE OF LIVE SPORTS GAMING
             </Typography>
           </Box>
 
@@ -831,7 +844,7 @@ export const LandingPage = () => {
                 <Box key={i} sx={{ color: C.gold, fontSize: 20 }}>★</Box>
               ))}
               <Typography sx={{ fontFamily: C.body, color: C.textSecondary, ml: 1, fontSize: "0.9rem" }}>
-                4.8 out of 5 · 2,300+ reviews
+                4.8 out of 5
               </Typography>
             </Stack>
           </Box>
@@ -959,7 +972,7 @@ export const LandingPage = () => {
               }}
             >
               Download Bettim and make your first prediction in under 60 seconds.
-              Join 50,000+ players today.
+              Join 10,000+ players today.
             </Typography>
             <Stack
               direction={{ xs: "column", sm: "row" }}
@@ -1055,23 +1068,11 @@ export const LandingPage = () => {
                 {[
                   {
                     label: "Instagram",
-                    href: "https://instagram.com",
+                    href: "https://www.instagram.com/bettim.co?igsh=d3lsNmJxMjJrZHE2",
                     icon: (
                       <SvgIcon viewBox="0 0 24 24" sx={{ fontSize: 18 }}>
                         <path
                           d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"
-                          fill="currentColor"
-                        />
-                      </SvgIcon>
-                    ),
-                  },
-                  {
-                    label: "X / Twitter",
-                    href: "https://twitter.com",
-                    icon: (
-                      <SvgIcon viewBox="0 0 24 24" sx={{ fontSize: 18 }}>
-                        <path
-                          d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
                           fill="currentColor"
                         />
                       </SvgIcon>
@@ -1143,8 +1144,9 @@ function StepCard({ step }: { step: (typeof STEPS)[number] }) {
         borderRadius: "20px",
         p: { xs: 3, md: 4 },
         opacity: visible ? 1 : 0,
-        transform: visible ? "none" : "translateY(24px)",
-        transition: "opacity 0.6s ease 0.2s, transform 0.6s ease 0.2s",
+        transform: visible ? "translateY(0)" : "translateY(36px)",
+        transition: "opacity 0.6s ease 0.2s, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s",
+        "@media (prefers-reduced-motion: reduce)": { transition: "none" },
         position: "relative",
         overflow: "hidden",
         "&::before": {
@@ -1227,6 +1229,7 @@ function ShowcaseItem({
     <Box
       ref={ref}
       sx={{
+        position: "relative",
         display: "flex",
         flexDirection: {
           xs: "column",
@@ -1236,12 +1239,113 @@ function ShowcaseItem({
         gap: { xs: 5, md: 9 },
         mb: { xs: 12, md: 16 },
         opacity: visible ? 1 : 0,
-        transform: visible
-          ? "none"
-          : `translateX(${imageLeft ? -32 : 32}px)`,
-        transition: "opacity 0.75s ease 0.2s, transform 0.75s ease 0.2s",
+        transform: visible ? "translateY(0)" : "translateY(48px)",
+        transition: "opacity 0.75s ease 0.2s, transform 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.2s",
+        "@media (prefers-reduced-motion: reduce)": { transition: "none" },
       }}
     >
+      {/* Aurora blob — large, behind the phone */}
+      <Box
+        sx={{
+          position: "absolute",
+          width: { xs: 280, md: 520 },
+          height: { xs: 280, md: 520 },
+          borderRadius: "50%",
+          background: `radial-gradient(circle, ${section.accent}30 0%, transparent 68%)`,
+          filter: "blur(72px)",
+          top: "50%",
+          [imageLeft ? "left" : "right"]: { xs: "-8%", md: "-4%" },
+          transform: "translateY(-50%)",
+          opacity: visible ? 1 : 0,
+          transition: "opacity 1.6s ease 0.5s",
+          pointerEvents: "none",
+          zIndex: 0,
+          "@media (prefers-reduced-motion: no-preference)": {
+            animation: "auroraDrift1 13s ease-in-out infinite",
+          },
+          "@keyframes auroraDrift1": {
+            "0%, 100%": { transform: "translateY(-50%) scale(1)" },
+            "35%": { transform: "translateY(-54%) translateX(22px) scale(1.08)" },
+            "70%": { transform: "translateY(-46%) translateX(-14px) scale(0.94)" },
+          },
+        }}
+      />
+
+      {/* Aurora blob — smaller, opposite corner */}
+      <Box
+        sx={{
+          position: "absolute",
+          width: { xs: 160, md: 280 },
+          height: { xs: 160, md: 280 },
+          borderRadius: "50%",
+          background: `radial-gradient(circle, ${section.accent}20 0%, transparent 70%)`,
+          filter: "blur(54px)",
+          bottom: { xs: "-10%", md: "-18%" },
+          [imageLeft ? "right" : "left"]: { xs: "5%", md: "18%" },
+          opacity: visible ? 0.8 : 0,
+          transition: "opacity 2s ease 0.9s",
+          pointerEvents: "none",
+          zIndex: 0,
+          "@media (prefers-reduced-motion: no-preference)": {
+            animation: "auroraDrift2 17s ease-in-out infinite reverse",
+          },
+          "@keyframes auroraDrift2": {
+            "0%, 100%": { transform: "translate(0, 0) scale(1)" },
+            "50%": { transform: "translate(-28px, -22px) scale(1.13)" },
+          },
+        }}
+      />
+
+      {/* Aurora blob — small accent top corner */}
+      <Box
+        sx={{
+          position: "absolute",
+          width: { xs: 100, md: 180 },
+          height: { xs: 100, md: 180 },
+          borderRadius: "50%",
+          background: `radial-gradient(circle, ${section.accent}15 0%, transparent 70%)`,
+          filter: "blur(40px)",
+          top: { xs: "-5%", md: "-12%" },
+          [imageLeft ? "right" : "left"]: { xs: "10%", md: "35%" },
+          opacity: visible ? 0.6 : 0,
+          transition: "opacity 2.2s ease 1.2s",
+          pointerEvents: "none",
+          zIndex: 0,
+          "@media (prefers-reduced-motion: no-preference)": {
+            animation: "auroraDrift3 9s ease-in-out infinite",
+          },
+          "@keyframes auroraDrift3": {
+            "0%, 100%": { transform: "translate(0, 0)" },
+            "50%": { transform: "translate(16px, 26px)" },
+          },
+        }}
+      />
+
+      {/* Mesh dot grid */}
+      <Box
+        sx={{
+          position: "absolute",
+          inset: "-10%",
+          backgroundImage: `radial-gradient(circle, ${section.accent}55 1px, transparent 1px)`,
+          backgroundSize: "30px 30px",
+          opacity: visible ? 0.09 : 0,
+          transition: "opacity 2.4s ease 1s",
+          pointerEvents: "none",
+          zIndex: 0,
+          maskImage:
+            "radial-gradient(ellipse 75% 75% at 50% 50%, black 30%, transparent 100%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse 75% 75% at 50% 50%, black 30%, transparent 100%)",
+          "@media (prefers-reduced-motion: no-preference)": {
+            animation: "meshDrift 24s linear infinite",
+          },
+          "@keyframes meshDrift": {
+            "0%": { backgroundPosition: "0 0" },
+            "100%": { backgroundPosition: "30px 30px" },
+          },
+        }}
+      />
+
       {/* Phone */}
       <Box
         sx={{
@@ -1249,6 +1353,8 @@ function ShowcaseItem({
           display: "flex",
           justifyContent: "center",
           width: { xs: "70%", sm: 240, md: 280 },
+          position: "relative",
+          zIndex: 1,
         }}
       >
         <PhoneFrame section={section} visible={visible} />
@@ -1259,6 +1365,8 @@ function ShowcaseItem({
         sx={{
           flex: 1,
           textAlign: { xs: "center", md: imageLeft ? "left" : "right" },
+          position: "relative",
+          zIndex: 1,
         }}
       >
         <EyebrowLabel color={section.accent}>{section.label}</EyebrowLabel>
@@ -1306,8 +1414,9 @@ function ReviewCard({ review }: { review: (typeof REVIEWS)[number] }) {
         flexDirection: "column",
         gap: 2,
         opacity: visible ? 1 : 0,
-        transform: visible ? "none" : "translateY(20px)",
-        transition: "opacity 0.6s ease 0.2s, transform 0.6s ease 0.2s",
+        transform: visible ? "translateY(0)" : "translateY(32px)",
+        transition: "opacity 0.6s ease 0.2s, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s",
+        "@media (prefers-reduced-motion: reduce)": { transition: "none" },
         "&:hover": {
           borderColor: "rgba(255,255,255,0.14)",
           background: "rgba(255,255,255,0.05)",
