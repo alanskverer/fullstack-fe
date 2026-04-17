@@ -49,7 +49,7 @@ const Privacy: React.FC = () => {
         setError(
           err instanceof Error
             ? err.message
-            : "Failed to load Privacy Policy document"
+            : "Failed to load Privacy Policy document",
         );
       } finally {
         setLoading(false);
@@ -94,7 +94,7 @@ const Privacy: React.FC = () => {
                   Privacy Policy
                 </Typography>
                 <Typography variant="caption" color="textSecondary">
-                  Last Updated: November 11, 2025
+                  Last Updated: April 17, 2026
                 </Typography>
               </Box>
             </Box>
