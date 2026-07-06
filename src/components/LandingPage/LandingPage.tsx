@@ -136,6 +136,7 @@ const SHOWCASE = [
       src: "/images/showcase/pick-your-game.jpeg",
     },
     accent: C.purple,
+    hideCopy: true,
   },
   {
     label: "Place Prediction",
@@ -156,6 +157,17 @@ const SHOWCASE = [
       src: "/videos/showcase/cutted_video-compressed.mp4",
     },
     accent: C.purple,
+  },
+  {
+    label: "Live Leaderboard",
+    title: "Live Leaderboard",
+    desc: "Watch your rank change with every basket. You're not just watching the game anymore. You're competing in it.",
+    media: {
+      type: "video" as const,
+      src: "/videos/showcase/live_leaderboard.mp4",
+    },
+    accent: C.purple,
+    featured: true,
   },
   {
     label: "All-Time Leaderboard",
@@ -337,9 +349,13 @@ const StoreButton = ({
 const PhoneFrame = ({
   section,
   visible,
+  scale = 1,
+  glowOpacity = "30",
 }: {
   section: (typeof SHOWCASE)[number];
   visible: boolean;
+  scale?: number;
+  glowOpacity?: string;
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -350,13 +366,20 @@ const PhoneFrame = ({
   }, [visible, section.media.type]);
 
   return (
-    <Box sx={{ position: "relative", mx: "auto" }}>
+    <Box
+      sx={{
+        position: "relative",
+        mx: "auto",
+        transform: `scale(${scale})`,
+        transformOrigin: "center center",
+      }}
+    >
       <Box
         sx={{
           position: "absolute",
           inset: "-30%",
           borderRadius: "50%",
-          background: `radial-gradient(circle, ${section.accent}30 0%, transparent 70%)`,
+          background: `radial-gradient(circle, ${section.accent}${glowOpacity} 0%, transparent 70%)`,
           filter: "blur(50px)",
           pointerEvents: "none",
         }}
@@ -870,7 +893,7 @@ export const LandingPage = () => {
           </Box>
 
           {SHOWCASE.map((section, i) => (
-            <ShowcaseItem key={section.title} section={section} index={i} />
+            <ShowcaseItem key={`${section.title}-${i}`} section={section} index={i} />
           ))}
         </Container>
       </Box>
@@ -1319,26 +1342,53 @@ function ShowcaseItem({
   index: number;
 }) {
   const { ref, visible } = useInView(0.08);
-  const imageLeft = index % 2 === 0;
+  const hideCopy = "hideCopy" in section && section.hideCopy === true;
+  const isFeatured = "featured" in section && section.featured === true;
+  const phoneOnLeft = !hideCopy && index % 2 === 0;
+  const glowMain = isFeatured ? "50" : "30";
+  const glowSecondary = isFeatured ? "35" : "20";
+  const glowTertiary = isFeatured ? "28" : "15";
+  const titleScale = isFeatured ? 1.15 : 1;
+  const phoneScale = isFeatured ? 1.22 : 1;
 
-  return (
+  const content = (
     <Box
-      ref={ref}
+      ref={isFeatured ? undefined : ref}
       sx={{
         position: "relative",
         display: "flex",
         flexDirection: {
           xs: "column",
-          md: imageLeft ? "row" : "row-reverse",
+          md: phoneOnLeft ? "row" : "row-reverse",
         },
         alignItems: "center",
-        gap: { xs: 5, md: 9 },
-        mb: { xs: 12, md: 16 },
+        gap: { xs: 5, md: hideCopy ? 0 : 9 },
+        mb: isFeatured ? 0 : { xs: 12, md: 16 },
+        px: isFeatured ? { xs: 2.5, md: 5 } : 0,
+        py: isFeatured ? { xs: 4, md: 6 } : 0,
+        borderRadius: isFeatured ? "28px" : 0,
+        border: isFeatured ? `1px solid ${section.accent}55` : "none",
+        background: isFeatured
+          ? `radial-gradient(ellipse 90% 70% at 50% 0%, ${section.accent}22 0%, transparent 65%), rgba(255,255,255,0.02)`
+          : "transparent",
         opacity: visible ? 1 : 0,
         transform: visible ? "translateY(0)" : "translateY(48px)",
         transition:
           "opacity 0.75s ease 0.2s, transform 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.2s",
         "@media (prefers-reduced-motion: reduce)": { transition: "none" },
+        ...(isFeatured && {
+          "@media (prefers-reduced-motion: no-preference)": {
+            animation: "featuredSectionPulse 3s ease-in-out infinite",
+          },
+          "@keyframes featuredSectionPulse": {
+            "0%, 100%": {
+              boxShadow: `0 0 0 0 ${section.accent}00, 0 24px 80px ${section.accent}18`,
+            },
+            "50%": {
+              boxShadow: `0 0 0 1px ${section.accent}44, 0 32px 100px ${section.accent}30`,
+            },
+          },
+        }),
       }}
     >
       {/* Aurora blob — large, behind the phone */}
@@ -1348,10 +1398,10 @@ function ShowcaseItem({
           width: { xs: 280, md: 520 },
           height: { xs: 280, md: 520 },
           borderRadius: "50%",
-          background: `radial-gradient(circle, ${section.accent}30 0%, transparent 68%)`,
+          background: `radial-gradient(circle, ${section.accent}${glowMain} 0%, transparent 68%)`,
           filter: "blur(72px)",
           top: "50%",
-          [imageLeft ? "left" : "right"]: { xs: "-8%", md: "-4%" },
+          [phoneOnLeft ? "left" : "right"]: { xs: "-8%", md: "-4%" },
           transform: "translateY(-50%)",
           opacity: visible ? 1 : 0,
           transition: "opacity 1.6s ease 0.5s",
@@ -1379,10 +1429,10 @@ function ShowcaseItem({
           width: { xs: 160, md: 280 },
           height: { xs: 160, md: 280 },
           borderRadius: "50%",
-          background: `radial-gradient(circle, ${section.accent}20 0%, transparent 70%)`,
+          background: `radial-gradient(circle, ${section.accent}${glowSecondary} 0%, transparent 70%)`,
           filter: "blur(54px)",
           bottom: { xs: "-10%", md: "-18%" },
-          [imageLeft ? "right" : "left"]: { xs: "5%", md: "18%" },
+          [phoneOnLeft ? "right" : "left"]: { xs: "5%", md: "18%" },
           opacity: visible ? 0.8 : 0,
           transition: "opacity 2s ease 0.9s",
           pointerEvents: "none",
@@ -1404,10 +1454,10 @@ function ShowcaseItem({
           width: { xs: 100, md: 180 },
           height: { xs: 100, md: 180 },
           borderRadius: "50%",
-          background: `radial-gradient(circle, ${section.accent}15 0%, transparent 70%)`,
+          background: `radial-gradient(circle, ${section.accent}${glowTertiary} 0%, transparent 70%)`,
           filter: "blur(40px)",
           top: { xs: "-5%", md: "-12%" },
-          [imageLeft ? "right" : "left"]: { xs: "10%", md: "35%" },
+          [phoneOnLeft ? "right" : "left"]: { xs: "10%", md: "35%" },
           opacity: visible ? 0.6 : 0,
           transition: "opacity 2.2s ease 1.2s",
           pointerEvents: "none",
@@ -1458,46 +1508,84 @@ function ShowcaseItem({
           zIndex: 1,
         }}
       >
-        <PhoneFrame section={section} visible={visible} />
+        <PhoneFrame
+          section={section}
+          visible={visible}
+          scale={phoneScale}
+          glowOpacity={isFeatured ? "50" : "30"}
+        />
       </Box>
 
       {/* Text */}
-      <Box
-        sx={{
-          flex: 1,
-          textAlign: { xs: "center", md: imageLeft ? "left" : "right" },
-          position: "relative",
-          zIndex: 1,
-        }}
-      >
-        <EyebrowLabel color={section.accent}>{section.label}</EyebrowLabel>
-        <Typography
+      {!hideCopy && (
+        <Box
           sx={{
-            fontFamily: C.display,
-            fontSize: { xs: "2rem", md: "2.6rem" },
-            color: C.textPrimary,
-            lineHeight: 1.15,
-            mb: 2.5,
+            flex: 1,
+            textAlign: { xs: "center", md: phoneOnLeft ? "left" : "right" },
+            position: "relative",
+            zIndex: 1,
           }}
         >
-          {section.title}
-        </Typography>
-        <Typography
-          sx={{
-            fontFamily: C.body,
-            color: C.textSecondary,
-            fontSize: { xs: "1rem", md: "1.05rem" },
-            lineHeight: 1.85,
-            maxWidth: 400,
-            mx: { xs: "auto", md: 0 },
-            ml: { xs: "auto", md: imageLeft ? 0 : "auto" },
-          }}
-        >
-          {section.desc}
-        </Typography>
-      </Box>
+          <EyebrowLabel color={section.accent}>{section.label}</EyebrowLabel>
+          <Typography
+            sx={{
+              fontFamily: C.display,
+              fontSize: {
+                xs: `${2 * titleScale}rem`,
+                md: `${2.6 * titleScale}rem`,
+              },
+              color: C.textPrimary,
+              lineHeight: 1.15,
+              mb: 2.5,
+            }}
+          >
+            {section.title}
+          </Typography>
+          <Typography
+            sx={{
+              fontFamily: C.body,
+              color: C.textSecondary,
+              fontSize: { xs: "1rem", md: "1.05rem" },
+              lineHeight: 1.85,
+              maxWidth: 400,
+              mx: { xs: "auto", md: 0 },
+              ml: { xs: "auto", md: phoneOnLeft ? 0 : "auto" },
+            }}
+          >
+            {section.desc}
+          </Typography>
+        </Box>
+      )}
     </Box>
   );
+
+  if (isFeatured) {
+    return (
+      <Box
+        ref={ref}
+        sx={{
+          width: "100vw",
+          position: "relative",
+          left: "50%",
+          right: "50%",
+          marginLeft: "-50vw",
+          marginRight: "-50vw",
+          mb: { xs: 12, md: 16 },
+          py: { xs: 6, md: 8 },
+          background: `
+            radial-gradient(ellipse 120% 80% at 50% 50%, ${C.purple}20 0%, transparent 70%),
+            linear-gradient(180deg, ${C.bgSection} 0%, rgba(124, 92, 252, 0.08) 50%, ${C.bgSection} 100%)
+          `,
+          borderTop: `1px solid ${C.purple}33`,
+          borderBottom: `1px solid ${C.purple}33`,
+        }}
+      >
+        <Container maxWidth="lg">{content}</Container>
+      </Box>
+    );
+  }
+
+  return content;
 }
 
 function ReviewCard({ review }: { review: (typeof REVIEWS)[number] }) {
