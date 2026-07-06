@@ -9,6 +9,7 @@ import { LiveEventConfig } from "./components/LiveEventConfig/LiveEventConfig";
 import { TeamStats } from "./components/TeamStats/TeamStats";
 import { NavigationLayout } from "./components/Layout/NavigationLayout";
 import { LandingPage } from "./components/LandingPage/LandingPage";
+import { FeaturedSectionVariants } from "./components/FeaturedSectionVariants/FeaturedSectionVariants";
 import Privacy from "./components/Privacy/Privacy";
 import TermsDocx from "./components/Terms/TermsDocx";
 import QA from "./components/QA/QA";
@@ -34,6 +35,7 @@ function App() {
     return (
         <Routes>
             <Route path="/" element={<LandingPage />} />
+            <Route path="/featured-section-variants" element={<FeaturedSectionVariants />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<TermsDocx />} />
             <Route path="/qa" element={<QA />} />
