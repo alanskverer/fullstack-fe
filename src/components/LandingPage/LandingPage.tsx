@@ -149,16 +149,6 @@ const SHOWCASE = [
     accent: C.rose,
   },
   {
-    label: "Live Tracking",
-    title: "Live the Moment",
-    desc: "Every prediction tracked in one place. See upcoming games, live scores, and completed results. Real-time, always.",
-    media: {
-      type: "video" as const,
-      src: "/videos/showcase/cutted_video-compressed.mp4",
-    },
-    accent: C.purple,
-  },
-  {
     label: "Live Leaderboard",
     title: "Live Leaderboard",
     desc: "Watch your rank change with every basket. You're not just watching the game anymore. You're competing in it.",
@@ -168,6 +158,16 @@ const SHOWCASE = [
     },
     accent: C.purple,
     featured: true,
+  },
+  {
+    label: "Live Tracking",
+    title: "Live the Moment",
+    desc: "Every prediction tracked in one place. See upcoming games, live scores, and completed results. Real-time, always.",
+    media: {
+      type: "video" as const,
+      src: "/videos/showcase/cutted_video-compressed.mp4",
+    },
+    accent: C.purple,
   },
   {
     label: "All-Time Leaderboard",
