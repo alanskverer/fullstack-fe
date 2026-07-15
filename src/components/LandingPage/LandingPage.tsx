@@ -730,22 +730,6 @@ export const LandingPage = () => {
               component="span"
               sx={{ color: C.textPrimary, fontWeight: 700 }}
             >
-              10,000+
-            </Box>{" "}
-            Players
-          </Typography>
-          <Box sx={{ width: 1, height: 18, background: C.border }} />
-          <Typography
-            sx={{
-              fontFamily: C.body,
-              fontSize: "0.85rem",
-              color: C.textSecondary,
-            }}
-          >
-            <Box
-              component="span"
-              sx={{ color: C.textPrimary, fontWeight: 700 }}
-            >
               100%
             </Box>{" "}
             Free Forever
@@ -805,7 +789,6 @@ export const LandingPage = () => {
             sx={{ textAlign: "center" }}
           >
             {[
-              { value: "10,000+", label: "Active Players" },
               { value: "4.8 ★", label: "App Store Rating" },
               { value: "100%", label: "Free — No purchases" },
             ].map(({ value, label }) => (
@@ -1072,7 +1055,7 @@ export const LandingPage = () => {
               }}
             >
               Download Bettim and make your first prediction in under 60
-              seconds. Join 10,000+ players today.
+              seconds.
             </Typography>
             <Stack
               direction={{ xs: "column", sm: "row" }}
