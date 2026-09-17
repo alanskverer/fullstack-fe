@@ -6,6 +6,8 @@ type ScrollSceneElement = HTMLElement & {
 };
 
 const SCENE_LABELS = ["OPEN", "PREDICT", "COMPETE", "LIVE", "TRUST", "PLAY"];
+const TICKER =
+  "NBA  /  NCAA  /  LIVE PREDICTIONS  /  ZERO REAL-MONEY BETTING  /  EVERY BASKET MOVES THE BOARD  /  ";
 
 export function ScrollExperience() {
   const [activeScene, setActiveScene] = useState("OPEN");
@@ -50,6 +52,8 @@ export function ScrollExperience() {
       if (closest) {
         const nextScene = closest.dataset.scrollScene ?? "OPEN";
         const nextPeak = closest.dataset.scrollPeak === "true";
+        root.dataset.activeScene = nextScene.toLowerCase().replace(/\s+/g, "-");
+        root.classList.toggle("sc-at-peak", nextPeak);
         setActiveScene((current) => (current === nextScene ? current : nextScene));
         setAtPeak((current) => (current === nextPeak ? current : nextPeak));
       }
@@ -74,30 +78,57 @@ export function ScrollExperience() {
       reducedMotion.removeEventListener("change", requestUpdate);
       root.style.removeProperty("--page-p");
       root.style.removeProperty("--scroll-v");
+      delete root.dataset.activeScene;
+      root.classList.remove("sc-at-peak");
     };
   }, []);
 
   return (
-    <Box
-      className={`sc-rank-trace${atPeak ? " is-peak" : ""}`}
-      aria-hidden="true"
-    >
-      <Box className="sc-rank-trace__meter">
-        <Box className="sc-rank-trace__fill" />
-        {SCENE_LABELS.map((label, index) => (
-          <Box
-            key={label}
-            className="sc-rank-trace__marker"
-            sx={{ "--marker-p": index / (SCENE_LABELS.length - 1) }}
-          />
-        ))}
+    <>
+      <Box className="sc-arena-fx" aria-hidden="true">
+        <Box className="sc-arena-fx__beam sc-arena-fx__beam--a" />
+        <Box className="sc-arena-fx__beam sc-arena-fx__beam--b" />
+        <Box className="sc-arena-fx__flash" />
       </Box>
-      <Box className="sc-rank-trace__readout">
-        <Typography component="span">{atPeak ? "RANK SHIFT" : "LIVE RUN"}</Typography>
-        <Typography component="strong">
-          {atPeak ? "#24 → #3" : activeScene.toUpperCase()}
+
+      <Box className="sc-broadcast-bar" aria-hidden="true">
+        <Typography component="span">BETTIM LIVE</Typography>
+        <Box className="sc-broadcast-bar__ticker">
+          <Typography component="span">{TICKER.repeat(2)}</Typography>
+        </Box>
+        <Typography component="strong">{atPeak ? "RANK SURGE" : activeScene}</Typography>
+      </Box>
+
+      <Box
+        className={`sc-rank-trace${atPeak ? " is-peak" : ""}`}
+        aria-hidden="true"
+      >
+        <Box className="sc-rank-trace__meter">
+          <Box className="sc-rank-trace__fill" />
+          {SCENE_LABELS.map((label, index) => (
+            <Box
+              key={label}
+              className="sc-rank-trace__marker"
+              sx={{ "--marker-p": index / (SCENE_LABELS.length - 1) }}
+            />
+          ))}
+        </Box>
+        <Box className="sc-rank-trace__readout">
+          <Typography component="span">{atPeak ? "RANK SHIFT" : "LIVE RUN"}</Typography>
+          <Typography component="strong">
+            {atPeak ? "#24 → #3" : activeScene.toUpperCase()}
+          </Typography>
+        </Box>
+      </Box>
+
+      <Box className={`sc-rank-takeover${atPeak ? " is-active" : ""}`} aria-hidden="true">
+        <Typography className="sc-rank-takeover__from">24</Typography>
+        <Box className="sc-rank-takeover__line" />
+        <Typography className="sc-rank-takeover__to">03</Typography>
+        <Typography className="sc-rank-takeover__label">
+          LIVE RANK. EVERY BASKET COUNTS.
         </Typography>
       </Box>
-    </Box>
+    </>
   );
 }

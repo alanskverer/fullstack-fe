@@ -2,6 +2,19 @@
 
 Interviewed September 17, 2026.
 
+## Extreme branch direction
+
+Creative authority was explicitly delegated with: "go to the extreme."
+
+This branch amplifies the approved cinematic sports-broadcast direction into an arena takeover. The information architecture, product truth, existing assets, and download paths stay intact. The visual range moves from premium-minimal to maximal broadcast:
+
+- Persistent live ticker and page progress telemetry.
+- Scroll-velocity light beams and scan intensity.
+- Oversized kinetic scene typography and hard red cut points.
+- Full-viewport product scenes rather than a conventional feature list.
+- One dominant rank-shift takeover at the live leaderboard peak.
+- A static, complete composition under reduced motion.
+
 ## Creative decisions
 
 1. Vibe: "Cinematic sports broadcast, calm confidence, electric live moments."

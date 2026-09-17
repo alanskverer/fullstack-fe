@@ -684,6 +684,7 @@ export const LandingPage = () => {
 
               <Typography
                 component="h1"
+                className="sc-hero__headline"
                 sx={{
                   fontFamily: C.display,
                   fontWeight: 400,
@@ -780,6 +781,7 @@ export const LandingPage = () => {
               </Stack>
 
               <Stack
+                className="sc-hero__actions"
                 direction={{ xs: "column", sm: "row" }}
                 spacing={1.8}
                 alignItems={{ xs: "center", md: "flex-start" }}
@@ -897,6 +899,7 @@ export const LandingPage = () => {
         <Container maxWidth="lg">
           <Box sx={{ textAlign: "center", mb: { xs: 7, md: 9 } }}>
             <Typography
+              className="sc-section-title"
               sx={{
                 fontFamily: C.display,
                 fontSize: { xs: "2rem", md: "2.8rem" },
@@ -944,6 +947,7 @@ export const LandingPage = () => {
           <Box sx={{ textAlign: "center", mb: { xs: 8, md: 12 } }}>
             <EyebrowLabel>See It In Action</EyebrowLabel>
             <Typography
+              className="sc-section-title sc-section-title--wide"
               sx={{
                 fontFamily: C.display,
                 fontSize: { xs: "2rem", md: "2.8rem" },
@@ -964,12 +968,14 @@ export const LandingPage = () => {
       {/* ── REVIEWS ───────────────────────────────────────────────────────── */}
       <Box
         component="section"
+        className="sc-trust-section"
         data-scroll-scene="Trust"
         sx={{ py: { xs: 10, md: 14 }, background: C.bgSection }}
       >
         <Container maxWidth="lg">
           <Box sx={{ textAlign: "center", mb: { xs: 7, md: 9 } }}>
             <Typography
+              className="sc-section-title"
               sx={{
                 fontFamily: C.display,
                 fontSize: { xs: "2rem", md: "2.8rem" },
@@ -1025,12 +1031,14 @@ export const LandingPage = () => {
       {/* ── FAQ ───────────────────────────────────────────────────────────── */}
       <Box
         component="section"
+        className="sc-faq-section"
         data-scroll-scene="Trust"
         sx={{ py: { xs: 10, md: 14 } }}
       >
         <Container maxWidth="md">
           <Box sx={{ textAlign: "center", mb: { xs: 6, md: 8 } }}>
             <Typography
+              className="sc-section-title"
               sx={{
                 fontFamily: C.display,
                 fontSize: { xs: "2rem", md: "2.8rem" },
