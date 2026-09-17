@@ -15,6 +15,8 @@ This branch amplifies the approved cinematic sports-broadcast direction into an 
 - One dominant rank-shift takeover at the live leaderboard peak.
 - A static, complete composition under reduced motion.
 
+Copy rule: the production messaging on bettim.co is the source of truth. The redesign may change presentation and choreography, but not product titles, descriptions, claims, or calls to action.
+
 ## Creative decisions
 
 1. Vibe: "Cinematic sports broadcast, calm confidence, electric live moments."

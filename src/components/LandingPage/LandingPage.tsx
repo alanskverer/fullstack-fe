@@ -106,12 +106,6 @@ const STORE_BUTTONS = [
   },
 ];
 
-const HERO_VALUE_PILLS = [
-  "NBA + NCAA",
-  "Real-time rank shifts",
-  "Virtual coins only",
-];
-
 const HERO_SYSTEM_ITEMS = [
   "System / Bettim",
   "Mode / Live predictions",
@@ -146,7 +140,7 @@ const SHOWCASE = [
   {
     label: "Home Screen",
     title: "Pick Your Game",
-    desc: "Browse tonight's NBA and NCAA matchups. See tip-off times and team records at a glance. Tap any game to jump in instantly.",
+    desc: "Browse tonight's NBA and NCAA matchups. Every detail at a glance — tip-off times, team records. Tap any game to jump in instantly.",
     media: {
       type: "image" as const,
       src: "/images/showcase/pick-your-game.jpeg",
@@ -157,7 +151,7 @@ const SHOWCASE = [
   {
     label: "Place Prediction",
     title: "Make Your Call",
-    desc: "Predict the final home and away score. Lock it in with virtual coins before tip-off and feel the rush when the game goes live.",
+    desc: "Predict the final score — home and away. Lock it in with virtual coins before tip-off and feel the rush when the game goes live.",
     media: {
       type: "video" as const,
       src: "/videos/showcase/place_bet_video_2.mp4",
@@ -198,7 +192,7 @@ const SHOWCASE = [
   {
     label: "Avatar Studio",
     title: "Own Your Look",
-    desc: "Unlock exclusive avatars as you level up. Every rank earned shows in your style, so you stand out in every leaderboard.",
+    desc: "Unlock exclusive avatars as you level up. Every rank earned shows in your style — stand out in every leaderboard.",
     media: { type: "video" as const, src: "/videos/showcase/avatar_world.mp4" },
     accent: C.purple,
   },
@@ -242,7 +236,7 @@ const FAQS = [
   },
   {
     q: "How do users get coins?",
-    a: "Users receive free virtual coins on signup and earn more by participating in games and achieving milestones. Coins cannot be purchased. They are earned through gameplay and daily bonuses only.",
+    a: "Users receive free virtual coins on signup and earn more by participating in games and achieving milestones. Coins cannot be purchased — they are earned through gameplay and daily bonuses only.",
   },
   {
     q: "How often do rewards refresh?",
@@ -679,7 +673,7 @@ export const LandingPage = () => {
                   mb: 2.2,
                 }}
               >
-                Designing a calmer way to compete live
+                Live Sports Gaming · NBA · NCAA
               </Typography>
 
               <Typography
@@ -696,11 +690,11 @@ export const LandingPage = () => {
                   color: C.textPrimary,
                 }}
               >
-                A quieter way
+                PREDICT.
                 <br />
-                to play live
+                COMPETE.
                 <br />
-                basketball.
+                DOMINATE.
               </Typography>
 
               <Typography
@@ -714,71 +708,10 @@ export const LandingPage = () => {
                   mx: { xs: "auto", md: 0 },
                 }}
               >
-                Bettim lets you call NBA and NCAA final scores, follow your rank
-                in real time, and stay in the game without the noise of real-money
-                betting.
+                Call live NBA &amp; NCAA scores, compete against thousands in
+                real-time, and climb the global leaderboards — all with virtual
+                coins, zero risk.
               </Typography>
-
-              <Stack
-                direction={{ xs: "column", md: "row" }}
-                spacing={{ xs: 2.5, md: 4 }}
-                alignItems={{ xs: "center", md: "flex-start" }}
-                sx={{ mb: 3.8, display: { xs: "none", sm: "flex" } }}
-              >
-                <Stack
-                  direction={{ xs: "column", sm: "row" }}
-                  spacing={1.4}
-                  alignItems={{ xs: "center", md: "flex-start" }}
-                  flexWrap="wrap"
-                  sx={{ rowGap: 1.4 }}
-                >
-                  {HERO_VALUE_PILLS.map((pill, index) => (
-                    <Box
-                      key={pill}
-                      sx={{
-                        borderTop: `1px solid ${C.border}`,
-                        pt: 1.2,
-                        minWidth: { xs: 180, sm: 150, md: 165 },
-                        transition: "border-color 0.25s ease, transform 0.25s ease",
-                        "@media (prefers-reduced-motion: no-preference)": {
-                          animation: `heroValueFade 0.8s ease ${index * 0.12}s both`,
-                          "@keyframes heroValueFade": {
-                            from: { opacity: 0, transform: "translateY(12px)" },
-                            to: { opacity: 1, transform: "translateY(0)" },
-                          },
-                        },
-                        "&:hover": {
-                          borderColor: "rgba(124, 92, 252, 0.45)",
-                          transform: "translateY(-2px)",
-                        },
-                      }}
-                    >
-                      <Typography
-                        sx={{
-                          fontFamily:
-                            'ui-monospace, SFMono-Regular, SFMono, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-                          fontSize: "0.68rem",
-                          letterSpacing: "0.12em",
-                          textTransform: "uppercase",
-                          color: C.textMuted,
-                          mb: 0.65,
-                        }}
-                      >
-                        {String(index + 1).padStart(2, "0")}
-                      </Typography>
-                      <Typography
-                        sx={{
-                          fontFamily: C.body,
-                          fontSize: "0.9rem",
-                          color: C.textPrimary,
-                        }}
-                      >
-                        {pill}
-                      </Typography>
-                    </Box>
-                  ))}
-                </Stack>
-              </Stack>
 
               <Stack
                 className="sc-hero__actions"
@@ -807,7 +740,7 @@ export const LandingPage = () => {
                     color: C.textMuted,
                   }}
                 >
-                  4.8 / App Store
+                  4.8 · App Store
                 </Typography>
                 <Box sx={{ width: { xs: 36, sm: 1 }, height: { xs: 1, sm: 14 }, background: C.border }} />
                 <Typography
@@ -820,7 +753,7 @@ export const LandingPage = () => {
                     color: C.textMuted,
                   }}
                 >
-                  Free membership / zero risk
+                  100% Free Forever
                 </Typography>
               </Stack>
             </Box>
@@ -860,7 +793,7 @@ export const LandingPage = () => {
           >
             {[
               { value: "4.8 ★", label: "App Store Rating" },
-              { value: "100%", label: "Free. No purchases" },
+              { value: "100%", label: "Free — No purchases" },
             ].map(({ value, label }) => (
               <Box key={label}>
                 <Typography
