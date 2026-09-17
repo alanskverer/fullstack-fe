@@ -17,6 +17,10 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import LeaderboardIcon from "@mui/icons-material/Leaderboard";
 import TrackChangesIcon from "@mui/icons-material/TrackChanges";
 import { useNavigate } from "react-router-dom";
+import { HeroAmbientEffects } from "./HeroAmbientEffects";
+import { HeroEnergySphere } from "./HeroEnergySphere";
+import { ScrollExperience } from "./ScrollExperience";
+import "./LandingPage.scss";
 
 // ─── Design Tokens ────────────────────────────────────────────────────────────
 
@@ -102,6 +106,18 @@ const STORE_BUTTONS = [
   },
 ];
 
+const HERO_VALUE_PILLS = [
+  "NBA + NCAA",
+  "Real-time rank shifts",
+  "Virtual coins only",
+];
+
+const HERO_SYSTEM_ITEMS = [
+  "System / Bettim",
+  "Mode / Live predictions",
+  "Access / Free membership",
+];
+
 const STEPS = [
   {
     num: "01",
@@ -130,7 +146,7 @@ const SHOWCASE = [
   {
     label: "Home Screen",
     title: "Pick Your Game",
-    desc: "Browse tonight's NBA and NCAA matchups. Every detail at a glance — tip-off times, team records. Tap any game to jump in instantly.",
+    desc: "Browse tonight's NBA and NCAA matchups. See tip-off times and team records at a glance. Tap any game to jump in instantly.",
     media: {
       type: "image" as const,
       src: "/images/showcase/pick-your-game.jpeg",
@@ -141,7 +157,7 @@ const SHOWCASE = [
   {
     label: "Place Prediction",
     title: "Make Your Call",
-    desc: "Predict the final score — home and away. Lock it in with virtual coins before tip-off and feel the rush when the game goes live.",
+    desc: "Predict the final home and away score. Lock it in with virtual coins before tip-off and feel the rush when the game goes live.",
     media: {
       type: "video" as const,
       src: "/videos/showcase/place_bet_video_2.mp4",
@@ -182,7 +198,7 @@ const SHOWCASE = [
   {
     label: "Avatar Studio",
     title: "Own Your Look",
-    desc: "Unlock exclusive avatars as you level up. Every rank earned shows in your style — stand out in every leaderboard.",
+    desc: "Unlock exclusive avatars as you level up. Every rank earned shows in your style, so you stand out in every leaderboard.",
     media: { type: "video" as const, src: "/videos/showcase/avatar_world.mp4" },
     accent: C.purple,
   },
@@ -226,7 +242,7 @@ const FAQS = [
   },
   {
     q: "How do users get coins?",
-    a: "Users receive free virtual coins on signup and earn more by participating in games and achieving milestones. Coins cannot be purchased — they are earned through gameplay and daily bonuses only.",
+    a: "Users receive free virtual coins on signup and earn more by participating in games and achieving milestones. Coins cannot be purchased. They are earned through gameplay and daily bonuses only.",
   },
   {
     q: "How often do rewards refresh?",
@@ -289,22 +305,23 @@ const StoreButton = ({
         backgroundColor: isWhite ? "#FFFFFF" : C.rose,
         color: isWhite ? "#0A0A0A" : "#fff",
         border: "none",
-        borderRadius: "14px",
-        px: 3,
-        py: 1.4,
+        borderRadius: "12px",
+        px: 2.7,
+        py: 1.2,
         textTransform: "none",
-        minWidth: 185,
+        minWidth: 178,
         cursor: "pointer",
-        transition: "all 0.22s ease",
+        transition:
+          "background-color 0.15s ease-out, color 0.15s ease-out, box-shadow 0.15s ease-out, transform 0.15s ease-out",
         boxShadow: isWhite
-          ? "0 4px 20px rgba(255,255,255,0.12)"
-          : `0 4px 20px ${C.roseGlow}`,
+          ? "0 2px 14px rgba(255,255,255,0.1)"
+          : `0 2px 14px ${C.roseGlow}`,
         "&:hover": {
-          backgroundColor: isWhite ? "#F0EEFF" : "#e0234a",
-          transform: "translateY(-3px)",
+          backgroundColor: isWhite ? "#F4F1FF" : "#e2284d",
+          transform: "translateY(-1px)",
           boxShadow: isWhite
-            ? `0 12px 36px ${C.purpleGlow}`
-            : `0 16px 40px ${C.roseGlow}`,
+            ? `0 6px 20px ${C.purpleGlow}`
+            : `0 8px 24px ${C.roseGlow}`,
         },
       }}
     >
@@ -367,10 +384,14 @@ const PhoneFrame = ({
 
   return (
     <Box
+      className="sc-showcase-phone"
       sx={{
         position: "relative",
         mx: "auto",
-        transform: `scale(${scale})`,
+        transform: {
+          xs: `scale(${Math.min(scale, 1.02)})`,
+          md: `scale(${scale})`,
+        },
         transformOrigin: "center center",
       }}
     >
@@ -519,6 +540,7 @@ export const LandingPage = () => {
 
   return (
     <Box
+      className="sc-landing"
       sx={{
         minHeight: "100vh",
         backgroundColor: C.bg,
@@ -528,23 +550,26 @@ export const LandingPage = () => {
       }}
     >
       <StickyBar />
+      <ScrollExperience />
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <Box
+        className="sc-hero"
+        data-scroll-scene="Open"
         sx={{
           minHeight: "100vh",
           display: "flex",
           flexDirection: "column",
-          alignItems: "center",
+          alignItems: "stretch",
           justifyContent: "center",
-          textAlign: "center",
+          textAlign: { xs: "center", md: "left" },
           position: "relative",
           px: 3,
-          pt: 6,
-          pb: 8,
+          pt: { xs: 2, md: 6 },
+          pb: { xs: 5, md: 9 },
           background: `
-            radial-gradient(ellipse 130% 70% at 50% -10%, rgba(124, 92, 252, 0.18) 0%, transparent 60%),
-            radial-gradient(ellipse 60% 40% at 90% 90%, rgba(255, 48, 85, 0.10) 0%, transparent 55%),
+            radial-gradient(ellipse 120% 72% at 78% 20%, rgba(124, 92, 252, 0.12) 0%, transparent 60%),
+            radial-gradient(ellipse 55% 35% at 88% 74%, rgba(255, 48, 85, 0.06) 0%, transparent 60%),
             ${C.bg}
           `,
           "&::after": {
@@ -557,212 +582,255 @@ export const LandingPage = () => {
           },
         }}
       >
-        {/* Logo */}
-        <Box
-          sx={{
-            position: "relative",
-            display: "inline-block",
-            mb: 4,
-          }}
-        >
-          <Box
-            sx={{
-              position: "absolute",
-              inset: "-40%",
-              borderRadius: "50%",
-              background: `radial-gradient(circle, ${C.purpleGlow} 0%, transparent 70%)`,
-              filter: "blur(30px)",
-              pointerEvents: "none",
-            }}
-          />
-          <Box
-            component="img"
-            src="/images/logo/logo.png"
-            alt="Bettim"
-            sx={{
-              position: "relative",
-              width: { xs: 100, md: 130 },
-              height: { xs: 100, md: 130 },
-              borderRadius: "26px",
-              boxShadow: `0 0 0 1px rgba(255,255,255,0.10), 0 20px 60px rgba(0,0,0,0.5)`,
-              display: "block",
-            }}
-          />
-        </Box>
-
-        {/* Eyebrow */}
-        <Box
-          sx={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 1.5,
-            border: `1px solid ${C.border}`,
-            borderRadius: "99px",
-            px: 2.5,
-            py: 0.7,
-            mb: 4,
-            backdropFilter: "blur(12px)",
-            background: "rgba(255,255,255,0.04)",
-          }}
-        >
-          <Box
-            sx={{
-              width: 6,
-              height: 6,
-              borderRadius: "50%",
-              background: C.teal,
-              boxShadow: `0 0 8px ${C.teal}`,
-            }}
-          />
-          <Typography
-            sx={{
-              fontFamily: C.body,
-              fontSize: "0.72rem",
-              fontWeight: 500,
-              color: C.textSecondary,
-              letterSpacing: "0.1em",
-              textTransform: "uppercase",
-            }}
-          >
-            Live Sports Gaming · NBA · NCAA
-          </Typography>
-        </Box>
-
-        {/* Headline */}
-        <Typography
-          component="h1"
-          sx={{
-            fontFamily: C.display,
-            fontWeight: 400,
-            fontSize: { xs: "2.6rem", sm: "3.6rem", md: "5rem" },
-            lineHeight: 1.1,
-            letterSpacing: "-0.01em",
-            mb: 3,
-            background:
-              "linear-gradient(135deg, #EEF2FF 20%, #C4B5FD 55%, #FB7185 100%)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
-            maxWidth: 800,
-          }}
-        >
-          PREDICT.
-          <br />
-          COMPETE.
-          <br />
-          DOMINATE.
-        </Typography>
-
-        {/* Subheadline */}
-        <Typography
-          sx={{
-            fontFamily: C.body,
-            color: C.textSecondary,
-            fontSize: { xs: "1rem", md: "1.15rem" },
-            lineHeight: 1.8,
-            maxWidth: 540,
-            mb: 5,
-          }}
-        >
-          Call live NBA &amp; NCAA scores, compete against thousands in
-          real-time, and climb the global leaderboards — all with virtual coins,
-          zero risk.
-        </Typography>
-
-        {/* Store Buttons */}
-        <Stack
-          direction={{ xs: "column", sm: "row" }}
-          spacing={2}
-          justifyContent="center"
-          alignItems="center"
-          sx={{ mb: 4 }}
-        >
-          <StoreButton variant="white" {...STORE_BUTTONS[0]} />
-          <StoreButton variant="rose" {...STORE_BUTTONS[1]} />
-        </Stack>
-
-        {/* Social Proof */}
-        <Stack
-          direction="row"
-          spacing={{ xs: 2, sm: 4 }}
-          justifyContent="center"
-          alignItems="center"
-          flexWrap="wrap"
-          sx={{ gap: 1 }}
-        >
-          <Stack direction="row" spacing={0.5} alignItems="center">
-            {[...Array(5)].map((_, i) => (
-              <Box key={i} sx={{ color: C.gold, fontSize: 16, lineHeight: 1 }}>
-                ★
-              </Box>
-            ))}
-            <Typography
-              sx={{
-                fontFamily: C.body,
-                fontSize: "0.85rem",
-                fontWeight: 600,
-                color: C.textPrimary,
-                ml: 0.5,
-              }}
+        <HeroAmbientEffects />
+        <HeroEnergySphere />
+        <Container maxWidth="lg" sx={{ position: "relative", zIndex: 1, py: { xs: 3, md: 8 } }}>
+          <Stack spacing={{ xs: 5, md: 8 }}>
+            <Stack
+              className="sc-hero__brand"
+              direction={{ xs: "column", md: "row" }}
+              justifyContent="space-between"
+              alignItems={{ xs: "center", md: "flex-start" }}
+              spacing={{ xs: 2, md: 4 }}
             >
-              4.8
-            </Typography>
-            <Typography
-              sx={{
-                fontFamily: C.body,
-                fontSize: "0.8rem",
-                color: C.textMuted,
-                ml: 0.3,
-              }}
-            >
-              App Store
-            </Typography>
-          </Stack>
-          <Box sx={{ width: 1, height: 18, background: C.border }} />
-          <Typography
-            sx={{
-              fontFamily: C.body,
-              fontSize: "0.85rem",
-              color: C.textSecondary,
-            }}
-          >
+              <Stack
+                direction="row"
+                spacing={1.5}
+                alignItems="center"
+                justifyContent={{ xs: "center", md: "flex-start" }}
+              >
+                <Box
+                  component="img"
+                  src="/images/logo/logo.png"
+                  alt="Bettim"
+                  sx={{
+                    width: 48,
+                    height: 48,
+                    borderRadius: "14px",
+                    boxShadow: `0 0 0 1px rgba(255,255,255,0.1), 0 12px 30px rgba(0,0,0,0.35)`,
+                  }}
+                />
+                <Box>
+                  <Typography
+                    sx={{
+                      fontFamily: C.display,
+                      fontSize: "0.92rem",
+                      letterSpacing: "0.16em",
+                      textTransform: "uppercase",
+                      color: C.textPrimary,
+                    }}
+                  >
+                    Bettim
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontFamily:
+                        'ui-monospace, SFMono-Regular, SFMono, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+                      fontSize: "0.68rem",
+                      letterSpacing: "0.12em",
+                      textTransform: "uppercase",
+                      color: C.textMuted,
+                      mt: 0.4,
+                    }}
+                  >
+                    Live score club / 2026
+                  </Typography>
+                </Box>
+              </Stack>
+
+              <Stack
+                direction={{ xs: "column", sm: "row" }}
+                spacing={{ xs: 1, sm: 2 }}
+                justifyContent={{ xs: "center", md: "flex-end" }}
+                alignItems={{ xs: "center", md: "flex-end" }}
+                flexWrap="wrap"
+                sx={{ rowGap: 1, display: { xs: "none", md: "flex" } }}
+              >
+                {HERO_SYSTEM_ITEMS.map((item) => (
+                  <Typography
+                    key={item}
+                    sx={{
+                      fontFamily:
+                        'ui-monospace, SFMono-Regular, SFMono, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+                      fontSize: "0.68rem",
+                      letterSpacing: "0.12em",
+                      textTransform: "uppercase",
+                      color: C.textMuted,
+                    }}
+                  >
+                    {item}
+                  </Typography>
+                ))}
+              </Stack>
+            </Stack>
+
             <Box
-              component="span"
-              sx={{ color: C.textPrimary, fontWeight: 700 }}
+              className="sc-hero__copy"
+              sx={{ maxWidth: { xs: "100%", md: 620 }, pr: { md: 14 } }}
             >
-              100%
-            </Box>{" "}
-            Free Forever
-          </Typography>
-        </Stack>
+              <Typography
+                sx={{
+                  fontFamily:
+                    'ui-monospace, SFMono-Regular, SFMono, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+                  fontSize: "0.72rem",
+                  letterSpacing: "0.18em",
+                  textTransform: "uppercase",
+                  color: C.textSecondary,
+                  mb: 2.2,
+                }}
+              >
+                Designing a calmer way to compete live
+              </Typography>
 
-        {/* Scroll indicator */}
-        <Box
-          sx={{
-            position: "absolute",
-            bottom: 36,
-            left: "50%",
-            transform: "translateX(-50%)",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: 0.5,
-            opacity: 0.4,
-          }}
-        >
-          <Box
-            sx={{
-              width: 1,
-              height: 48,
-              background: `linear-gradient(to bottom, transparent, ${C.purple})`,
-              borderRadius: 1,
-            }}
-          />
-        </Box>
+              <Typography
+                component="h1"
+                sx={{
+                  fontFamily: C.display,
+                  fontWeight: 400,
+                  fontSize: { xs: "2.7rem", sm: "3.55rem", md: "5rem" },
+                  lineHeight: { xs: 1.04, md: 1.02 },
+                  letterSpacing: { xs: "-0.01em", md: "-0.02em" },
+                  mb: 2.5,
+                  maxWidth: 620,
+                  color: C.textPrimary,
+                }}
+              >
+                A quieter way
+                <br />
+                to play live
+                <br />
+                basketball.
+              </Typography>
+
+              <Typography
+                sx={{
+                  fontFamily: C.body,
+                  color: "#A8B4C9",
+                  fontSize: { xs: "1rem", md: "1.08rem" },
+                  lineHeight: 1.9,
+                  maxWidth: 510,
+                  mb: 3.4,
+                  mx: { xs: "auto", md: 0 },
+                }}
+              >
+                Bettim lets you call NBA and NCAA final scores, follow your rank
+                in real time, and stay in the game without the noise of real-money
+                betting.
+              </Typography>
+
+              <Stack
+                direction={{ xs: "column", md: "row" }}
+                spacing={{ xs: 2.5, md: 4 }}
+                alignItems={{ xs: "center", md: "flex-start" }}
+                sx={{ mb: 3.8, display: { xs: "none", sm: "flex" } }}
+              >
+                <Stack
+                  direction={{ xs: "column", sm: "row" }}
+                  spacing={1.4}
+                  alignItems={{ xs: "center", md: "flex-start" }}
+                  flexWrap="wrap"
+                  sx={{ rowGap: 1.4 }}
+                >
+                  {HERO_VALUE_PILLS.map((pill, index) => (
+                    <Box
+                      key={pill}
+                      sx={{
+                        borderTop: `1px solid ${C.border}`,
+                        pt: 1.2,
+                        minWidth: { xs: 180, sm: 150, md: 165 },
+                        transition: "border-color 0.25s ease, transform 0.25s ease",
+                        "@media (prefers-reduced-motion: no-preference)": {
+                          animation: `heroValueFade 0.8s ease ${index * 0.12}s both`,
+                          "@keyframes heroValueFade": {
+                            from: { opacity: 0, transform: "translateY(12px)" },
+                            to: { opacity: 1, transform: "translateY(0)" },
+                          },
+                        },
+                        "&:hover": {
+                          borderColor: "rgba(124, 92, 252, 0.45)",
+                          transform: "translateY(-2px)",
+                        },
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          fontFamily:
+                            'ui-monospace, SFMono-Regular, SFMono, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+                          fontSize: "0.68rem",
+                          letterSpacing: "0.12em",
+                          textTransform: "uppercase",
+                          color: C.textMuted,
+                          mb: 0.65,
+                        }}
+                      >
+                        {String(index + 1).padStart(2, "0")}
+                      </Typography>
+                      <Typography
+                        sx={{
+                          fontFamily: C.body,
+                          fontSize: "0.9rem",
+                          color: C.textPrimary,
+                        }}
+                      >
+                        {pill}
+                      </Typography>
+                    </Box>
+                  ))}
+                </Stack>
+              </Stack>
+
+              <Stack
+                direction={{ xs: "column", sm: "row" }}
+                spacing={1.8}
+                alignItems={{ xs: "center", md: "flex-start" }}
+                sx={{ mb: 2.6 }}
+              >
+                <StoreButton variant="white" {...STORE_BUTTONS[0]} />
+                <StoreButton variant="rose" {...STORE_BUTTONS[1]} />
+              </Stack>
+
+              <Stack
+                direction={{ xs: "column", sm: "row" }}
+                spacing={{ xs: 1.2, sm: 2.4 }}
+                alignItems={{ xs: "center", md: "center" }}
+                sx={{ color: C.textSecondary }}
+              >
+                <Typography
+                  sx={{
+                    fontFamily:
+                      'ui-monospace, SFMono-Regular, SFMono, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+                    fontSize: "0.72rem",
+                    letterSpacing: "0.12em",
+                    textTransform: "uppercase",
+                    color: C.textMuted,
+                  }}
+                >
+                  4.8 / App Store
+                </Typography>
+                <Box sx={{ width: { xs: 36, sm: 1 }, height: { xs: 1, sm: 14 }, background: C.border }} />
+                <Typography
+                  sx={{
+                    fontFamily:
+                      'ui-monospace, SFMono-Regular, SFMono, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+                    fontSize: "0.72rem",
+                    letterSpacing: "0.12em",
+                    textTransform: "uppercase",
+                    color: C.textMuted,
+                  }}
+                >
+                  Free membership / zero risk
+                </Typography>
+              </Stack>
+            </Box>
+          </Stack>
+        </Container>
+
       </Box>
 
       {/* ── STATS BAR ────────────────────────────────────────────────────── */}
       <Box
+        className="sc-stats"
+        data-scroll-scene="Live"
         sx={{
           background: C.bgSection,
           borderTop: `1px solid ${C.border}`,
@@ -790,17 +858,14 @@ export const LandingPage = () => {
           >
             {[
               { value: "4.8 ★", label: "App Store Rating" },
-              { value: "100%", label: "Free — No purchases" },
+              { value: "100%", label: "Free. No purchases" },
             ].map(({ value, label }) => (
               <Box key={label}>
                 <Typography
                   sx={{
                     fontFamily: C.display,
                     fontSize: { xs: "1.8rem", md: "2.2rem" },
-                    background: `linear-gradient(135deg, ${C.purple}, ${C.rose})`,
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
+                    color: C.textPrimary,
                     lineHeight: 1.2,
                   }}
                 >
@@ -824,10 +889,13 @@ export const LandingPage = () => {
       </Box>
 
       {/* ── HOW IT WORKS ──────────────────────────────────────────────────── */}
-      <Box component="section" sx={{ py: { xs: 10, md: 14 } }}>
+      <Box
+        component="section"
+        data-scroll-scene="Predict"
+        sx={{ py: { xs: 10, md: 14 } }}
+      >
         <Container maxWidth="lg">
           <Box sx={{ textAlign: "center", mb: { xs: 7, md: 9 } }}>
-            <EyebrowLabel>How It Works</EyebrowLabel>
             <Typography
               sx={{
                 fontFamily: C.display,
@@ -841,25 +909,37 @@ export const LandingPage = () => {
           </Box>
 
           <Box
+            className="sc-steps-grid"
             sx={{
               display: "grid",
               gridTemplateColumns: {
                 xs: "1fr",
                 sm: "1fr 1fr",
-                md: "1fr 1fr 1fr",
+                md: "1.15fr 0.85fr",
               },
+              gridTemplateRows: { md: "1fr 1fr" },
               gap: 3,
+              "& > :first-of-type": {
+                gridRow: { md: "1 / 3" },
+              },
+              "& > :last-of-type": {
+                gridColumn: { sm: "1 / -1", md: "auto" },
+              },
             }}
           >
-            {STEPS.map((step) => (
-              <StepCard key={step.num} step={step} />
+            {STEPS.map((step, index) => (
+              <StepCard key={step.num} step={step} index={index} />
             ))}
           </Box>
         </Container>
       </Box>
 
       {/* ── SHOWCASE ──────────────────────────────────────────────────────── */}
-      <Box component="section" sx={{ py: { xs: 6, md: 10 } }}>
+      <Box
+        component="section"
+        data-scroll-scene="Compete"
+        sx={{ py: { xs: 6, md: 10 } }}
+      >
         <Container maxWidth="lg">
           <Box sx={{ textAlign: "center", mb: { xs: 8, md: 12 } }}>
             <EyebrowLabel>See It In Action</EyebrowLabel>
@@ -884,11 +964,11 @@ export const LandingPage = () => {
       {/* ── REVIEWS ───────────────────────────────────────────────────────── */}
       <Box
         component="section"
+        data-scroll-scene="Trust"
         sx={{ py: { xs: 10, md: 14 }, background: C.bgSection }}
       >
         <Container maxWidth="lg">
           <Box sx={{ textAlign: "center", mb: { xs: 7, md: 9 } }}>
-            <EyebrowLabel>Player Reviews</EyebrowLabel>
             <Typography
               sx={{
                 fontFamily: C.display,
@@ -943,10 +1023,13 @@ export const LandingPage = () => {
       </Box>
 
       {/* ── FAQ ───────────────────────────────────────────────────────────── */}
-      <Box component="section" sx={{ py: { xs: 10, md: 14 } }}>
+      <Box
+        component="section"
+        data-scroll-scene="Trust"
+        sx={{ py: { xs: 10, md: 14 } }}
+      >
         <Container maxWidth="md">
           <Box sx={{ textAlign: "center", mb: { xs: 6, md: 8 } }}>
-            <EyebrowLabel>FAQ</EyebrowLabel>
             <Typography
               sx={{
                 fontFamily: C.display,
@@ -1017,9 +1100,14 @@ export const LandingPage = () => {
       </Box>
 
       {/* ── FINAL CTA ─────────────────────────────────────────────────────── */}
-      <Box component="section" sx={{ py: { xs: 6, md: 8 }, px: 3 }}>
+      <Box
+        component="section"
+        data-scroll-scene="Play"
+        sx={{ py: { xs: 6, md: 8 }, px: 3 }}
+      >
         <Container maxWidth="md">
           <Box
+            className="sc-final-cta"
             sx={{
               borderRadius: "28px",
               border: `1px solid rgba(124, 92, 252, 0.25)`,
@@ -1188,7 +1276,8 @@ export const LandingPage = () => {
                       border: `1px solid ${C.border}`,
                       color: C.textMuted,
                       cursor: "pointer",
-                      transition: "all 0.2s",
+                      transition:
+                        "color 0.15s ease-out, border-color 0.15s ease-out, background-color 0.15s ease-out, transform 0.15s ease-out",
                       "&:hover": {
                         color: C.textPrimary,
                         borderColor: C.border,
@@ -1232,7 +1321,13 @@ export const LandingPage = () => {
 
 // ─── Section Sub-components ────────────────────────────────────────────────────
 
-function StepCard({ step }: { step: (typeof STEPS)[number] }) {
+function StepCard({
+  step,
+  index,
+}: {
+  step: (typeof STEPS)[number];
+  index: number;
+}) {
   const { ref, visible } = useInView(0.1);
   const { Icon } = step;
 
@@ -1240,6 +1335,7 @@ function StepCard({ step }: { step: (typeof STEPS)[number] }) {
     <Box
       ref={ref}
       sx={{
+        "--item-i": index,
         background: C.card,
         border: `1px solid ${C.border}`,
         borderRadius: "20px",
@@ -1336,7 +1432,10 @@ function ShowcaseItem({
 
   const content = (
     <Box
-      ref={isFeatured ? undefined : ref}
+      ref={ref}
+      className="sc-showcase-act"
+      data-scroll-scene={isFeatured ? "Live" : section.label}
+      data-scroll-peak={isFeatured ? "true" : undefined}
       sx={{
         position: "relative",
         display: "flex",
@@ -1349,6 +1448,11 @@ function ShowcaseItem({
         mb: isFeatured ? 0 : { xs: 12, md: 16 },
         px: isFeatured ? { xs: 2.5, md: 5 } : 0,
         py: isFeatured ? { xs: 4, md: 6 } : 0,
+        minHeight: {
+          xs: isFeatured ? "105vh" : "auto",
+          md: isFeatured ? "118vh" : hideCopy ? "82vh" : "92vh",
+        },
+        justifyContent: isFeatured ? "center" : "flex-start",
         borderRadius: isFeatured ? "28px" : 0,
         border: isFeatured ? `1px solid ${section.accent}55` : "none",
         background: isFeatured
@@ -1374,6 +1478,13 @@ function ShowcaseItem({
         }),
       }}
     >
+      {isFeatured && (
+        <Box className="sc-rank-pulse" aria-hidden>
+          <Box className="sc-rank-pulse__number">24 / 03</Box>
+          <Box className="sc-rank-pulse__lock">Prediction locked</Box>
+        </Box>
+      )}
+
       {/* Aurora blob — large, behind the phone */}
       <Box
         sx={{
@@ -1502,6 +1613,7 @@ function ShowcaseItem({
       {/* Text */}
       {!hideCopy && (
         <Box
+          className="sc-showcase-copy"
           sx={{
             flex: 1,
             textAlign: { xs: "center", md: phoneOnLeft ? "left" : "right" },
@@ -1545,7 +1657,6 @@ function ShowcaseItem({
   if (isFeatured) {
     return (
       <Box
-        ref={ref}
         sx={{
           width: "100vw",
           position: "relative",
