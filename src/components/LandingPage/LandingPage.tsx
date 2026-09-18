@@ -107,7 +107,7 @@ const STORE_BUTTONS = [
 ];
 
 const HERO_SYSTEM_ITEMS = [
-  "System / Bettim",
+  "System / BUL",
   "Mode / Live predictions",
   "Access / Free membership",
 ];
@@ -138,15 +138,14 @@ const STEPS = [
 
 const SHOWCASE = [
   {
-    label: "Home Screen",
-    title: "Pick Your Game",
+    label: "Game selection",
+    title: "Choose your game",
     desc: "Browse tonight's NBA and NCAA matchups. Every detail at a glance — tip-off times, team records. Tap any game to jump in instantly.",
     media: {
       type: "image" as const,
       src: "/images/showcase/pick-your-game.jpeg",
     },
-    accent: C.purple,
-    hideCopy: true,
+    accent: C.rose,
   },
   {
     label: "Place Prediction",
@@ -227,12 +226,12 @@ const REVIEWS = [
 
 const FAQS = [
   {
-    q: "What is Bettim?",
-    a: "Bettim is a live sports gaming platform where users engage with NBA and NCAA events in real-time. The app provides an entertaining way to follow games and compete with other users through virtual coins and leaderboards.",
+    q: "What is BUL?",
+    a: "BUL is a live sports gaming platform where users engage with NBA and NCAA events in real-time. The app provides an entertaining way to follow games and compete with other users through virtual coins and leaderboards.",
   },
   {
     q: "Can users buy anything with real money?",
-    a: "No. Bettim does not offer any in-app purchases. Users cannot buy coins, items, or any other content with real money. All features are completely free and accessible to everyone.",
+    a: "No. BUL does not offer any in-app purchases. Users cannot buy coins, items, or any other content with real money. All features are completely free and accessible to everyone.",
   },
   {
     q: "How do users get coins?",
@@ -244,7 +243,7 @@ const FAQS = [
   },
   {
     q: "How can I contact support?",
-    a: "Reach our support team at support@bettim.co. We typically respond within 24–48 hours during business days.",
+    a: "Reach our support team at support@bulinteractive.com. We typically respond within 24–48 hours during business days.",
   },
 ];
 
@@ -476,7 +475,7 @@ const StickyBar = () => {
         <Box
           component="img"
           src="/images/logo/logo.png"
-          alt="Bettim"
+          alt="BUL"
           sx={{
             width: 32,
             height: 32,
@@ -493,7 +492,7 @@ const StickyBar = () => {
             display: { xs: "none", sm: "block" },
           }}
         >
-          Download Bettim
+          Download BUL
         </Typography>
         {STORE_BUTTONS.map(({ icon, label, href }) => (
           <Button
@@ -588,48 +587,33 @@ export const LandingPage = () => {
               spacing={{ xs: 2, md: 4 }}
             >
               <Stack
-                direction="row"
-                spacing={1.5}
-                alignItems="center"
+                spacing={0.75}
+                alignItems={{ xs: "center", md: "flex-start" }}
                 justifyContent={{ xs: "center", md: "flex-start" }}
               >
                 <Box
                   component="img"
-                  src="/images/logo/logo.png"
-                  alt="Bettim"
+                  src="/images/logo/wordmark.png"
+                  alt="BUL"
                   sx={{
-                    width: 48,
-                    height: 48,
-                    borderRadius: "14px",
-                    boxShadow: `0 0 0 1px rgba(255,255,255,0.1), 0 12px 30px rgba(0,0,0,0.35)`,
+                    width: { xs: 110, md: 126 },
+                    height: "auto",
+                    filter: "invert(1)",
+                    display: "block",
                   }}
                 />
-                <Box>
-                  <Typography
-                    sx={{
-                      fontFamily: C.display,
-                      fontSize: "0.92rem",
-                      letterSpacing: "0.16em",
-                      textTransform: "uppercase",
-                      color: C.textPrimary,
-                    }}
-                  >
-                    Bettim
-                  </Typography>
-                  <Typography
-                    sx={{
-                      fontFamily:
-                        'ui-monospace, SFMono-Regular, SFMono, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-                      fontSize: "0.68rem",
-                      letterSpacing: "0.12em",
-                      textTransform: "uppercase",
-                      color: C.textMuted,
-                      mt: 0.4,
-                    }}
-                  >
-                    Live score club / 2026
-                  </Typography>
-                </Box>
+                <Typography
+                  sx={{
+                    fontFamily:
+                      'ui-monospace, SFMono-Regular, SFMono, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+                    fontSize: "0.68rem",
+                    letterSpacing: "0.12em",
+                    textTransform: "uppercase",
+                    color: C.textMuted,
+                  }}
+                >
+                  Live score club / 2026
+                </Typography>
               </Stack>
 
               <Stack
@@ -851,16 +835,9 @@ export const LandingPage = () => {
               gridTemplateColumns: {
                 xs: "1fr",
                 sm: "1fr 1fr",
-                md: "1.15fr 0.85fr",
+                md: "1fr 1fr 1fr",
               },
-              gridTemplateRows: { md: "1fr 1fr" },
               gap: 3,
-              "& > :first-of-type": {
-                gridRow: { md: "1 / 3" },
-              },
-              "& > :last-of-type": {
-                gridColumn: { sm: "1 / -1", md: "auto" },
-              },
             }}
           >
             {STEPS.map((step, index) => (
@@ -877,21 +854,6 @@ export const LandingPage = () => {
         sx={{ py: { xs: 6, md: 10 } }}
       >
         <Container maxWidth="lg">
-          <Box sx={{ textAlign: "center", mb: { xs: 8, md: 12 } }}>
-            <EyebrowLabel>See It In Action</EyebrowLabel>
-            <Typography
-              className="sc-section-title sc-section-title--wide"
-              sx={{
-                fontFamily: C.display,
-                fontSize: { xs: "2rem", md: "2.8rem" },
-                color: C.textPrimary,
-                lineHeight: 1.15,
-              }}
-            >
-              THE FUTURE OF LIVE SPORTS GAMING
-            </Typography>
-          </Box>
-
           {SHOWCASE.map((section, i) => (
             <ShowcaseItem key={`${section.title}-${i}`} section={section} index={i} />
           ))}
@@ -1083,7 +1045,7 @@ export const LandingPage = () => {
                 mx: "auto",
               }}
             >
-              Download Bettim and make your first prediction in under 60
+              Download BUL and make your first prediction in under 60
               seconds.
             </Typography>
             <Stack
@@ -1123,35 +1085,28 @@ export const LandingPage = () => {
             sx={{ mb: 5 }}
           >
             {/* Brand */}
-            <Stack direction="row" spacing={2} alignItems="center">
+            <Stack spacing={1} alignItems={{ xs: "center", sm: "flex-start" }}>
               <Box
                 component="img"
-                src="/images/logo/logo.png"
-                alt="Bettim"
-                sx={{ width: 44, height: 44, borderRadius: "12px" }}
+                src="/images/logo/wordmark.png"
+                alt="BUL"
+                sx={{
+                  width: 106,
+                  height: "auto",
+                  filter: "invert(1)",
+                  display: "block",
+                }}
               />
-              <Box>
-                <Typography
-                  sx={{
-                    fontFamily: C.display,
-                    fontSize: "1.1rem",
-                    color: C.textPrimary,
-                    lineHeight: 1.2,
-                  }}
-                >
-                  BETTIM
-                </Typography>
-                <Typography
-                  sx={{
-                    fontFamily: C.body,
-                    fontSize: "0.72rem",
-                    color: C.textMuted,
-                    letterSpacing: "0.08em",
-                  }}
-                >
-                  Live Sports Gaming
-                </Typography>
-              </Box>
+              <Typography
+                sx={{
+                  fontFamily: C.body,
+                  fontSize: "0.72rem",
+                  color: C.textMuted,
+                  letterSpacing: "0.08em",
+                }}
+              >
+                Live Sports Gaming
+              </Typography>
             </Stack>
 
             {/* Nav + social */}
@@ -1248,9 +1203,9 @@ export const LandingPage = () => {
                 letterSpacing: "0.04em",
               }}
             >
-              © 2026 Bettim. All rights reserved. ·{" "}
-              <a href="mailto:support@bettim.co" style={{ color: "inherit", textDecoration: "none" }}>
-                support@bettim.co
+              © 2026 BUL. All rights reserved. ·{" "}
+              <a href="mailto:support@bulinteractive.com" style={{ color: "inherit", textDecoration: "none" }}>
+                support@bulinteractive.com
               </a>
             </Typography>
           </Box>
@@ -1421,7 +1376,7 @@ function ShowcaseItem({
     >
       {isFeatured && (
         <Box className="sc-rank-pulse" aria-hidden>
-          <Box className="sc-rank-pulse__number">24 / 03</Box>
+          {/* <Box className="sc-rank-pulse__number">24 / 03</Box> */}
           <Box className="sc-rank-pulse__lock">Prediction locked</Box>
         </Box>
       )}

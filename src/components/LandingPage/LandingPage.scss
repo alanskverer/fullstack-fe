@@ -1,3 +1,21 @@
+@property --scroll-p {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0.5;
+}
+
+@property --page-p {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --scroll-v {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
 .sc-landing {
   --sc-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --arena-red: #ff244d;
@@ -43,7 +61,7 @@
   letter-spacing: -0.08em;
   white-space: nowrap;
   transform:
-    translate3d(calc(var(--scroll-p, 0) * -10vw), 0, 0)
+    translate3d(calc(var(--scroll-p, 0) * -6vw), 0, 0)
     skewX(-7deg);
 }
 
@@ -77,28 +95,33 @@
 
 .sc-hero__brand,
 .sc-hero__copy,
-.sc-hero-orb {
+.sc-hero-orb,
+.sc-showcase-phone,
+.sc-showcase-copy,
+.sc-final-cta,
+.sc-hero::before,
+.sc-showcase-act::after {
   will-change: transform, opacity;
 }
 
 .sc-hero__brand {
-  transform: translate3d(0, calc(var(--scroll-p, 0) * -18px), 0);
-  opacity: calc(1 - var(--scroll-p, 0) * 0.65);
+  transform: translate3d(0, calc(var(--scroll-p, 0) * -12px), 0);
+  opacity: calc(1 - var(--scroll-p, 0) * 0.45);
 }
 
 .sc-hero__copy {
   width: min(55vw, 860px);
   max-width: 860px !important;
   padding-right: 0 !important;
-  transform: translate3d(0, calc(var(--scroll-p, 0) * -42px), 0);
-  opacity: calc(1 - var(--scroll-p, 0) * 0.72);
+  transform: translate3d(0, calc(var(--scroll-p, 0) * -26px), 0);
+  opacity: calc(1 - var(--scroll-p, 0) * 0.5);
 }
 
 .sc-hero-orb {
   transform:
-    translate3d(0, calc(var(--scroll-p, 0) * 112px), 0)
-    scale(calc(1 + var(--scroll-p, 0) * 0.08));
-  opacity: calc(1 - var(--scroll-p, 0) * 0.34);
+    translate3d(0, calc(var(--scroll-p, 0) * 64px), 0)
+    scale(calc(1 + var(--scroll-p, 0) * 0.045));
+  opacity: calc(1 - var(--scroll-p, 0) * 0.22);
 }
 
 .sc-stats {
@@ -108,7 +131,7 @@
   border-block: 0 !important;
   background: var(--arena-red) !important;
   color: #08090f;
-  clip-path: inset(0 calc((1 - var(--scroll-p, 0.5)) * 18%) 0 0);
+  clip-path: inset(0 calc((1 - var(--scroll-p, 0.5)) * 8%) 0 0);
 }
 
 .sc-stats * {
@@ -136,7 +159,7 @@
 }
 
 .sc-showcase-act {
-  --scene-offset: calc((0.5 - var(--scroll-p, 0.5)) * 76px);
+  --scene-offset: calc((0.5 - var(--scroll-p, 0.5)) * 42px);
   min-height: 110svh !important;
   margin-bottom: 6vh !important;
   padding-block: 10vh !important;
@@ -158,7 +181,7 @@
   letter-spacing: -0.08em;
   text-transform: uppercase;
   white-space: nowrap;
-  transform: translate3d(calc((0.5 - var(--scroll-p, 0.5)) * 15vw), 0, 0);
+  transform: translate3d(calc((0.5 - var(--scroll-p, 0.5)) * 8vw), 0, 0);
 }
 
 .sc-showcase-act:nth-of-type(even) {
@@ -169,17 +192,17 @@
 
 .sc-showcase-phone {
   translate: 0 var(--scene-offset);
-  rotate: calc((0.5 - var(--scroll-p, 0.5)) * 7deg);
+  rotate: calc((0.5 - var(--scroll-p, 0.5)) * 3.5deg);
   filter:
-    saturate(calc(0.65 + var(--scroll-p, 0.5) * 0.9))
-    contrast(1.08)
+    saturate(calc(0.78 + var(--scroll-p, 0.5) * 0.5))
+    contrast(1.05)
     drop-shadow(0 52px 52px rgb(0 0 0 / 58%));
 }
 
 .sc-showcase-copy {
   transform: translate3d(
     0,
-    calc((var(--scroll-p, 0.5) - 0.5) * 74px),
+    calc((var(--scroll-p, 0.5) - 0.5) * 40px),
     0
   );
 }
@@ -261,19 +284,22 @@
   overflow: hidden;
   pointer-events: none;
   mix-blend-mode: screen;
+  transform: translateZ(0);
+  contain: strict;
 }
 
 .sc-arena-fx::after {
   content: "";
   position: absolute;
   inset: 0;
-  opacity: calc(0.035 + var(--scroll-v, 0) * 0.18);
+  opacity: calc(0.02 + var(--scroll-v, 0) * 0.12);
   background:
     repeating-linear-gradient(
       90deg,
       transparent 0 3vw,
       rgb(255 255 255 / 12%) 3vw calc(3vw + 1px)
     );
+  will-change: opacity;
 }
 
 .sc-arena-fx__beam {
@@ -281,9 +307,11 @@
   top: -40vh;
   width: 9vw;
   height: 180vh;
-  opacity: calc(var(--scroll-v, 0) * 0.48);
+  opacity: calc(0.06 + var(--scroll-v, 0) * 0.34);
   background: linear-gradient(to right, transparent, rgb(118 87 255 / 42%), transparent);
   filter: blur(18px);
+  will-change: opacity, transform;
+  backface-visibility: hidden;
 }
 
 .sc-arena-fx__beam--a {
@@ -518,8 +546,8 @@
 
 .sc-final-cta {
   transform:
-    translate3d(0, calc((0.5 - var(--scroll-p, 0.5)) * 36px), 0)
-    scale(calc(0.97 + var(--scroll-p, 0.5) * 0.03));
+    translate3d(0, calc((0.5 - var(--scroll-p, 0.5)) * 20px), 0)
+    scale(calc(0.985 + var(--scroll-p, 0.5) * 0.015));
   border-radius: 0 !important;
   clip-path: polygon(0 0, 96% 0, 100% 18%, 100% 100%, 4% 100%, 0 82%);
 }

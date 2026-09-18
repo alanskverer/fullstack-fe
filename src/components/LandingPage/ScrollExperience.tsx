@@ -5,9 +5,30 @@ type ScrollSceneElement = HTMLElement & {
   dataset: DOMStringMap & { scrollScene?: string; scrollPeak?: string };
 };
 
+type Spring = { value: number; velocity: number };
+
 const SCENE_LABELS = ["OPEN", "PREDICT", "COMPETE", "LIVE", "TRUST", "PLAY"];
 const TICKER =
   "NBA  /  NCAA  /  LIVE PREDICTIONS  /  ZERO REAL-MONEY BETTING  /  EVERY BASKET MOVES THE BOARD  /  ";
+
+function createSpring(value: number): Spring {
+  return { value, velocity: 0 };
+}
+
+function stepSpring(spring: Spring, target: number, dt: number, omega: number) {
+  const offset = spring.value - target;
+  const accel = -2 * omega * spring.velocity - omega * omega * offset;
+  spring.velocity += accel * dt;
+  spring.value += spring.velocity * dt;
+  if (Math.abs(spring.value - target) < 0.00025 && Math.abs(spring.velocity) < 0.0004) {
+    spring.value = target;
+    spring.velocity = 0;
+  }
+}
+
+function isSpringSettled(spring: Spring, target: number) {
+  return spring.value === target && spring.velocity === 0;
+}
 
 export function ScrollExperience() {
   const [activeScene, setActiveScene] = useState("OPEN");
@@ -22,25 +43,57 @@ export function ScrollExperience() {
     let frame = 0;
     let previousY = window.scrollY;
     let previousTime = performance.now();
+    const pageSpring = createSpring(
+      Math.min(
+        1,
+        Math.max(0, window.scrollY / Math.max(root.scrollHeight - window.innerHeight, 1)),
+      ),
+    );
+    const velocitySpring = createSpring(0);
+    const sceneSprings = new WeakMap<ScrollSceneElement, Spring>();
 
     const update = (now: number) => {
-      frame = 0;
       const viewportHeight = Math.max(window.innerHeight, 1);
       const scrollable = Math.max(root.scrollHeight - viewportHeight, 1);
       const pageProgress = Math.min(1, Math.max(0, window.scrollY / scrollable));
-      const elapsed = Math.max(now - previousTime, 16);
-      const velocity = Math.min(1, Math.abs(window.scrollY - previousY) / elapsed / 1.4);
+      const dt = Math.min(0.045, Math.max(now - previousTime, 1) / 1000);
+      const rawVelocity = reducedMotion.matches
+        ? 0
+        : Math.min(1, Math.abs(window.scrollY - previousY) / Math.max(now - previousTime, 1) / 1.4);
+      let catchingUp = false;
       let closest: ScrollSceneElement | undefined;
       let closestDistance = Number.POSITIVE_INFINITY;
 
-      root.style.setProperty("--page-p", pageProgress.toFixed(4));
-      root.style.setProperty("--scroll-v", reducedMotion.matches ? "0" : velocity.toFixed(3));
+      if (reducedMotion.matches) {
+        pageSpring.value = pageProgress;
+        pageSpring.velocity = 0;
+        velocitySpring.value = 0;
+        velocitySpring.velocity = 0;
+      } else {
+        stepSpring(pageSpring, pageProgress, dt, 11);
+        stepSpring(velocitySpring, rawVelocity, dt, 13);
+        catchingUp =
+          !isSpringSettled(pageSpring, pageProgress) ||
+          !isSpringSettled(velocitySpring, rawVelocity);
+      }
+
+      root.style.setProperty("--page-p", pageSpring.value.toFixed(4));
+      root.style.setProperty("--scroll-v", Math.max(0, velocitySpring.value).toFixed(4));
 
       scenes.forEach((scene) => {
         const rect = scene.getBoundingClientRect();
         const travel = rect.height + viewportHeight;
         const progress = Math.min(1, Math.max(0, (viewportHeight - rect.top) / travel));
-        scene.style.setProperty("--scroll-p", reducedMotion.matches ? "0.5" : progress.toFixed(4));
+        const spring = sceneSprings.get(scene) ?? createSpring(progress);
+        if (reducedMotion.matches) {
+          spring.value = progress;
+          spring.velocity = 0;
+        } else {
+          stepSpring(spring, progress, dt, 11);
+          if (!isSpringSettled(spring, progress)) catchingUp = true;
+        }
+        sceneSprings.set(scene, spring);
+        scene.style.setProperty("--scroll-p", spring.value.toFixed(4));
 
         const distance = Math.abs(rect.top + rect.height / 2 - viewportHeight / 2);
         if (rect.bottom > 0 && rect.top < viewportHeight && distance < closestDistance) {
@@ -60,6 +113,10 @@ export function ScrollExperience() {
 
       previousY = window.scrollY;
       previousTime = now;
+      frame =
+        !reducedMotion.matches && catchingUp
+          ? window.requestAnimationFrame(update)
+          : 0;
     };
 
     const requestUpdate = () => {
@@ -92,7 +149,7 @@ export function ScrollExperience() {
       </Box>
 
       <Box className="sc-broadcast-bar" aria-hidden="true">
-        <Typography component="span">BETTIM LIVE</Typography>
+        <Typography component="span">BUL LIVE</Typography>
         <Box className="sc-broadcast-bar__ticker">
           <Typography component="span">{TICKER.repeat(2)}</Typography>
         </Box>
@@ -116,11 +173,12 @@ export function ScrollExperience() {
         <Box className="sc-rank-trace__readout">
           <Typography component="span">{atPeak ? "RANK SHIFT" : "LIVE RUN"}</Typography>
           <Typography component="strong">
-            {atPeak ? "#24 → #3" : activeScene.toUpperCase()}
+            {activeScene.toUpperCase()}
           </Typography>
         </Box>
       </Box>
 
+      {/* Rank takeover (24 / 03) paused for now
       <Box className={`sc-rank-takeover${atPeak ? " is-active" : ""}`} aria-hidden="true">
         <Typography className="sc-rank-takeover__from">24</Typography>
         <Box className="sc-rank-takeover__line" />
@@ -129,6 +187,7 @@ export function ScrollExperience() {
           LIVE RANK. EVERY BASKET COUNTS.
         </Typography>
       </Box>
+      */}
     </>
   );
 }
