@@ -17,10 +17,6 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import LeaderboardIcon from "@mui/icons-material/Leaderboard";
 import TrackChangesIcon from "@mui/icons-material/TrackChanges";
 import { useNavigate } from "react-router-dom";
-import { HeroAmbientEffects } from "./HeroAmbientEffects";
-import { HeroEnergySphere } from "./HeroEnergySphere";
-import { ScrollExperience } from "./ScrollExperience";
-import "./LandingPage.scss";
 
 // ─── Design Tokens ────────────────────────────────────────────────────────────
 
@@ -106,12 +102,6 @@ const STORE_BUTTONS = [
   },
 ];
 
-const HERO_SYSTEM_ITEMS = [
-  "System / BUL",
-  "Mode / Live predictions",
-  "Access / Free membership",
-];
-
 const STEPS = [
   {
     num: "01",
@@ -138,14 +128,15 @@ const STEPS = [
 
 const SHOWCASE = [
   {
-    label: "Game selection",
-    title: "Choose your game",
+    label: "Home Screen",
+    title: "Pick Your Game",
     desc: "Browse tonight's NBA and NCAA matchups. Every detail at a glance — tip-off times, team records. Tap any game to jump in instantly.",
     media: {
       type: "image" as const,
       src: "/images/showcase/pick-your-game.jpeg",
     },
-    accent: C.rose,
+    accent: C.purple,
+    hideCopy: true,
   },
   {
     label: "Place Prediction",
@@ -226,12 +217,12 @@ const REVIEWS = [
 
 const FAQS = [
   {
-    q: "What is BUL?",
-    a: "BUL is a live sports gaming platform where users engage with NBA and NCAA events in real-time. The app provides an entertaining way to follow games and compete with other users through virtual coins and leaderboards.",
+    q: "What is Bettim?",
+    a: "Bettim is a live sports gaming platform where users engage with NBA and NCAA events in real-time. The app provides an entertaining way to follow games and compete with other users through virtual coins and leaderboards.",
   },
   {
     q: "Can users buy anything with real money?",
-    a: "No. BUL does not offer any in-app purchases. Users cannot buy coins, items, or any other content with real money. All features are completely free and accessible to everyone.",
+    a: "No. Bettim does not offer any in-app purchases. Users cannot buy coins, items, or any other content with real money. All features are completely free and accessible to everyone.",
   },
   {
     q: "How do users get coins?",
@@ -243,7 +234,7 @@ const FAQS = [
   },
   {
     q: "How can I contact support?",
-    a: "Reach our support team at support@bulinteractive.com. We typically respond within 24–48 hours during business days.",
+    a: "Reach our support team at support@bettim.co. We typically respond within 24–48 hours during business days.",
   },
 ];
 
@@ -298,23 +289,22 @@ const StoreButton = ({
         backgroundColor: isWhite ? "#FFFFFF" : C.rose,
         color: isWhite ? "#0A0A0A" : "#fff",
         border: "none",
-        borderRadius: "12px",
-        px: 2.7,
-        py: 1.2,
+        borderRadius: "14px",
+        px: 3,
+        py: 1.4,
         textTransform: "none",
-        minWidth: 178,
+        minWidth: 185,
         cursor: "pointer",
-        transition:
-          "background-color 0.15s ease-out, color 0.15s ease-out, box-shadow 0.15s ease-out, transform 0.15s ease-out",
+        transition: "all 0.22s ease",
         boxShadow: isWhite
-          ? "0 2px 14px rgba(255,255,255,0.1)"
-          : `0 2px 14px ${C.roseGlow}`,
+          ? "0 4px 20px rgba(255,255,255,0.12)"
+          : `0 4px 20px ${C.roseGlow}`,
         "&:hover": {
-          backgroundColor: isWhite ? "#F4F1FF" : "#e2284d",
-          transform: "translateY(-1px)",
+          backgroundColor: isWhite ? "#F0EEFF" : "#e0234a",
+          transform: "translateY(-3px)",
           boxShadow: isWhite
-            ? `0 6px 20px ${C.purpleGlow}`
-            : `0 8px 24px ${C.roseGlow}`,
+            ? `0 12px 36px ${C.purpleGlow}`
+            : `0 16px 40px ${C.roseGlow}`,
         },
       }}
     >
@@ -377,14 +367,10 @@ const PhoneFrame = ({
 
   return (
     <Box
-      className="sc-showcase-phone"
       sx={{
         position: "relative",
         mx: "auto",
-        transform: {
-          xs: `scale(${Math.min(scale, 1.02)})`,
-          md: `scale(${scale})`,
-        },
+        transform: `scale(${scale})`,
         transformOrigin: "center center",
       }}
     >
@@ -475,7 +461,7 @@ const StickyBar = () => {
         <Box
           component="img"
           src="/images/logo/logo.png"
-          alt="BUL"
+          alt="Bettim"
           sx={{
             width: 32,
             height: 32,
@@ -492,7 +478,7 @@ const StickyBar = () => {
             display: { xs: "none", sm: "block" },
           }}
         >
-          Download BUL
+          Download Bettim
         </Typography>
         {STORE_BUTTONS.map(({ icon, label, href }) => (
           <Button
@@ -533,7 +519,6 @@ export const LandingPage = () => {
 
   return (
     <Box
-      className="sc-landing"
       sx={{
         minHeight: "100vh",
         backgroundColor: C.bg,
@@ -543,26 +528,23 @@ export const LandingPage = () => {
       }}
     >
       <StickyBar />
-      <ScrollExperience />
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <Box
-        className="sc-hero"
-        data-scroll-scene="Open"
         sx={{
           minHeight: "100vh",
           display: "flex",
           flexDirection: "column",
-          alignItems: "stretch",
+          alignItems: "center",
           justifyContent: "center",
-          textAlign: { xs: "center", md: "left" },
+          textAlign: "center",
           position: "relative",
           px: 3,
-          pt: { xs: 2, md: 6 },
-          pb: { xs: 5, md: 9 },
+          pt: 6,
+          pb: 8,
           background: `
-            radial-gradient(ellipse 120% 72% at 78% 20%, rgba(124, 92, 252, 0.12) 0%, transparent 60%),
-            radial-gradient(ellipse 55% 35% at 88% 74%, rgba(255, 48, 85, 0.06) 0%, transparent 60%),
+            radial-gradient(ellipse 130% 70% at 50% -10%, rgba(124, 92, 252, 0.18) 0%, transparent 60%),
+            radial-gradient(ellipse 60% 40% at 90% 90%, rgba(255, 48, 85, 0.10) 0%, transparent 55%),
             ${C.bg}
           `,
           "&::after": {
@@ -575,181 +557,212 @@ export const LandingPage = () => {
           },
         }}
       >
-        <HeroAmbientEffects />
-        <HeroEnergySphere />
-        <Container maxWidth="lg" sx={{ position: "relative", zIndex: 1, py: { xs: 3, md: 8 } }}>
-          <Stack spacing={{ xs: 5, md: 8 }}>
-            <Stack
-              className="sc-hero__brand"
-              direction={{ xs: "column", md: "row" }}
-              justifyContent="space-between"
-              alignItems={{ xs: "center", md: "flex-start" }}
-              spacing={{ xs: 2, md: 4 }}
+        {/* Logo */}
+        <Box
+          sx={{
+            position: "relative",
+            display: "inline-block",
+            mb: 4,
+          }}
+        >
+          <Box
+            sx={{
+              position: "absolute",
+              inset: "-40%",
+              borderRadius: "50%",
+              background: `radial-gradient(circle, ${C.purpleGlow} 0%, transparent 70%)`,
+              filter: "blur(30px)",
+              pointerEvents: "none",
+            }}
+          />
+          <Box
+            component="img"
+            src="/images/logo/logo.png"
+            alt="Bettim"
+            sx={{
+              position: "relative",
+              width: { xs: 100, md: 130 },
+              height: { xs: 100, md: 130 },
+              borderRadius: "26px",
+              boxShadow: `0 0 0 1px rgba(255,255,255,0.10), 0 20px 60px rgba(0,0,0,0.5)`,
+              display: "block",
+            }}
+          />
+        </Box>
+
+        {/* Eyebrow */}
+        <Box
+          sx={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 1.5,
+            border: `1px solid ${C.border}`,
+            borderRadius: "99px",
+            px: 2.5,
+            py: 0.7,
+            mb: 4,
+            backdropFilter: "blur(12px)",
+            background: "rgba(255,255,255,0.04)",
+          }}
+        >
+          <Box
+            sx={{
+              width: 6,
+              height: 6,
+              borderRadius: "50%",
+              background: C.teal,
+              boxShadow: `0 0 8px ${C.teal}`,
+            }}
+          />
+          <Typography
+            sx={{
+              fontFamily: C.body,
+              fontSize: "0.72rem",
+              fontWeight: 500,
+              color: C.textSecondary,
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
+            }}
+          >
+            Live Sports Gaming · NBA · NCAA
+          </Typography>
+        </Box>
+
+        {/* Headline */}
+        <Typography
+          component="h1"
+          sx={{
+            fontFamily: C.display,
+            fontWeight: 400,
+            fontSize: { xs: "2.6rem", sm: "3.6rem", md: "5rem" },
+            lineHeight: 1.1,
+            letterSpacing: "-0.01em",
+            mb: 3,
+            background:
+              "linear-gradient(135deg, #EEF2FF 20%, #C4B5FD 55%, #FB7185 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+            maxWidth: 800,
+          }}
+        >
+          PREDICT.
+          <br />
+          COMPETE.
+          <br />
+          DOMINATE.
+        </Typography>
+
+        {/* Subheadline */}
+        <Typography
+          sx={{
+            fontFamily: C.body,
+            color: C.textSecondary,
+            fontSize: { xs: "1rem", md: "1.15rem" },
+            lineHeight: 1.8,
+            maxWidth: 540,
+            mb: 5,
+          }}
+        >
+          Call live NBA &amp; NCAA scores, compete against thousands in
+          real-time, and climb the global leaderboards — all with virtual coins,
+          zero risk.
+        </Typography>
+
+        {/* Store Buttons */}
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          spacing={2}
+          justifyContent="center"
+          alignItems="center"
+          sx={{ mb: 4 }}
+        >
+          <StoreButton variant="white" {...STORE_BUTTONS[0]} />
+          <StoreButton variant="rose" {...STORE_BUTTONS[1]} />
+        </Stack>
+
+        {/* Social Proof */}
+        <Stack
+          direction="row"
+          spacing={{ xs: 2, sm: 4 }}
+          justifyContent="center"
+          alignItems="center"
+          flexWrap="wrap"
+          sx={{ gap: 1 }}
+        >
+          <Stack direction="row" spacing={0.5} alignItems="center">
+            {[...Array(5)].map((_, i) => (
+              <Box key={i} sx={{ color: C.gold, fontSize: 16, lineHeight: 1 }}>
+                ★
+              </Box>
+            ))}
+            <Typography
+              sx={{
+                fontFamily: C.body,
+                fontSize: "0.85rem",
+                fontWeight: 600,
+                color: C.textPrimary,
+                ml: 0.5,
+              }}
             >
-              <Stack
-                spacing={0.75}
-                alignItems={{ xs: "center", md: "flex-start" }}
-                justifyContent={{ xs: "center", md: "flex-start" }}
-              >
-                <Box
-                  component="img"
-                  src="/images/logo/wordmark.png"
-                  alt="BUL"
-                  sx={{
-                    width: { xs: 110, md: 126 },
-                    height: "auto",
-                    filter: "invert(1)",
-                    display: "block",
-                  }}
-                />
-                <Typography
-                  sx={{
-                    fontFamily:
-                      'ui-monospace, SFMono-Regular, SFMono, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-                    fontSize: "0.68rem",
-                    letterSpacing: "0.12em",
-                    textTransform: "uppercase",
-                    color: C.textMuted,
-                  }}
-                >
-                  Live score club / 2026
-                </Typography>
-              </Stack>
-
-              <Stack
-                direction={{ xs: "column", sm: "row" }}
-                spacing={{ xs: 1, sm: 2 }}
-                justifyContent={{ xs: "center", md: "flex-end" }}
-                alignItems={{ xs: "center", md: "flex-end" }}
-                flexWrap="wrap"
-                sx={{ rowGap: 1, display: { xs: "none", md: "flex" } }}
-              >
-                {HERO_SYSTEM_ITEMS.map((item) => (
-                  <Typography
-                    key={item}
-                    sx={{
-                      fontFamily:
-                        'ui-monospace, SFMono-Regular, SFMono, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-                      fontSize: "0.68rem",
-                      letterSpacing: "0.12em",
-                      textTransform: "uppercase",
-                      color: C.textMuted,
-                    }}
-                  >
-                    {item}
-                  </Typography>
-                ))}
-              </Stack>
-            </Stack>
-
-            <Box
-              className="sc-hero__copy"
-              sx={{ maxWidth: { xs: "100%", md: 620 }, pr: { md: 14 } }}
+              4.8
+            </Typography>
+            <Typography
+              sx={{
+                fontFamily: C.body,
+                fontSize: "0.8rem",
+                color: C.textMuted,
+                ml: 0.3,
+              }}
             >
-              <Typography
-                sx={{
-                  fontFamily:
-                    'ui-monospace, SFMono-Regular, SFMono, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-                  fontSize: "0.72rem",
-                  letterSpacing: "0.18em",
-                  textTransform: "uppercase",
-                  color: C.textSecondary,
-                  mb: 2.2,
-                }}
-              >
-                Live Sports Gaming · NBA · NCAA
-              </Typography>
-
-              <Typography
-                component="h1"
-                className="sc-hero__headline"
-                sx={{
-                  fontFamily: C.display,
-                  fontWeight: 400,
-                  fontSize: { xs: "2.7rem", sm: "3.55rem", md: "5rem" },
-                  lineHeight: { xs: 1.04, md: 1.02 },
-                  letterSpacing: { xs: "-0.01em", md: "-0.02em" },
-                  mb: 2.5,
-                  maxWidth: 620,
-                  color: C.textPrimary,
-                }}
-              >
-                PREDICT.
-                <br />
-                COMPETE.
-                <br />
-                DOMINATE.
-              </Typography>
-
-              <Typography
-                sx={{
-                  fontFamily: C.body,
-                  color: "#A8B4C9",
-                  fontSize: { xs: "1rem", md: "1.08rem" },
-                  lineHeight: 1.9,
-                  maxWidth: 510,
-                  mb: 3.4,
-                  mx: { xs: "auto", md: 0 },
-                }}
-              >
-                Call live NBA &amp; NCAA scores, compete against thousands in
-                real-time, and climb the global leaderboards — all with virtual
-                coins, zero risk.
-              </Typography>
-
-              <Stack
-                className="sc-hero__actions"
-                direction={{ xs: "column", sm: "row" }}
-                spacing={1.8}
-                alignItems={{ xs: "center", md: "flex-start" }}
-                sx={{ mb: 2.6 }}
-              >
-                <StoreButton variant="white" {...STORE_BUTTONS[0]} />
-                <StoreButton variant="rose" {...STORE_BUTTONS[1]} />
-              </Stack>
-
-              <Stack
-                direction={{ xs: "column", sm: "row" }}
-                spacing={{ xs: 1.2, sm: 2.4 }}
-                alignItems={{ xs: "center", md: "center" }}
-                sx={{ color: C.textSecondary }}
-              >
-                <Typography
-                  sx={{
-                    fontFamily:
-                      'ui-monospace, SFMono-Regular, SFMono, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-                    fontSize: "0.72rem",
-                    letterSpacing: "0.12em",
-                    textTransform: "uppercase",
-                    color: C.textMuted,
-                  }}
-                >
-                  4.8 · App Store
-                </Typography>
-                <Box sx={{ width: { xs: 36, sm: 1 }, height: { xs: 1, sm: 14 }, background: C.border }} />
-                <Typography
-                  sx={{
-                    fontFamily:
-                      'ui-monospace, SFMono-Regular, SFMono, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-                    fontSize: "0.72rem",
-                    letterSpacing: "0.12em",
-                    textTransform: "uppercase",
-                    color: C.textMuted,
-                  }}
-                >
-                  100% Free Forever
-                </Typography>
-              </Stack>
-            </Box>
+              App Store
+            </Typography>
           </Stack>
-        </Container>
+          <Box sx={{ width: 1, height: 18, background: C.border }} />
+          <Typography
+            sx={{
+              fontFamily: C.body,
+              fontSize: "0.85rem",
+              color: C.textSecondary,
+            }}
+          >
+            <Box
+              component="span"
+              sx={{ color: C.textPrimary, fontWeight: 700 }}
+            >
+              100%
+            </Box>{" "}
+            Free Forever
+          </Typography>
+        </Stack>
 
+        {/* Scroll indicator */}
+        <Box
+          sx={{
+            position: "absolute",
+            bottom: 36,
+            left: "50%",
+            transform: "translateX(-50%)",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 0.5,
+            opacity: 0.4,
+          }}
+        >
+          <Box
+            sx={{
+              width: 1,
+              height: 48,
+              background: `linear-gradient(to bottom, transparent, ${C.purple})`,
+              borderRadius: 1,
+            }}
+          />
+        </Box>
       </Box>
 
       {/* ── STATS BAR ────────────────────────────────────────────────────── */}
       <Box
-        className="sc-stats"
-        data-scroll-scene="Live"
         sx={{
           background: C.bgSection,
           borderTop: `1px solid ${C.border}`,
@@ -784,7 +797,10 @@ export const LandingPage = () => {
                   sx={{
                     fontFamily: C.display,
                     fontSize: { xs: "1.8rem", md: "2.2rem" },
-                    color: C.textPrimary,
+                    background: `linear-gradient(135deg, ${C.purple}, ${C.rose})`,
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
                     lineHeight: 1.2,
                   }}
                 >
@@ -808,15 +824,11 @@ export const LandingPage = () => {
       </Box>
 
       {/* ── HOW IT WORKS ──────────────────────────────────────────────────── */}
-      <Box
-        component="section"
-        data-scroll-scene="Predict"
-        sx={{ py: { xs: 10, md: 14 } }}
-      >
+      <Box component="section" sx={{ py: { xs: 10, md: 14 } }}>
         <Container maxWidth="lg">
           <Box sx={{ textAlign: "center", mb: { xs: 7, md: 9 } }}>
+            <EyebrowLabel>How It Works</EyebrowLabel>
             <Typography
-              className="sc-section-title"
               sx={{
                 fontFamily: C.display,
                 fontSize: { xs: "2rem", md: "2.8rem" },
@@ -829,7 +841,6 @@ export const LandingPage = () => {
           </Box>
 
           <Box
-            className="sc-steps-grid"
             sx={{
               display: "grid",
               gridTemplateColumns: {
@@ -840,20 +851,30 @@ export const LandingPage = () => {
               gap: 3,
             }}
           >
-            {STEPS.map((step, index) => (
-              <StepCard key={step.num} step={step} index={index} />
+            {STEPS.map((step) => (
+              <StepCard key={step.num} step={step} />
             ))}
           </Box>
         </Container>
       </Box>
 
       {/* ── SHOWCASE ──────────────────────────────────────────────────────── */}
-      <Box
-        component="section"
-        data-scroll-scene="Compete"
-        sx={{ py: { xs: 6, md: 10 } }}
-      >
+      <Box component="section" sx={{ py: { xs: 6, md: 10 } }}>
         <Container maxWidth="lg">
+          <Box sx={{ textAlign: "center", mb: { xs: 8, md: 12 } }}>
+            <EyebrowLabel>See It In Action</EyebrowLabel>
+            <Typography
+              sx={{
+                fontFamily: C.display,
+                fontSize: { xs: "2rem", md: "2.8rem" },
+                color: C.textPrimary,
+                lineHeight: 1.15,
+              }}
+            >
+              THE FUTURE OF LIVE SPORTS GAMING
+            </Typography>
+          </Box>
+
           {SHOWCASE.map((section, i) => (
             <ShowcaseItem key={`${section.title}-${i}`} section={section} index={i} />
           ))}
@@ -863,14 +884,12 @@ export const LandingPage = () => {
       {/* ── REVIEWS ───────────────────────────────────────────────────────── */}
       <Box
         component="section"
-        className="sc-trust-section"
-        data-scroll-scene="Trust"
         sx={{ py: { xs: 10, md: 14 }, background: C.bgSection }}
       >
         <Container maxWidth="lg">
           <Box sx={{ textAlign: "center", mb: { xs: 7, md: 9 } }}>
+            <EyebrowLabel>Player Reviews</EyebrowLabel>
             <Typography
-              className="sc-section-title"
               sx={{
                 fontFamily: C.display,
                 fontSize: { xs: "2rem", md: "2.8rem" },
@@ -924,16 +943,11 @@ export const LandingPage = () => {
       </Box>
 
       {/* ── FAQ ───────────────────────────────────────────────────────────── */}
-      <Box
-        component="section"
-        className="sc-faq-section"
-        data-scroll-scene="Trust"
-        sx={{ py: { xs: 10, md: 14 } }}
-      >
+      <Box component="section" sx={{ py: { xs: 10, md: 14 } }}>
         <Container maxWidth="md">
           <Box sx={{ textAlign: "center", mb: { xs: 6, md: 8 } }}>
+            <EyebrowLabel>FAQ</EyebrowLabel>
             <Typography
-              className="sc-section-title"
               sx={{
                 fontFamily: C.display,
                 fontSize: { xs: "2rem", md: "2.8rem" },
@@ -1003,14 +1017,9 @@ export const LandingPage = () => {
       </Box>
 
       {/* ── FINAL CTA ─────────────────────────────────────────────────────── */}
-      <Box
-        component="section"
-        data-scroll-scene="Play"
-        sx={{ py: { xs: 6, md: 8 }, px: 3 }}
-      >
+      <Box component="section" sx={{ py: { xs: 6, md: 8 }, px: 3 }}>
         <Container maxWidth="md">
           <Box
-            className="sc-final-cta"
             sx={{
               borderRadius: "28px",
               border: `1px solid rgba(124, 92, 252, 0.25)`,
@@ -1045,7 +1054,7 @@ export const LandingPage = () => {
                 mx: "auto",
               }}
             >
-              Download BUL and make your first prediction in under 60
+              Download Bettim and make your first prediction in under 60
               seconds.
             </Typography>
             <Stack
@@ -1085,28 +1094,35 @@ export const LandingPage = () => {
             sx={{ mb: 5 }}
           >
             {/* Brand */}
-            <Stack spacing={1} alignItems={{ xs: "center", sm: "flex-start" }}>
+            <Stack direction="row" spacing={2} alignItems="center">
               <Box
                 component="img"
-                src="/images/logo/wordmark.png"
-                alt="BUL"
-                sx={{
-                  width: 106,
-                  height: "auto",
-                  filter: "invert(1)",
-                  display: "block",
-                }}
+                src="/images/logo/logo.png"
+                alt="Bettim"
+                sx={{ width: 44, height: 44, borderRadius: "12px" }}
               />
-              <Typography
-                sx={{
-                  fontFamily: C.body,
-                  fontSize: "0.72rem",
-                  color: C.textMuted,
-                  letterSpacing: "0.08em",
-                }}
-              >
-                Live Sports Gaming
-              </Typography>
+              <Box>
+                <Typography
+                  sx={{
+                    fontFamily: C.display,
+                    fontSize: "1.1rem",
+                    color: C.textPrimary,
+                    lineHeight: 1.2,
+                  }}
+                >
+                  BETTIM
+                </Typography>
+                <Typography
+                  sx={{
+                    fontFamily: C.body,
+                    fontSize: "0.72rem",
+                    color: C.textMuted,
+                    letterSpacing: "0.08em",
+                  }}
+                >
+                  Live Sports Gaming
+                </Typography>
+              </Box>
             </Stack>
 
             {/* Nav + social */}
@@ -1172,8 +1188,7 @@ export const LandingPage = () => {
                       border: `1px solid ${C.border}`,
                       color: C.textMuted,
                       cursor: "pointer",
-                      transition:
-                        "color 0.15s ease-out, border-color 0.15s ease-out, background-color 0.15s ease-out, transform 0.15s ease-out",
+                      transition: "all 0.2s",
                       "&:hover": {
                         color: C.textPrimary,
                         borderColor: C.border,
@@ -1203,9 +1218,9 @@ export const LandingPage = () => {
                 letterSpacing: "0.04em",
               }}
             >
-              © 2026 BUL. All rights reserved. ·{" "}
-              <a href="mailto:support@bulinteractive.com" style={{ color: "inherit", textDecoration: "none" }}>
-                support@bulinteractive.com
+              © 2026 Bettim. All rights reserved. ·{" "}
+              <a href="mailto:support@bettim.co" style={{ color: "inherit", textDecoration: "none" }}>
+                support@bettim.co
               </a>
             </Typography>
           </Box>
@@ -1217,13 +1232,7 @@ export const LandingPage = () => {
 
 // ─── Section Sub-components ────────────────────────────────────────────────────
 
-function StepCard({
-  step,
-  index,
-}: {
-  step: (typeof STEPS)[number];
-  index: number;
-}) {
+function StepCard({ step }: { step: (typeof STEPS)[number] }) {
   const { ref, visible } = useInView(0.1);
   const { Icon } = step;
 
@@ -1231,7 +1240,6 @@ function StepCard({
     <Box
       ref={ref}
       sx={{
-        "--item-i": index,
         background: C.card,
         border: `1px solid ${C.border}`,
         borderRadius: "20px",
@@ -1328,10 +1336,7 @@ function ShowcaseItem({
 
   const content = (
     <Box
-      ref={ref}
-      className="sc-showcase-act"
-      data-scroll-scene={isFeatured ? "Live" : section.label}
-      data-scroll-peak={isFeatured ? "true" : undefined}
+      ref={isFeatured ? undefined : ref}
       sx={{
         position: "relative",
         display: "flex",
@@ -1344,11 +1349,6 @@ function ShowcaseItem({
         mb: isFeatured ? 0 : { xs: 12, md: 16 },
         px: isFeatured ? { xs: 2.5, md: 5 } : 0,
         py: isFeatured ? { xs: 4, md: 6 } : 0,
-        minHeight: {
-          xs: isFeatured ? "105vh" : "auto",
-          md: isFeatured ? "118vh" : hideCopy ? "82vh" : "92vh",
-        },
-        justifyContent: isFeatured ? "center" : "flex-start",
         borderRadius: isFeatured ? "28px" : 0,
         border: isFeatured ? `1px solid ${section.accent}55` : "none",
         background: isFeatured
@@ -1374,13 +1374,6 @@ function ShowcaseItem({
         }),
       }}
     >
-      {isFeatured && (
-        <Box className="sc-rank-pulse" aria-hidden>
-          {/* <Box className="sc-rank-pulse__number">24 / 03</Box> */}
-          <Box className="sc-rank-pulse__lock">Prediction locked</Box>
-        </Box>
-      )}
-
       {/* Aurora blob — large, behind the phone */}
       <Box
         sx={{
@@ -1509,7 +1502,6 @@ function ShowcaseItem({
       {/* Text */}
       {!hideCopy && (
         <Box
-          className="sc-showcase-copy"
           sx={{
             flex: 1,
             textAlign: { xs: "center", md: phoneOnLeft ? "left" : "right" },
@@ -1553,6 +1545,7 @@ function ShowcaseItem({
   if (isFeatured) {
     return (
       <Box
+        ref={ref}
         sx={{
           width: "100vw",
           position: "relative",

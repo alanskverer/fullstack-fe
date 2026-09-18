@@ -76,7 +76,7 @@ const QA: React.FC = () => {
       setFormSubmitting(true);
 
       // Send email using Formsubmit.co (simple, no signup required!)
-      const response = await fetch("https://formsubmit.co/ajax/support@bulinteractive.com", {
+      const response = await fetch("https://formsubmit.co/ajax/support@bettim.co", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -86,7 +86,7 @@ const QA: React.FC = () => {
           name: validatedData.name,
           email: validatedData.email,
           message: validatedData.message,
-          _subject: `BUL Support - ${validatedData.name}`,
+          _subject: `Bettim Support - ${validatedData.name}`,
           _template: "box", // Nice email template
         }),
       });
@@ -114,7 +114,7 @@ const QA: React.FC = () => {
         // Handle fetch or other errors
         console.error("Error submitting form:", error);
         setFormError(
-          "Failed to send message. Please email us directly at support@bulinteractive.com or try again later."
+          "Failed to send message. Please email us directly at support@bettim.co or try again later."
         );
       }
     } finally {
@@ -216,7 +216,7 @@ const QA: React.FC = () => {
               <HelpOutlineIcon sx={{ fontSize: 32, color: "primary.main" }} />
               <Box>
                 <Typography variant="h5" sx={{ fontWeight: 700, mb: 0.5 }}>
-                  BUL – Help & Support
+                  Bettim – Help & Support
                 </Typography>
                 <Typography variant="body2" color="textSecondary">
                   Get answers to common questions or contact our support team
@@ -281,7 +281,7 @@ const QA: React.FC = () => {
             <Typography
               variant="h6"
               component="a"
-              href="mailto:support@bulinteractive.com"
+              href="mailto:support@bettim.co"
               sx={{
                 color: "primary.main",
                 textDecoration: "none",
@@ -291,7 +291,7 @@ const QA: React.FC = () => {
                 },
               }}
             >
-              support@bulinteractive.com
+              support@bettim.co
             </Typography>
           </Box>
 
@@ -384,11 +384,11 @@ const QA: React.FC = () => {
 
           <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography sx={{ fontWeight: 600 }}>What is BUL?</Typography>
+              <Typography sx={{ fontWeight: 600 }}>What is Bettim?</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Typography>
-                BUL is a live sports gaming platform where users can engage
+                Bettim is a live sports gaming platform where users can engage
                 with NCAA events in real-time. The app provides an entertaining
                 way to follow games and compete with other users through virtual
                 coins and leaderboards.
@@ -419,7 +419,7 @@ const QA: React.FC = () => {
             </AccordionSummary>
             <AccordionDetails>
               <Typography>
-                <strong>No.</strong> BUL does not offer any in-app purchases.
+                <strong>No.</strong> Bettim does not offer any in-app purchases.
                 Users cannot buy coins, items, or any other content with real
                 money. All features are completely free and accessible to
                 everyone.
@@ -452,7 +452,7 @@ const QA: React.FC = () => {
             <AccordionDetails>
               <Typography>
                 If you encounter a bug or technical issue, please email us at{" "}
-                <strong>support@bulinteractive.com</strong> with a description of the
+                <strong>support@bettim.co</strong> with a description of the
                 problem, including your device type and what you were doing when
                 the issue occurred. We'll investigate and respond as quickly as
                 possible.
@@ -471,7 +471,7 @@ const QA: React.FC = () => {
                 First, try closing and reopening the app. If the problem
                 persists, restart your device. If you're still experiencing
                 issues, contact our support team at{" "}
-                <strong>support@bulinteractive.com</strong> and include details about when
+                <strong>support@bettim.co</strong> and include details about when
                 the crash occurs so we can help resolve it.
               </Typography>
             </AccordionDetails>
@@ -486,7 +486,7 @@ const QA: React.FC = () => {
             <AccordionDetails>
               <Typography>
                 You can reach our support team by emailing{" "}
-                <strong>support@bulinteractive.com</strong> or by using the contact form
+                <strong>support@bettim.co</strong> or by using the contact form
                 at the top of this page. We typically respond within 24-48 hours
                 during business days.
               </Typography>
@@ -512,14 +512,14 @@ const QA: React.FC = () => {
           </Box>
 
           <Typography variant="body1" paragraph>
-            BUL is committed to providing a safe and fair entertainment
+            Bettim is committed to providing a safe and fair entertainment
             experience for all users:
           </Typography>
 
           <Box component="ul" sx={{ pl: 2, "& li": { mb: 1.5 } }}>
             <li>
               <Typography variant="body1">
-                <strong>No real-money gambling:</strong> BUL is purely for
+                <strong>No real-money gambling:</strong> Bettim is purely for
                 entertainment purposes and does not involve real-money wagering
                 or gambling of any kind.
               </Typography>
@@ -541,7 +541,7 @@ const QA: React.FC = () => {
               <Typography variant="body1">
                 <strong>Report concerns:</strong> If you have concerns about
                 misuse or need assistance, please contact our support team at
-                support@bulinteractive.com immediately.
+                support@bettim.co immediately.
               </Typography>
             </li>
           </Box>
@@ -657,13 +657,13 @@ const QA: React.FC = () => {
           }}
         >
           <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
-            BUL
+            Bettim
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-            Support: <a href="mailto:support@bulinteractive.com" style={{ color: "inherit" }}>support@bulinteractive.com</a>
+            Support: <a href="mailto:support@bettim.co" style={{ color: "inherit" }}>support@bettim.co</a>
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            © 2025 BUL. All rights reserved.
+            © 2025 Bettim. All rights reserved.
           </Typography>
         </Box>
       </Container>
