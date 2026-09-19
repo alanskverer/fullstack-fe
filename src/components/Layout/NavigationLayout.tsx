@@ -94,7 +94,7 @@ export const NavigationLayout = ({ onLogout }: NavigationLayoutProps) => {
                                     textDecoration: 'none',
                                 }}
                             >
-                                Bettim Admin
+                                BUL Admin
                             </Typography>
                         </Box>
 
