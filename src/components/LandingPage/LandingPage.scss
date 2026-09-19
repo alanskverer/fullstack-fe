@@ -129,9 +129,12 @@
   z-index: 2;
   overflow: hidden;
   border-block: 0 !important;
-  background: var(--arena-red) !important;
+  background: #a99be0 !important;
   color: #08090f;
-  clip-path: inset(0 calc((1 - var(--scroll-p, 0.5)) * 8%) 0 0);
+  clip-path: inset(
+    0 calc((1 - var(--scroll-p, 0.5)) * 12%)
+    0 calc((1 - var(--scroll-p, 0.5)) * 12%)
+  );
 }
 
 .sc-stats * {

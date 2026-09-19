@@ -765,7 +765,7 @@ export const LandingPage = () => {
                 sx={{
                   width: { xs: "60px", sm: "1px" },
                   height: { xs: "1px", sm: "36px" },
-                  background: C.border,
+                  background: "rgba(8, 9, 15, 0.22)",
                   mx: "auto",
                 }}
               />
