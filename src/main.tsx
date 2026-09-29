@@ -37,9 +37,8 @@ function App() {
 
     return (
         <Routes>
-            <Route path="/" element={<NightCourt />} />
-            <Route path="/v1" element={<Navigate to="/" replace />} />
-            <Route path="/classic" element={<LandingPage />} />
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/v1" element={<NightCourt />} />
             <Route path="/v2" element={<TheBuild />} />
             <Route path="/v3" element={<LivingCourt />} />
             <Route path="/featured-section-variants" element={<FeaturedSectionVariants />} />
