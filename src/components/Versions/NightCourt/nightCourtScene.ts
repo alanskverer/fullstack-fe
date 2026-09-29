@@ -17,8 +17,11 @@ import {
   smooth,
 } from "../shared/three-utils";
 
-const ROSE = "#ff3055";
-const VIOLET = "#7c5cfc";
+/* BUL app palette. */
+const PURPLE = "#A78BFA";
+const DEEP_PURPLE = "#682FD3";
+const ROYAL_PURPLE = "#6A2ED4";
+const VIVID_PURPLE = "#7D37FF";
 
 /* Court is 16 m wide (x) and 30 m long (z) including the apron. */
 const RIM_Z = 12.425;
@@ -98,8 +101,8 @@ function texCourt() {
     ctx.closePath();
     ctx.fill();
 
-    // Lane in BUL rose.
-    ctx.fillStyle = "rgba(255, 48, 85, 0.78)";
+    // Lane in BUL royal purple.
+    ctx.fillStyle = "rgba(106, 46, 212, 0.8)";
     const laneY = side < 0 ? base : base - 5.8;
     ctx.fillRect(-2.45, laneY, 4.9, 5.8);
 
@@ -132,7 +135,7 @@ function texCourt() {
   ctx.beginPath();
   ctx.arc(0, 0, 1.8, 0, Math.PI * 2);
   ctx.stroke();
-  ctx.fillStyle = "rgba(255, 48, 85, 0.9)";
+  ctx.fillStyle = "rgba(125, 55, 255, 0.9)";
   ctx.beginPath();
   ctx.arc(0, 0, 1.2, 0, Math.PI * 2);
   ctx.fill();
@@ -219,22 +222,22 @@ function texMoon() {
   const { c, ctx } = canvas(S, S);
   const rnd = mulberry32(41);
   const g = ctx.createRadialGradient(S * 0.42, S * 0.4, S * 0.05, S / 2, S / 2, S * 0.5);
-  g.addColorStop(0, "#ff7a6a");
-  g.addColorStop(0.7, "#e0233a");
-  g.addColorStop(1, "#8e1024");
+  g.addColorStop(0, PURPLE);
+  g.addColorStop(0.7, ROYAL_PURPLE);
+  g.addColorStop(1, "#34137a");
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, S, S);
   for (let i = 0; i < 90; i++) {
     const r = (4 + rnd() * rnd() * 40) * (S / 512);
     const x = rnd() * S;
     const y = rnd() * S;
-    ctx.fillStyle = `rgba(90, 8, 20, ${0.12 + rnd() * 0.25})`;
+    ctx.fillStyle = `rgba(40, 12, 96, ${0.12 + rnd() * 0.25})`;
     ctx.beginPath();
     ctx.arc(x, y, r, 0, Math.PI * 2);
     ctx.fill();
   }
   for (const [x, y, r] of [[0.62, 0.38, 0.16], [0.36, 0.64, 0.12], [0.7, 0.66, 0.09]]) {
-    ctx.fillStyle = "rgba(110, 10, 26, 0.35)";
+    ctx.fillStyle = "rgba(60, 18, 130, 0.35)";
     ctx.beginPath();
     ctx.ellipse(x * S, y * S, r * S, r * S * 0.8, 0.4, 0, Math.PI * 2);
     ctx.fill();
@@ -299,7 +302,7 @@ export function createNightCourt(canvasEl: HTMLCanvasElement): NightCourt {
           float h = vDir.y;
           vec3 zen = vec3(0.012, 0.016, 0.03);
           vec3 mid = vec3(0.03, 0.03, 0.07);
-          vec3 hor = vec3(0.13, 0.06, 0.12);
+          vec3 hor = vec3(0.09, 0.05, 0.17);
           vec3 col = mix(hor, mid, smoothstep(0.0, 0.16, h));
           col = mix(col, zen, smoothstep(0.16, 0.6, h));
           gl_FragColor = vec4(col, 1.0);
@@ -331,14 +334,14 @@ export function createNightCourt(canvasEl: HTMLCanvasElement): NightCourt {
   moon.rotation.y = -0.6;
   scene.add(moon);
   const moonGlow = new THREE.Sprite(
-    new THREE.SpriteMaterial({ map: glowTexture("rgba(255,70,90,0.55)", "rgba(255,48,85,0.12)"), blending: THREE.AdditiveBlending, depthWrite: false, fog: false }),
+    new THREE.SpriteMaterial({ map: glowTexture("rgba(140,90,255,0.55)", "rgba(125,55,255,0.12)"), blending: THREE.AdditiveBlending, depthWrite: false, fog: false }),
   );
   moonGlow.scale.set(170, 170, 1);
   moonGlow.position.copy(moon.position).add(v(0, 0, -5));
   scene.add(moonGlow);
 
   scene.add(new THREE.HemisphereLight("#3a3f78", "#0a0608", 0.55));
-  const moonLight = new THREE.DirectionalLight("#ff6b7d", 0.35);
+  const moonLight = new THREE.DirectionalLight("#9a7bff", 0.35);
   moonLight.position.copy(moon.position);
   scene.add(moonLight);
 
@@ -360,7 +363,7 @@ export function createNightCourt(canvasEl: HTMLCanvasElement): NightCourt {
 
   /* Hoops */
   const steel = new THREE.MeshStandardMaterial({ color: "#1d2130", roughness: 0.5, metalness: 0.7 });
-  const rimMat = new THREE.MeshStandardMaterial({ color: ROSE, emissive: ROSE, emissiveIntensity: 0.6, roughness: 0.35, metalness: 0.6 });
+  const rimMat = new THREE.MeshStandardMaterial({ color: VIVID_PURPLE, emissive: VIVID_PURPLE, emissiveIntensity: 0.6, roughness: 0.35, metalness: 0.6 });
   const boardMat = new THREE.MeshPhysicalMaterial({ color: "#c8d0ff", roughness: 0.08, transmission: 0.7, transparent: true, opacity: 0.35, thickness: 0.05 });
   const lineMat = new THREE.MeshBasicMaterial({ color: "#f2efff" });
   const netMat = new THREE.LineBasicMaterial({ color: "#d9dbe8", transparent: true, opacity: 0.8 });
@@ -523,7 +526,7 @@ export function createNightCourt(canvasEl: HTMLCanvasElement): NightCourt {
     ctx.fillRect(0, 0, 1024, 512);
     ctx.fillStyle = "#0c0f1c";
     for (let y = 0; y < 512; y += 8) ctx.fillRect(0, y, 1024, 1);
-    ctx.fillStyle = ROSE;
+    ctx.fillStyle = PURPLE;
     ctx.font = "700 54px 'Onest', 'Helvetica Neue', sans-serif";
     ctx.textAlign = "left";
     ctx.fillText("BUL  ● LIVE", 48, 86);
@@ -536,7 +539,7 @@ export function createNightCourt(canvasEl: HTMLCanvasElement): NightCourt {
     ctx.font = "300 190px 'Onest', 'Helvetica Neue', sans-serif";
     ctx.fillText("102", 300, 330);
     ctx.fillText("98", 740, 330);
-    ctx.fillStyle = VIOLET;
+    ctx.fillStyle = VIVID_PURPLE;
     ctx.fillText(":", 520, 318);
     ctx.font = "500 36px ui-monospace, Menlo, monospace";
     ctx.fillStyle = "#8f98b8";
@@ -558,7 +561,7 @@ export function createNightCourt(canvasEl: HTMLCanvasElement): NightCourt {
   scoreboard.add(sbPole, sbFrame, sbScreen);
   scoreboard.position.set(12.4, 0, 2);
   scene.add(scoreboard);
-  const sbLight = new THREE.PointLight(VIOLET, 30, 18, 2);
+  const sbLight = new THREE.PointLight(VIVID_PURPLE, 30, 18, 2);
   sbLight.position.set(11, 6.3, 2);
   scene.add(sbLight);
 
@@ -649,7 +652,7 @@ export function createNightCourt(canvasEl: HTMLCanvasElement): NightCourt {
   const cSeed: { x: number; y: number; z: number; fall: number; omega: number; slip: number; phase: number; roll: number; dir: number; tilt: number }[] = [];
   {
     const rnd = mulberry32(31);
-    const palette = [ROSE, VIOLET, "#ffffff", "#ffb800", VIOLET, ROSE];
+    const palette = [VIVID_PURPLE, PURPLE, "#ffffff", "#ffb800", ROYAL_PURPLE, DEEP_PURPLE];
     const col = new THREE.Color();
     for (let i = 0; i < CONF; i++) {
       cSeed.push({
