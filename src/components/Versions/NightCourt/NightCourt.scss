@@ -689,23 +689,18 @@ main { position: relative; z-index: 10; }
   &.is-shown { transform: none; }
   img { width: 32px; height: 32px; border-radius: 8px; box-shadow: 0 0 0 1px var(--line); }
   > span { font-weight: 600; font-size: 0.9rem; }
-  a {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 7px 18px;
+  .nc-stores { flex-wrap: nowrap; gap: 10px; }
+  .nc-store {
+    min-width: 0;
+    gap: 8px;
+    padding: 6px 14px 6px 12px;
     border-radius: 10px;
-    background: var(--rose);
-    color: #fff;
-    font-size: 0.82rem;
-    font-weight: 700;
-    transition: background-color 0.15s;
-    svg { width: 16px; height: 16px; }
-    &:hover { background: #e0234a; }
+    font-size: 0.85rem;
+    svg { width: 18px; height: 18px; }
+    small { font-size: 0.5rem; }
   }
   @media (max-width: 560px) {
     img, > span { display: none; }
-    a { padding: 7px 12px; font-size: 0.75rem; }
   }
 }
 

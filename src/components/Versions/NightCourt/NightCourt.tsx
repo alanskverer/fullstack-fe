@@ -71,8 +71,7 @@ function StickyBar() {
     <div className={`nc-bar${show ? " is-shown" : ""}`}>
       <img src={ICON} alt="" />
       <span>Download BUL</span>
-      <a href={APP_STORE_URL} target="_blank" rel="noopener noreferrer"><AppleGlyph /> App Store</a>
-      <a href={PLAY_STORE_URL} target="_blank" rel="noopener noreferrer"><PlayGlyph /> Google Play</a>
+      <StoreLinks />
     </div>
   );
 }
