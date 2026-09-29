@@ -10,9 +10,6 @@ import { TeamStats } from "./components/TeamStats/TeamStats";
 import { NavigationLayout } from "./components/Layout/NavigationLayout";
 import { LandingPage } from "./components/LandingPage/LandingPage";
 import { FeaturedSectionVariants } from "./components/FeaturedSectionVariants/FeaturedSectionVariants";
-import { NightCourt } from "./components/Versions/NightCourt/NightCourt";
-import { TheBuild } from "./components/Versions/TheBuild/TheBuild";
-import { LivingCourt } from "./components/Versions/LivingCourt/LivingCourt";
 import Privacy from "./components/Privacy/Privacy";
 import TermsDocx from "./components/Terms/TermsDocx";
 import QA from "./components/QA/QA";
@@ -38,9 +35,6 @@ function App() {
     return (
         <Routes>
             <Route path="/" element={<LandingPage />} />
-            <Route path="/v1" element={<NightCourt />} />
-            <Route path="/v2" element={<TheBuild />} />
-            <Route path="/v3" element={<LivingCourt />} />
             <Route path="/featured-section-variants" element={<FeaturedSectionVariants />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<TermsDocx />} />
