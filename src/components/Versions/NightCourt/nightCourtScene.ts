@@ -275,7 +275,7 @@ export type NightCourt = {
   dispose: () => void;
 };
 
-export function createNightCourt(canvasEl: HTMLCanvasElement): NightCourt {
+export function createNightCourt(canvasEl: HTMLCanvasElement, opts: { rain?: boolean } = {}): NightCourt {
   const reduced = prefersReducedMotion();
   const renderer = new THREE.WebGLRenderer({ canvas: canvasEl, antialias: true, powerPreference: "high-performance" });
   renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -638,6 +638,7 @@ export function createNightCourt(canvasEl: HTMLCanvasElement): NightCourt {
     l.frustumCulled = false;
     return l;
   })();
+  rain.visible = opts.rain ?? true;
   scene.add(rain);
 
   /* Confetti: instanced cards that tumble through face, edge and back,

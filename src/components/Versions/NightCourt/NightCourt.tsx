@@ -90,7 +90,7 @@ export function NightCourt() {
     if (!cv) return;
     let scene: Scene;
     try {
-      scene = createNightCourt(cv);
+      scene = createNightCourt(cv, { rain: new URLSearchParams(location.search).get("rain") === "1" });
     } catch {
       setGlFailed(true);
       return;
