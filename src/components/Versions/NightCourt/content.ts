@@ -4,11 +4,6 @@ import type { ShowcaseItem } from "../shared/content";
 
 export const HERO_SYSTEM_ITEMS = ["System / BUL", "Mode / Live predictions", "Access / Free membership"];
 
-export const STATS = [
-  { value: "4.8 ★", label: "App Store Rating" },
-  { value: "100%", label: "Free — No purchases" },
-];
-
 export const STEPS = [
   {
     num: "01",
@@ -27,7 +22,7 @@ export const STEPS = [
   },
 ];
 
-export type Act = ShowcaseItem & { accent: "rose" | "violet"; featured?: boolean };
+export type Act = ShowcaseItem & { accent: "rose" | "violet" };
 
 export const SHOWCASE: Act[] = [
   {
@@ -50,7 +45,6 @@ export const SHOWCASE: Act[] = [
     desc: "Watch your rank change with every basket. You're not just watching the game anymore. You're competing in it.",
     media: { type: "video", src: "/videos/showcase/live_leaderboard.mp4" },
     accent: "violet",
-    featured: true,
   },
   {
     label: "Live Tracking",

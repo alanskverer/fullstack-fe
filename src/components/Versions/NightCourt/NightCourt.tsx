@@ -6,7 +6,7 @@ import { useReveal } from "../shared/useReveal";
 import { AppleGlyph, Media, PlayGlyph, Words } from "../shared/Media";
 import { VersionSwitcher } from "../shared/VersionSwitcher";
 import { APP_STORE_URL, INSTAGRAM_URL, PLAY_STORE_URL, SUPPORT_EMAIL } from "../shared/content";
-import { Act, FAQS, FOOTER_LINKS, HERO_SYSTEM_ITEMS, REVIEWS, SHOWCASE, STATS, STEPS } from "./content";
+import { Act, FAQS, FOOTER_LINKS, HERO_SYSTEM_ITEMS, REVIEWS, SHOWCASE, STEPS } from "./content";
 import "./NightCourt.scss";
 
 /* Each chapter anchors one camera key in the scene, in order. */
@@ -28,21 +28,18 @@ function StoreLinks() {
         <AppleGlyph />
         <span><small>Download on the</small>App Store</span>
       </a>
-      <a className="nc-store nc-store--rose" href={PLAY_STORE_URL} target="_blank" rel="noopener noreferrer">
+      <a className="nc-store nc-store--black" href={PLAY_STORE_URL} target="_blank" rel="noopener noreferrer">
         <PlayGlyph />
-        <span><small>GET IT ON</small>Google Play</span>
+        <span><small>Get it on</small>Google Play</span>
       </a>
     </div>
   );
 }
 
-function ShowcaseAct({ act, index }: { act: Act; index: number }) {
+function ShowcaseAct({ act, index, id }: { act: Act; index: number; id?: string }) {
   const phoneLeft = index % 2 === 0;
   return (
-    <article
-      className={`nc-act nc-act--${act.accent}${phoneLeft ? "" : " nc-act--flip"}${act.featured ? " nc-act--featured" : ""}`}
-    >
-      {act.featured && <span className="nc-act__lock" data-reveal>Prediction locked</span>}
+    <article id={id} className={`nc-act nc-act--${act.accent}${phoneLeft ? "" : " nc-act--flip"}`}>
       <div className="nc-phone" data-reveal>
         <Media item={act} />
       </div>
@@ -103,9 +100,11 @@ export function NightCourt() {
 
     const sections = CHAPTERS.map((c) => document.getElementById(`nc-${c.id}`)!);
     let max = 1;
+    let tops: number[] = [];
     const measure = () => {
       max = Math.max(1, document.documentElement.scrollHeight - innerHeight);
-      const times = sections.map((s, i) => (i === 0 ? 0 : Math.min(1, s.offsetTop / max)));
+      tops = sections.map((s) => s.getBoundingClientRect().top + scrollY);
+      const times = tops.map((top, i) => (i === 0 ? 0 : Math.min(1, top / max)));
       times[times.length - 1] = 1;
       for (let i = 1; i < times.length; i++) times[i] = Math.max(times[i], times[i - 1] + 0.01);
       scene.setKeyTimes(times);
@@ -114,8 +113,8 @@ export function NightCourt() {
       const y = scrollY;
       scene.setProgress(Math.min(1, y / max));
       let a = 0;
-      sections.forEach((s, i) => {
-        if (s.offsetTop - innerHeight * 0.45 <= y) a = i;
+      tops.forEach((top, i) => {
+        if (top - innerHeight * 0.45 <= y) a = i;
       });
       setActive(a);
     };
@@ -245,16 +244,6 @@ export function NightCourt() {
           </button>
         </section>
 
-        {/* ── Stats ─────────────────────────────── */}
-        <section className="nc-stats" aria-label="Highlights">
-          {STATS.map((s) => (
-            <div key={s.label} data-reveal>
-              <b>{s.value}</b>
-              <span>{s.label}</span>
-            </div>
-          ))}
-        </section>
-
         {/* ── How it works ─────────────────────────────── */}
         <section id="nc-predict" className="nc-sec">
           <h2 className="nc-h2 nc-center" data-reveal>
@@ -273,13 +262,9 @@ export function NightCourt() {
 
         {/* ── Showcase ─────────────────────────────── */}
         <section id="nc-compete" className="nc-sec nc-showcase">
-          {SHOWCASE.slice(0, 2).map((a, i) => <ShowcaseAct key={a.title} act={a} index={i} />)}
-        </section>
-        <section id="nc-live" className="nc-featured">
-          <ShowcaseAct act={SHOWCASE[2]} index={2} />
-        </section>
-        <section className="nc-sec nc-showcase">
-          {SHOWCASE.slice(3).map((a, i) => <ShowcaseAct key={a.title} act={a} index={i + 3} />)}
+          {SHOWCASE.map((a, i) => (
+            <ShowcaseAct key={a.title} act={a} index={i} id={i === 2 ? "nc-live" : undefined} />
+          ))}
         </section>
 
         {/* ── Reviews ─────────────────────────────── */}
