@@ -175,7 +175,7 @@ export function NightCourt() {
       <div className="nc-cursor" ref={cursorRef} aria-hidden />
 
       <header className={`nc-nav${scrolled ? " is-scrolled" : ""}`}>
-        <Link to="/v1" className="nc-brand" aria-label="BUL home">
+        <Link to="/" className="nc-brand" aria-label="BUL home">
           <img src={ICON} alt="" />
           <span>
             <b>BUL</b>
