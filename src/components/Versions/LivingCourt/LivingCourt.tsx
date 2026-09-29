@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { createLivingCourt, LivingCourt as Scene } from "./livingCourtScene";
 import { useReveal } from "../shared/useReveal";
 import { AppleGlyph, Media, PlayGlyph } from "../shared/Media";
-import { VersionSwitcher } from "../shared/VersionSwitcher";
 import {
   APP_STORE_URL,
   FAQS,
@@ -285,7 +284,6 @@ export function LivingCourt() {
         </footer>
       </section>
 
-      <VersionSwitcher />
     </div>
   );
 }

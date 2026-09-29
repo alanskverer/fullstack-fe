@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { BUILD_T, BuildHandle, createBuild, PRESETS, STAGES } from "./theBuildScene";
 import { useReveal } from "../shared/useReveal";
 import { AppleGlyph, Media, PlayGlyph } from "../shared/Media";
-import { VersionSwitcher } from "../shared/VersionSwitcher";
 import {
   APP_STORE_URL,
   FAQS,
@@ -290,7 +289,6 @@ export function TheBuild() {
         </footer>
       </section>
 
-      <VersionSwitcher tone="light" placement="top" />
     </div>
   );
 }

@@ -4,7 +4,6 @@ import { createNightCourt, NightCourt as Scene } from "./nightCourtScene";
 import { grainDataUrl } from "../shared/three-utils";
 import { useReveal } from "../shared/useReveal";
 import { AppleGlyph, Media, PlayGlyph, Words } from "../shared/Media";
-import { VersionSwitcher } from "../shared/VersionSwitcher";
 import { APP_STORE_URL, INSTAGRAM_URL, PLAY_STORE_URL, SUPPORT_EMAIL } from "../shared/content";
 import { Act, FAQS, FOOTER_LINKS, HERO_SYSTEM_ITEMS, REVIEWS, SHOWCASE, STEPS } from "./content";
 import "./NightCourt.scss";
@@ -342,7 +341,6 @@ export function NightCourt() {
       </main>
 
       <StickyBar />
-      <VersionSwitcher />
     </div>
   );
 }
